@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class PiggyUser implements User {
 
     @Autowired
@@ -22,21 +22,23 @@ public class PiggyUser implements User {
     private String currency;
     private String userpic;
     private String email;
-    private String email_hash;
-    private String last_visit;
-    private String last_mail;
+    private String emailHash;
+    private String lastVisit;
+    private String lastMail;
     private String data;
     private String note;
 
+    private Integer interest;
     private Integer money;
     private Integer mailing;
-    private Double slider_value;
+    private Double sliderValue;
 
 
     public void setByName(String username) {
         userDao.select(username);
-        // Если получится найти - проставить authorized = true
-        // Потом - проставить last_visit
+        userDao.updateLastVisit();
+
+        setAuthorized(true);
     }
 
     public boolean isAuthorized() {
@@ -47,19 +49,148 @@ public class PiggyUser implements User {
         this.authorized = authorized;
     }
 
-    public String getUsername() {
-        return username;
+    public void setSliderValue(Double sliderValue) {
+        this.sliderValue = sliderValue;
+    }
+
+    public void setCapitalization(boolean capitalization) {
+        this.capitalization = capitalization;
+    }
+
+    public void setDeposit(boolean deposit) {
+        this.deposit = deposit;
     }
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getNote() {
-        return note;
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public void setUserpic(String userpic) {
+        this.userpic = userpic;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setEmailHash(String emailHash) {
+        this.emailHash = emailHash;
+    }
+
+    public void setLastVisit(String lastVisit) {
+        this.lastVisit = lastVisit;
+    }
+
+    public void setLastMail(String lastMail) {
+        this.lastMail = lastMail;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public void setInterest(Integer interest) {
+        this.interest = interest;
+    }
+
+    public void setMoney(Integer money) {
+        this.money = money;
+    }
+
+    public void setMailing(Integer mailing) {
+        this.mailing = mailing;
+    }
+
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public Double getSliderValue() {
+        return sliderValue;
+    }
+
+    public boolean isCapitalization() {
+        return capitalization;
+    }
+
+    public boolean isDeposit() {
+        return deposit;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public String getUserpic() {
+        return userpic;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getEmailHash() {
+        return emailHash;
+    }
+
+    public String getLastVisit() {
+        return lastVisit;
+    }
+
+    public String getLastMail() {
+        return lastMail;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public Integer getInterest() {
+        return interest;
+    }
+
+    public Integer getMoney() {
+        return money;
+    }
+
+    public Integer getMailing() {
+        return mailing;
+    }
+
+    @Override
+    public String toString() {
+        return "PiggyUser{" +
+                "userDao=" + userDao +
+                ", authorized=" + authorized +
+                ", capitalization=" + capitalization +
+                ", deposit=" + deposit +
+                ", username='" + username + '\'' +
+                ", currency='" + currency + '\'' +
+                ", userpic='" + userpic + '\'' +
+                ", email='" + email + '\'' +
+                ", emailHash='" + emailHash + '\'' +
+                ", lastVisit='" + lastVisit + '\'' +
+                ", lastMail='" + lastMail + '\'' +
+                ", data='" + data + '\'' +
+                ", note='" + note + '\'' +
+                ", interest=" + interest +
+                ", money=" + money +
+                ", mailing=" + mailing +
+                ", sliderValue=" + sliderValue +
+                '}';
     }
 }

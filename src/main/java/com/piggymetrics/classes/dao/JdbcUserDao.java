@@ -2,15 +2,14 @@ package com.piggymetrics.classes.dao;
 
 import com.piggymetrics.classes.PiggyUser;
 import com.piggymetrics.classes.dao.interfaces.UserDao;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.Date;
 
 @Repository
 public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
@@ -40,6 +39,15 @@ public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
 
     @Override
     public void update() {
+
+    }
+
+    @Override
+    public void updateLastVisit() {
+        String sql = "UPDATE users SET last_visit = ? where username = ?";
+
+        getJdbcTemplate().update(
+                sql, new Object[]{new Date(), user.getUsername()});
 
     }
 }

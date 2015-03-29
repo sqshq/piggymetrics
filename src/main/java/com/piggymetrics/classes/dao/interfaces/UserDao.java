@@ -8,4 +8,6 @@ public interface UserDao {
 
     public void update();
 
+    public void updateLastVisit();
+
 }
