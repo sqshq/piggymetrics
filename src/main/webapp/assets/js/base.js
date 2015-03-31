@@ -1,14 +1,16 @@
 // From json to objects
-function jsonParse(data) {
-	if (typeof data == 'string') {
-		obj = JSON.parse(data);
-		user = new User (obj.login, obj.lastVisit, obj.avatar, obj.usd, obj.eur, obj.checkedCurr, obj.lastCurr, obj.checkedPercent, obj.notes);
-		savings = new Savings (obj.freeMoney, !!Number(obj.deposit), !!Number(obj.capitalization), obj.percent);
-		expenses = obj.data.expenses;
-		incomes = obj.data.incomes;
-		//expenses = JSON.parse(obj.data).expenses;
-		//incomes = JSON.parse(obj.data).incomes;
-	}
+function jsonParse(obj) {
+	//console.log(data);
+	//if (typeof data == 'string') {
+	//	obj = JSON.parse(data);
+		console.log(obj); //@todo убрать
+		user = new User (obj.username, obj.lastVisit, obj.userpic, '60.00', '70.00', obj.checkedCurrency, obj.lastCurrency, obj.sliderValue, obj.note); //@todo убрать 60 и 70
+		savings = new Savings (obj.money, !!Number(obj.deposit), !!Number(obj.capitalization), obj.interest);
+		//expenses = obj.data.expenses;
+		//incomes = obj.data.incomes;
+		expenses = JSON.parse(obj.data).expenses;
+		incomes = JSON.parse(obj.data).incomes;
+	//}
 }
 
 // From objects to json
@@ -32,23 +34,23 @@ function jsonStringify() {
 }
 
 var user = {};
-function User(login, lastVisit, avatar, usd, eur, checkedCurr, lastCurr, checkedPercent, notes) {
-	this.login = login;
+function User(username, lastVisit, userpic, usd, eur, checkedCurrency, lastCurrency, sliderValue, note) {
+	this.login = username;
 	this.lastVisit = lastVisit;
-	this.avatar = avatar;
+	this.avatar = userpic;
 	this.usd = usd;
 	this.eur = eur;
-	this.checkedCurr = checkedCurr;
-	this.lastCurr = lastCurr;
-	this.checkedPercent = checkedPercent;
-	this.notes = notes;
+	this.checkedCurr = checkedCurrency;
+	this.lastCurr = lastCurrency;
+	this.checkedPercent = sliderValue;
+	this.notes = note;
 }
 var savings = {};
-function Savings(freeMoney, deposit, capitalization, percent) {
-	this.freeMoney = freeMoney;
+function Savings(money, deposit, capitalization, interest) {
+	this.freeMoney = money;
 	this.deposit = deposit;
 	this.capitalization = capitalization;
-	this.percent = percent;
+	this.percent = interest;
 }
 var incomes = {};
 function AddIncome(income_id, title, icon, currency, period, value){
@@ -294,17 +296,19 @@ function debounce(f, ms) {
 		setTimeout(function() { state = null }, ms);
 	}
 }
-Up = debounce(Up, 300); // 360
-Down = debounce(Down, 300); //360
-initStatisticPage = debounce(initStatisticPage, 900);
-launchStatistic = debounce(launchStatistic, 2400);
-fadeStatistic = debounce(fadeStatistic, 1900);
-jsonDataSave = debounce(jsonDataSave, 1800);
-startOfExpenseList = debounce(startOfExpenseList, 500);
-endOfExpenseList = debounce(endOfExpenseList, 500);
-startOfIncomeList = debounce(startOfIncomeList, 500);
-endOfIncomeList = debounce(endOfIncomeList, 500);
-initGreetingPage = debounce(initGreetingPage, 2000);
+
+Up 	 = debounce(Up, 300);
+Down = debounce(Down, 300);
+
+initStatisticPage 	= debounce(initStatisticPage, 900);
+launchStatistic 	= debounce(launchStatistic, 2400);
+fadeStatistic 		= debounce(fadeStatistic, 1900);
+jsonDataSave 		= debounce(jsonDataSave, 1800);
+startOfExpenseList 	= debounce(startOfExpenseList, 500);
+endOfExpenseList 	= debounce(endOfExpenseList, 500);
+startOfIncomeList 	= debounce(startOfIncomeList, 500);
+endOfIncomeList 	= debounce(endOfIncomeList, 500);
+initGreetingPage 	= debounce(initGreetingPage, 2000);
 
 // Slide up
 function Up(transaction) {

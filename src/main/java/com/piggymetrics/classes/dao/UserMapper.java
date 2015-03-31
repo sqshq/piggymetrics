@@ -20,7 +20,8 @@ public class UserMapper implements RowMapper
         user.setCapitalization(set.getBoolean("capitalization"));
 
         user.setUsername(set.getString("username"));
-        user.setCurrency(set.getString("currency"));
+        user.setCheckedCurrency(set.getString("checked_currency"));
+        user.setLastCurrency(set.getString("last_currency"));
         user.setUserpic(set.getString("userpic"));
         user.setEmail(set.getString("email"));
         user.setEmailHash(set.getString("email_hash"));

@@ -19,7 +19,7 @@ public class AppInterceptor extends HandlerInterceptorAdapter {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (!(auth instanceof AnonymousAuthenticationToken)) {
-            user.setByName(auth.getName());
+            user.fillByName(auth.getName());
         } else {
             user.setAuthorized(false);
         }

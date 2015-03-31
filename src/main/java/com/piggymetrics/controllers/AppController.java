@@ -1,10 +1,12 @@
 package com.piggymetrics.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.piggymetrics.classes.PiggyUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
 import org.springframework.context.i18n.LocaleContextHolder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +20,7 @@ public class AppController implements MessageSourceAware {
     private PiggyUser user;
 
     private MessageSource messageSource;
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public void setMessageSource(MessageSource messageSource) {
@@ -27,10 +30,13 @@ public class AppController implements MessageSourceAware {
 	@RequestMapping("/")
 	public String launchApp(ModelMap model) {
 
-		model.addAttribute("custom", user.getNote()); //@todo убрать дебаг
+        try {
+            model.addAttribute("user", mapper.writeValueAsString(user));
+            model.addAttribute("authorized", user.isAuthorized());
+        } catch (JsonProcessingException e) {
+            // @todo log an error
+        }
 
-		model.addAttribute("authorized", user.isAuthorized());
-		model.addAttribute("user", false);
 		return "app/base";
 	}
 
@@ -38,12 +44,10 @@ public class AppController implements MessageSourceAware {
 	public String launchDemoApp(ModelMap model) {
 
         Locale locale = LocaleContextHolder.getLocale();
-        user.setByName(messageSource.getMessage("demo", null, locale));
-
-        model.addAttribute("custom", user); //@todo убрать дебаг
+        user.fillByName(messageSource.getMessage("demo", null, locale));
 
         model.addAttribute("authorized", true);
-        model.addAttribute("user_data", false);
+        model.addAttribute("user", false);
         return "app/base";
     }
 
