@@ -22,11 +22,6 @@
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
 
-    <!--<bean id="savedRequestAwareAuthenticationSuccessHandler"-->
-          <!--class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">-->
-        <!--<property name="targetUrlParameter" value="targetUrl" />-->
-    <!--</bean>-->
-
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>

@@ -45,9 +45,14 @@ public class AppController implements MessageSourceAware {
 
         Locale locale = LocaleContextHolder.getLocale();
         user.fillByName(messageSource.getMessage("demo", null, locale));
+        user.setUsername("demo");
 
-        model.addAttribute("authorized", true);
-        model.addAttribute("user", false);
+        try {
+            model.addAttribute("user", mapper.writeValueAsString(user));
+            model.addAttribute("authorized", true);
+        } catch (JsonProcessingException e) {
+            // @todo log an error
+        }
         return "app/base";
     }
 

@@ -5,6 +5,10 @@ import com.piggymetrics.classes.dao.interfaces.UserDao;
 import com.piggymetrics.classes.interfaces.User;
 import lombok.Getter;
 import lombok.Setter;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,5 +51,15 @@ public class PiggyUser implements User {
 
         setAuthorized(true);
     }
-// @todo кастомный сеттер lastVisit ибо надо/вот/так
+
+    public String getLastVisit() {
+
+//        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+
+//        DateTime date = formatter.parseDateTime(this.lastVisit);
+//        DateTimeFormatter fmt = DateTimeFormat.forPattern("d/MMMM/yyyy");
+
+//        System.out.println(date);
+        return "01/05/2015";
+    }
 }

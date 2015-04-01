@@ -8,8 +8,8 @@
              http://www.springframework.org/schema/context
              http://www.springframework.org/schema/context/spring-context-3.0.xsd">
 
-    <context:annotation-config />
-    <context:component-scan base-package="com.piggymetrics.*"/>
+    <!--<context:annotation-config />-->
+    <!--<context:component-scan base-package="com.piggymetrics.*"/>-->
 
     <http auto-config="true" use-expressions="true">
 
