@@ -1,36 +1,9 @@
 // From json to objects
 function jsonParse(obj) {
-	//console.log(data);
-	//if (typeof data == 'string') {
-	//	obj = JSON.parse(data);
-		console.log(obj); //@todo убрать
-		user = new User (obj.username, obj.lastVisit, obj.userpic, '60.00', '70.00', obj.checkedCurrency, obj.lastCurrency, obj.sliderValue, obj.note); //@todo убрать 60 и 70
-		savings = new Savings (obj.money, !!Number(obj.deposit), !!Number(obj.capitalization), obj.interest);
-		//expenses = obj.data.expenses;
-		//incomes = obj.data.incomes;
-		expenses = JSON.parse(obj.data).expenses;
-		incomes = JSON.parse(obj.data).incomes;
-	//}
-}
-
-// From objects to json
-function jsonStringify() {
-	var data = {
-		incomes: incomes,
-		expenses: expenses
-	}
-	var array = {
-		checkedCurr: user.checkedCurr,
-		lastCurr: user.lastCurr,
-		checkedPercent: $("#savings-slider").data("checkedPercent"),
-		notes: user.notes,
-		freeMoney: savings.freeMoney,
-		deposit: + savings.deposit,
-		capitalization: + savings.capitalization,
-		percent: savings.percent,
-		data: data
-	}
-	return JSON.stringify(array);
+	user = new User (obj.username, obj.lastVisit, obj.userpic, '60.00', '70.00', obj.checkedCurrency, obj.lastCurrency, obj.sliderValue, obj.note); //@todo убрать 60 и 70
+	savings = new Savings (obj.money, !!Number(obj.deposit), !!Number(obj.capitalization), obj.interest);
+	expenses = JSON.parse(obj.data).expenses;
+	incomes = JSON.parse(obj.data).incomes;
 }
 
 var user = {};
@@ -855,15 +828,22 @@ function launchStatistic() {
 
 }
 
-// Launch data saving every 60 sec
-//setInterval(jsonDataSave, 60000);
-
 // Save all data on server
 function jsonDataSave() {
 	if (user.login !== undefined && savePermit) {
 		var saveOptions = {
 			datatype: 	"json",
-			data: { user_data: jsonStringify() }
+			data: {
+				checkedCurrency: user.checkedCurr,
+				lastCurrency: user.lastCurr,
+				sliderValue: $("#savings-slider").data("checkedPercent"),
+				note: user.notes,
+				money: Math.ceil(savings.freeMoney),
+				deposit: +savings.deposit,
+				capitalization: +savings.capitalization,
+				interest: savings.percent,
+				data: JSON.stringify({incomes: incomes, expenses: expenses})
+			}
 		};
 		$("#saveoptions").ajaxSubmit(saveOptions);
 		$("#leftborder, #rightborder, #centerborder").addClass("saveaction");

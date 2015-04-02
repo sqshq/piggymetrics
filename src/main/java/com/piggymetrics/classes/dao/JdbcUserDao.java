@@ -38,8 +38,20 @@ public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
     }
 
     @Override
-    public void update() {
-
+    public void update(PiggyUser valid) {
+        getJdbcTemplate().update(
+            "UPDATE users SET checked_currency = ?, last_currency = ?, capitalization = ?, slider_value = ?, interest = ?, deposit = ?, money = ?, note = ?, data = ? where username = ?",
+            valid.getCheckedCurrency(),
+            valid.getLastCurrency(),
+            valid.isCapitalization(),
+            valid.getSliderValue(),
+            valid.getInterest(),
+            valid.isDeposit(),
+            valid.getMoney(),
+            valid.getNote(),
+            valid.getData(),
+            user.getUsername()
+        );
     }
 
     @Override

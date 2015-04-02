@@ -50,6 +50,7 @@ public class AppController implements MessageSourceAware {
         try {
             model.addAttribute("user", mapper.writeValueAsString(user));
             model.addAttribute("authorized", true);
+            model.addAttribute("demo", true);
         } catch (JsonProcessingException e) {
             // @todo log an error
         }

@@ -12,9 +12,12 @@
         <spring.version>4.1.1.RELEASE</spring.version>
         <spring.security.version>3.2.3.RELEASE</spring.security.version>
         <mysql.connector.version>5.1.30</mysql.connector.version>
+        <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
+        <validation.api.version>1.0.0.GA</validation.api.version>
         <compiler.version>2.3.2</compiler.version>
         <lombok.version>1.16.2</lombok.version>
         <jackson.version>2.5.1</jackson.version>
+        <joda.version>2.7</joda.version>
         <jstl.version>1.2</jstl.version>
     </properties>
 
@@ -118,7 +121,20 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.7</version>
+            <version>${joda.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>${validation.api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate.validator.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
     </dependencies>

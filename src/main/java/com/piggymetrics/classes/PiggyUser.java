@@ -5,12 +5,11 @@ import com.piggymetrics.classes.dao.interfaces.UserDao;
 import com.piggymetrics.classes.interfaces.User;
 import lombok.Getter;
 import lombok.Setter;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.validation.constraints.NotNull;
 
 @Component
 @Getter
@@ -61,5 +60,9 @@ public class PiggyUser implements User {
 
 //        System.out.println(date);
         return "01/05/2015";
+    }
+
+    public void applyChanges(PiggyUser valid) {
+        userDao.update(valid);
     }
 }
