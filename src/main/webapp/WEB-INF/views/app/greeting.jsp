@@ -19,7 +19,7 @@
     </div>
     <div id="plustext"><spring:message code="getin"/></div>
   </div>
-  <form action="../user/logout" id="logout" method="post" autocomplete="off">
+  <form action="/j_spring_security_logout" id="logout" method="post" autocomplete="off">
     <div id="minus">
       <div id="minusborder">
         <div id="minusone"></div>

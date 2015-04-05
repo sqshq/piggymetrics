@@ -1,20 +1,16 @@
-package com.piggymetrics.classes.dao;
+package com.piggymetrics.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.piggymetrics.classes.PiggyUser;
+import com.piggymetrics.model.PiggyUser;
 import org.springframework.jdbc.core.RowMapper;
 
-public class UserMapper implements RowMapper
-{
-    private PiggyUser user;
-
-    public UserMapper(PiggyUser user) {
-        this.user = user;
-    }
+public class UserMapper implements RowMapper {
 
     public PiggyUser mapRow(ResultSet set, int rowNum) throws SQLException {
+
+        PiggyUser user = new PiggyUser();
 
         user.setDeposit(set.getBoolean("deposit"));
         user.setCapitalization(set.getBoolean("capitalization"));
@@ -34,6 +30,9 @@ public class UserMapper implements RowMapper
         user.setMoney(set.getInt("money"));
         user.setMailing(set.getInt("mailing"));
         user.setSliderValue(set.getDouble("slider_value"));
+        user.setUsd(set.getDouble("usd"));
+        user.setEur(set.getDouble("eur"));
+        user.setAuthorized(true);
 
         return user;
     }

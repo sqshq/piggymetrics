@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Service("failureHandler")
+@Service
 public class FailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Override

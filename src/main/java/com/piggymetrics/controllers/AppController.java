@@ -1,57 +1,51 @@
 package com.piggymetrics.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.piggymetrics.classes.PiggyUser;
+import com.piggymetrics.model.PiggyUser;
+import com.piggymetrics.service.PiggyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
-import org.springframework.context.i18n.LocaleContextHolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Locale;
+import java.security.Principal;
 
 @Controller
-public class AppController implements MessageSourceAware {
+public class AppController {
 
     @Autowired
-    private PiggyUser user;
+    private PiggyUserService userService;
 
-    private MessageSource messageSource;
     private ObjectMapper mapper = new ObjectMapper();
 
-    @Override
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
-
 	@RequestMapping("/")
-	public String launchApp(ModelMap model) {
+	public String launchApp(ModelMap model, Principal principal) {
 
         try {
-            model.addAttribute("user", mapper.writeValueAsString(user));
-            model.addAttribute("authorized", user.isAuthorized());
-        } catch (JsonProcessingException e) {
+
+            PiggyUser current = userService.getUser(principal.getName());
+
+            model.addAttribute("user", mapper.writeValueAsString(current));
+            model.addAttribute("authorized", current.isAuthorized());
+        } catch (NullPointerException e) {
+            model.addAttribute("authorized", false);
+        } catch (Exception e) {
             // @todo log an error
         }
 
-		return "app/base";
-	}
+        return "app/base";
+    }
 
 	@RequestMapping("/demo")
 	public String launchDemoApp(ModelMap model) {
 
-        Locale locale = LocaleContextHolder.getLocale();
-        user.fillByName(messageSource.getMessage("demo", null, locale));
-        user.setUsername("demo");
+        PiggyUser demo = userService.getDemoUser();
 
         try {
-            model.addAttribute("user", mapper.writeValueAsString(user));
+            model.addAttribute("user", mapper.writeValueAsString(demo));
             model.addAttribute("authorized", true);
             model.addAttribute("demo", true);
-        } catch (JsonProcessingException e) {
+        } catch (Exception e) {
             // @todo log an error
         }
         return "app/base";

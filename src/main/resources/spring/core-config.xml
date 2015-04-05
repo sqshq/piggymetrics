@@ -22,14 +22,6 @@
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
 
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/assets/**"/>
-            <bean class="com.piggymetrics.helpers.AppInterceptor" />
-        </mvc:interceptor>
-    </mvc:interceptors>
-
     <mvc:resources mapping="/assets/**" location="/assets/" />
 
     <mvc:annotation-driven />

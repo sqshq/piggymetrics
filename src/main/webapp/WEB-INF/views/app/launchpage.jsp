@@ -14,17 +14,18 @@
       <div id="wrapper">
         <!-- LOG IN FORMS -->
         <div id="cube">
-          <form action="../user/login" id="auth" method="post" autocomplete="off">
+          <form action="/user/login" id="auth" method="post" autocomplete="off">
             <div class="side" id="side1">
               <div id="backlogin"></div>
               <div id="enter"></div>
-              <input class="frontforms" id="frontloginform" name="user_name" placeholder="<spring:message code="login"/>" type="text" autocomplete="off"/>
+              <input class="frontforms" id="frontloginform" name="username" placeholder="<spring:message code="login"/>" type="text" autocomplete="off"/>
             </div>
             <div class="side" id="side2">
               <div id="backpassword"></div>
-              <input class="frontforms" id="frontpasswordform" name="user_password" placeholder="<spring:message code="password"/>" type="password" autocomplete="off"/>
+              <input class="frontforms" id="frontpasswordform" name="password" placeholder="<spring:message code="password"/>" type="password" autocomplete="off"/>
             </div>
             <input class="ghostform" name="ghauth" id="ghauth" type="text"/>
+            <input type="hidden" name="remember_me" value="true"/>
           </form>
         </div>
       </div>

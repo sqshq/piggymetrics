@@ -1,9 +1,11 @@
 // From json to objects
 function jsonParse(obj) {
-	user = new User (obj.username, obj.lastVisit, obj.userpic, '60.00', '70.00', obj.checkedCurrency, obj.lastCurrency, obj.sliderValue, obj.note); //@todo убрать 60 и 70
-	savings = new Savings (obj.money, !!Number(obj.deposit), !!Number(obj.capitalization), obj.interest);
-	expenses = JSON.parse(obj.data).expenses;
-	incomes = JSON.parse(obj.data).incomes;
+	if (typeof obj != 'undefined') {
+		user = new User (obj.username, obj.lastVisit, obj.userpic, obj.usd, obj.eur, obj.checkedCurrency, obj.lastCurrency, obj.sliderValue, obj.note); //@todo убрать 60 и 70
+		savings = new Savings (obj.money, !!Number(obj.deposit), !!Number(obj.capitalization), obj.interest);
+		expenses = JSON.parse(obj.data).expenses;
+		incomes = JSON.parse(obj.data).incomes;
+	}
 }
 
 var user = {};

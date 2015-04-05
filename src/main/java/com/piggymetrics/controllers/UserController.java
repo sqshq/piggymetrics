@@ -1,12 +1,10 @@
 package com.piggymetrics.controllers;
 
-import com.piggymetrics.classes.PiggyUser;
+import com.piggymetrics.model.PiggyUser;
 import com.piggymetrics.helpers.ResponseBody;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -17,13 +15,8 @@ import javax.validation.Valid;
 public class UserController {
 
     /*
-    * Набор рест-методов
     *
     * Reqistration
-    *
-    * Login
-    *
-    * Logout
     *
     * Save
     *

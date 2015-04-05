@@ -29,7 +29,7 @@ public class SecureController {
 
 Методы этого класса скорее всего уйдет в UserController (логин, логаут, реггистрация) - или в AuthController
 
- */
+*/
     @RequestMapping(value = "/admin**", method = RequestMethod.GET)
     public ModelAndView adminPage() {
 

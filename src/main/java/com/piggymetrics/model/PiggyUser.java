@@ -1,20 +1,18 @@
-package com.piggymetrics.classes;
+package com.piggymetrics.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.piggymetrics.classes.dao.interfaces.UserDao;
-import com.piggymetrics.classes.interfaces.User;
+import com.piggymetrics.dao.interfaces.UserDao;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotNull;
+import javax.servlet.http.HttpServletRequest;
 
 @Component
 @Getter
 @Setter
-public class PiggyUser implements User {
+public class PiggyUser {
 
     @Autowired
     @JsonIgnore
@@ -28,6 +26,8 @@ public class PiggyUser implements User {
     private String emailHash;
     @JsonIgnore
     private String lastMail;
+    @JsonIgnore
+    private PiggyUser itself;
 
     private String username;
     private String checkedCurrency;
@@ -43,26 +43,27 @@ public class PiggyUser implements User {
     private Integer mailing;
 
     private Double sliderValue;
+    private Double usd;
+    private Double eur;
+
+    // @todo обновить интерфейс
 
     public void fillByName(String username) {
         userDao.select(username);
-        userDao.updateLastVisit(); //@todo сюда же IP
+    }
 
-        setAuthorized(true);
+    public void updateLastVisit(HttpServletRequest request) {
+//        userDao.updateLastVisit(request.getRemoteAddr());
+    }
+
+    public void applyChanges(PiggyUser valid) {
+//        userDao.update(valid);
     }
 
     public String getLastVisit() {
 
-//        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
-
-//        DateTime date = formatter.parseDateTime(this.lastVisit);
-//        DateTimeFormatter fmt = DateTimeFormat.forPattern("d/MMMM/yyyy");
-
-//        System.out.println(date);
+        // @todo возвращать правду
         return "01/05/2015";
     }
 
-    public void applyChanges(PiggyUser valid) {
-        userDao.update(valid);
-    }
 }
