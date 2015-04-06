@@ -59,11 +59,11 @@ public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
     }
 
     @Override
-    public void updateVisit(String username, String IP) {
-        String sql = "UPDATE users SET last_visit = ?, IP = ? where username = ?";
+    public void updateVisit(String username, String IP, String language) {
+        String sql = "UPDATE users SET last_visit = ?, IP = ?, language = ? where username = ?";
 
         getJdbcTemplate().update(
-                sql, new Object[] {new Date(), IP, username});
+                sql, new Object[] {new Date(), IP, language, username});
 
     }
 

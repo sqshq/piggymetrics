@@ -24,7 +24,6 @@ public class AppController {
 
         try {
             User current = userService.getUser(principal.getName(), request);
-
             model.addAttribute("user", mapper.writeValueAsString(current));
             model.addAttribute("authorized", current.isAuthorized());
         } catch (NullPointerException e) {

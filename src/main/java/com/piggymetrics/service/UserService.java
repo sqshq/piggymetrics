@@ -12,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,12 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 @Service
-public class UserService implements UserServiceInterface, MessageSourceAware { // @todo обовить интерфейс
-
-    @Override
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
+public class UserService implements UserServiceInterface, MessageSourceAware {
 
     @Autowired
     @Qualifier("authenticationManager")
@@ -37,11 +33,16 @@ public class UserService implements UserServiceInterface, MessageSourceAware { /
     private Locale locale = LocaleContextHolder.getLocale();
     private MessageSource messageSource;
 
+    @Override
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
+
     @Transactional
     public User getUser(String username, HttpServletRequest request) {
-        System.out.println(request.getLocale().getLanguage()); // @todo отдавть в апдейт визит
+
         User user = userDao.select(username);
-        userDao.updateVisit(username, request.getRemoteAddr());
+        userDao.updateVisit(username, request.getRemoteAddr(), request.getLocale().getLanguage());
 
         if (user.getUserpic() == null) {
             user.setUserpic(messageSource.getMessage("userpic", null, locale));
@@ -54,7 +55,6 @@ public class UserService implements UserServiceInterface, MessageSourceAware { /
     public User getDemoUser() {
 
         User user = userDao.select(messageSource.getMessage("demo", null, locale));
-
         user.setUsername("Demo");
 
         return user;
@@ -67,13 +67,19 @@ public class UserService implements UserServiceInterface, MessageSourceAware { /
 
     @Transactional
     public void addUser(User user, HttpServletRequest request) {
+
+        String password = user.getPassword();
+
+        StandardPasswordEncoder encoder = new StandardPasswordEncoder();
+        user.setPassword(encoder.encode(password));
         userDao.insertUser(user);
-        authUser(user, request);
+
+        authUser(user.getUsername(), password, request);
     }
 
-    private void authUser(User user, HttpServletRequest request) {
+    private void authUser(String username, String password, HttpServletRequest request) {
 
-        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
         request.getSession();
 
         token.setDetails(new WebAuthenticationDetails(request));

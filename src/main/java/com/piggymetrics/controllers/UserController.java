@@ -18,16 +18,6 @@ import java.security.Principal;
 @RequestMapping(value = "/user")
 public class UserController {
 
-    /*
-    *
-    * Reqistration
-    *
-    * Save
-    *
-    * Upload
-    *
-     */
-
     @Autowired
     private UserService userService;
 

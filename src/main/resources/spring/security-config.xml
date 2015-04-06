@@ -28,12 +28,14 @@
                 data-source-ref="dataSource"/>
     </http>
 
-    <!-- Select users and user_roles from database -->
+    <beans:bean id="encoder" class="org.springframework.security.crypto.password.StandardPasswordEncoder" />
+
     <authentication-manager alias="authenticationManager">
         <authentication-provider>
             <jdbc-user-service data-source-ref="dataSource"
                                users-by-username-query="select username, password, enabled from users where username = ?"
                                authorities-by-username-query="select username, role from users where username = ?"/>
+            <password-encoder ref="encoder" />
         </authentication-provider>
     </authentication-manager>
 

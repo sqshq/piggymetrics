@@ -8,7 +8,7 @@ public interface UserDao {
 
     public void update(String username, User user);
 
-    public void updateVisit(String username, String IP);
+    public void updateVisit(String username, String IP, String language);
 
     public void insertUser(User user);
 
