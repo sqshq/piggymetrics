@@ -1,5 +1,6 @@
 package com.piggymetrics.controllers;
 
+import com.piggymetrics.helpers.LangMessage;
 import com.piggymetrics.model.User;
 import com.piggymetrics.helpers.ResponseBody;
 import com.piggymetrics.service.UserService;
@@ -25,7 +26,7 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private MessageSource messageSource;
+    private LangMessage lang;
 
     @Secured("ROLE_USER")
     @RequestMapping("/save/{data}")
@@ -33,8 +34,7 @@ public class UserController {
 
         if (result.hasErrors()) {
             // @todo log an error
-            return new ResponseBody("fail", messageSource.getMessage(
-                    result.getFieldError().getDefaultMessage(), null, request.getLocale()));
+            return new ResponseBody("fail", lang.get(result.getFieldError().getDefaultMessage(), request));
         }
 
         try {
@@ -44,10 +44,10 @@ public class UserController {
                 userService.saveChanges(principal.getName(), user);
             }
         } catch (DuplicateKeyException e) {
-            return new ResponseBody("fail", messageSource.getMessage("emailExists", null, request.getLocale()));
+            return new ResponseBody("fail", lang.get("emailExists", request));
         } catch (Exception e) {
             // @todo log an error
-            return new ResponseBody("fail", messageSource.getMessage("error", null, request.getLocale()));
+            return new ResponseBody("fail", lang.get("error", request));
         }
 
         return new ResponseBody("success");
@@ -57,18 +57,17 @@ public class UserController {
     public Object registerUser(@Valid User register, BindingResult result, HttpServletRequest request) {
 
         if (result.hasErrors()) {
-            return new ResponseBody("fail", messageSource.getMessage(
-                    result.getFieldError().getDefaultMessage(), null, request.getLocale()));
+            return new ResponseBody("fail", lang.get(result.getFieldError().getDefaultMessage(), request));
         }
 
         try {
             userService.addUser(register, request);
             return userService.getUser(register.getUsername(), request);
         } catch (DuplicateKeyException e) {
-            return new ResponseBody("fail", messageSource.getMessage("usernameExists", null, request.getLocale()));
+            return new ResponseBody("fail", lang.get("usernameExists", request));
         } catch (Exception e) {
             // @todo log an error
-            return new ResponseBody("fail", messageSource.getMessage("error", null, request.getLocale()));
+            return new ResponseBody("fail", lang.get("error", request));
         }
     }
 }
