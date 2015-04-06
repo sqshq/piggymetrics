@@ -87,14 +87,14 @@
           </form>
         </div>
         <div id="mailform">
-          <form action="../user/register" id="mail" method="post" autocomplete="off">
-            <input name="usermail" id="backmailform" placeholder=" электропочта" type="text"/><br>
+          <form action="../user/save/email" id="mail" method="post" autocomplete="off">
+            <input name="email" id="backmailform" placeholder=" электропочта" type="text"/><br>
             <button class="mailbutton" type="submit" name="mailbutton">Получать напоминания</button>
           </form>
 					<span class="mailforminfo">Регистрация прошла успешно.<br>
 					<span class="mailforminfosmall">Мы предлагаем вам ввести адрес электронной почты, чтобы периодически получать напоминания.
 					Именно <i>регулярное</i> наблюдение за состоянием бюджета принесет плоды.</span></span>
-
+          <%--@todo убрать в ланги!--%>
           <div id="skipmail"><a href="#">Пропустить этот шаг</a></div>
         </div>
       </div>

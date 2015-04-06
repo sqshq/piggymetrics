@@ -22,6 +22,24 @@ public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
     }
 
     @Override
+    public void insertUser(User user) {
+        String sql = "INSERT INTO users (username, password, userpic, last_visit) VALUES (?, ?, ?, ?)";
+
+        getJdbcTemplate().update(
+                sql, user.getUsername(), user.getPassword(), user.getUserpic(), new Date());
+    }
+
+
+    @Override
+    public void saveEmail(String username, User user) {
+
+        String sql = "UPDATE users SET email = ? where username = ?";
+
+        getJdbcTemplate().update(
+                sql, user.getEmail(), username);
+    }
+
+    @Override
     public User select(String username) {
 
         String sql = "SELECT * FROM users JOIN settings WHERE username = ?";
@@ -60,18 +78,10 @@ public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
 
     @Override
     public void updateVisit(String username, String IP, String language) {
+
         String sql = "UPDATE users SET last_visit = ?, IP = ?, language = ? where username = ?";
 
         getJdbcTemplate().update(
-                sql, new Object[] {new Date(), IP, language, username});
-
-    }
-
-    @Override
-    public void insertUser(User user) {
-        String sql = "INSERT INTO users (username, password, userpic, last_visit) VALUES (?, ?, ?, ?)";
-
-        getJdbcTemplate().update(
-                sql, new Object[] { user.getUsername(), user.getPassword(), user.getUserpic(), new Date()});
+                sql, new Date(), IP, language, username);
     }
 }

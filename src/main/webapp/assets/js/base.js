@@ -844,6 +844,7 @@ function launchStatistic() {
 // Save all data on server
 function jsonDataSave() {
 	if (user.login !== undefined && savePermit) {
+
 		var saveOptions = {
 			datatype: 	"json",
 			data: {
@@ -858,9 +859,13 @@ function jsonDataSave() {
 				data: JSON.stringify({incomes: incomes, expenses: expenses})
 			}
 		};
+
 		$("#saveoptions").ajaxSubmit(saveOptions);
 		$("#leftborder, #rightborder, #centerborder").addClass("saveaction");
-		setTimeout(function() { $("#leftborder, #rightborder, #centerborder").removeClass("saveaction"); }, 400);
+
+		setTimeout(function() {
+			$("#leftborder, #rightborder, #centerborder").removeClass("saveaction");
+		}, 400);
 	}
 }
 

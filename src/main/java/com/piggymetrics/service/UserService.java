@@ -66,6 +66,11 @@ public class UserService implements UserServiceInterface, MessageSourceAware {
     }
 
     @Transactional
+    public void saveEmail(String username, User user) {
+        userDao.saveEmail(username, user);
+    }
+
+    @Transactional
     public void addUser(User user, HttpServletRequest request) {
 
         String password = user.getPassword();

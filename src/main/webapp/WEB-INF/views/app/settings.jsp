@@ -82,7 +82,7 @@
     <div id="savebutton"><div id="leftborder"></div><div id="centerborder"></div><div id="rightborder"></div><div id="save"></div></div>
 </div>
 
-<form action="../user/save" id="saveoptions" method="post" autocomplete="off"></form>
+<form action="../user/save/changes" id="saveoptions" method="post" autocomplete="off"></form>
 
 <!-- NOTES WINDOW -->
 <div id="overlay"></div>

@@ -3,9 +3,10 @@ package com.piggymetrics.controllers;
 import com.piggymetrics.model.User;
 import com.piggymetrics.helpers.ResponseBody;
 import com.piggymetrics.service.UserService;
+import org.springframework.validation.BindingResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,8 +23,8 @@ public class UserController {
     private UserService userService;
 
     @Secured("ROLE_USER")
-    @RequestMapping("/save")
-    public ResponseBody saveChanges(@Valid User user, BindingResult result, Principal principal) {
+    @RequestMapping("/save/{data}")
+    public ResponseBody saveChanges(@PathVariable String data, @Valid User user, BindingResult result, Principal principal) {
 
         if (result.hasErrors() || principal == null) {
             // @todo log an error
@@ -31,10 +32,14 @@ public class UserController {
         }
 
         try {
-            userService.saveChanges(principal.getName(), user);
+            if (data.equals("changes")) {
+                userService.saveChanges(principal.getName(), user);
+            } else if (data.equals("email")) {
+                userService.saveEmail(principal.getName(), user);
+            }
         } catch (Exception e) {
             // @todo log an error
-            return new ResponseBody("fail", e.getMessage());
+            return new ResponseBody("fail", e.getMessage()); // @todo отдавать ланг вместо эксепшена
         }
 
         return new ResponseBody("success");
@@ -51,8 +56,7 @@ public class UserController {
             userService.addUser(register, request);
             return userService.getUser(register.getUsername(), request);
         } catch (Exception e) {
-            return new ResponseBody("fail", e.getMessage());
+            return new ResponseBody("fail", e.getMessage()); // @todo отдавать ланг вместо эксепшена
         }
-
     }
 }
