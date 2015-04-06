@@ -1,10 +1,16 @@
 // From json to objects
 function jsonParse(obj) {
+	console.log(obj);
 	if (typeof obj != 'undefined') {
 		user = new User (obj.username, obj.lastVisit, obj.userpic, obj.usd, obj.eur, obj.checkedCurrency, obj.lastCurrency, obj.sliderValue, obj.note); //@todo убрать 60 и 70
 		savings = new Savings (obj.money, !!Number(obj.deposit), !!Number(obj.capitalization), obj.interest);
-		expenses = JSON.parse(obj.data).expenses;
-		incomes = JSON.parse(obj.data).incomes;
+
+		if (obj.data !== null) {
+			expenses = JSON.parse(obj.data).expenses;
+			incomes = JSON.parse(obj.data).incomes;
+		} else {
+			incomes = expenses = {};
+		}
 	}
 }
 
@@ -231,15 +237,20 @@ function checkSlidersLength() {
 function checkPeriod(period) {
 	var periodText;
 	switch (period) {
-		case "year": periodText = language.periodYear
+		case "year":
+			periodText = language.periodYear;
 			break;
-		case "quarter": periodText = language.periodQuarter
+		case "quarter":
+			periodText = language.periodQuarter;
 			break;
-		case "month":periodText = language.periodMonth
+		case "month":
+			periodText = language.periodMonth;
 			break;
-		case "day": periodText = language.periodDay
+		case "day":
+			periodText = language.periodDay;
 			break;
-		case "hour": periodText = language.periodHour
+		case "hour":
+			periodText = language.periodHour;
 			break;
 	}
 	return periodText

@@ -2,17 +2,15 @@ package com.piggymetrics.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.piggymetrics.dao.interfaces.UserDao;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.http.HttpServletRequest;
+import lombok.Getter;
+import lombok.Setter;
 
 @Component
 @Getter
 @Setter
-public class PiggyUser {
+public class User {
 
     @Autowired
     @JsonIgnore
@@ -27,9 +25,11 @@ public class PiggyUser {
     @JsonIgnore
     private String lastMail;
     @JsonIgnore
-    private PiggyUser itself;
+    private User itself;
 
     private String username;
+    @JsonIgnore
+    private String password;
     private String checkedCurrency;
     private String lastCurrency;
     private String userpic;
@@ -45,20 +45,6 @@ public class PiggyUser {
     private Double sliderValue;
     private Double usd;
     private Double eur;
-
-    // @todo обновить интерфейс
-
-    public void fillByName(String username) {
-        userDao.select(username);
-    }
-
-    public void updateLastVisit(HttpServletRequest request) {
-//        userDao.updateLastVisit(request.getRemoteAddr());
-    }
-
-    public void applyChanges(PiggyUser valid) {
-//        userDao.update(valid);
-    }
 
     public String getLastVisit() {
 

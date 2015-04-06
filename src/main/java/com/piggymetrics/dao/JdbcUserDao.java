@@ -1,6 +1,6 @@
 package com.piggymetrics.dao;
 
-import com.piggymetrics.model.PiggyUser;
+import com.piggymetrics.model.User;
 import com.piggymetrics.dao.interfaces.UserDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.Date;
 
 @Repository
 public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
@@ -21,12 +22,12 @@ public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
     }
 
     @Override
-    public PiggyUser select(String username) {
+    public User select(String username) {
 
         String sql = "SELECT * FROM users JOIN settings WHERE username = ?";
 
         try {
-            PiggyUser user = (PiggyUser) getJdbcTemplate().queryForObject(
+            User user = (User) getJdbcTemplate().queryForObject(
                     sql, new Object[]{username}, new UserMapper());
 
             return user;
@@ -37,33 +38,40 @@ public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
     }
 
     @Override
-    public void insert() {
+    public void update(String username, User user) {
+
+        getJdbcTemplate().update(
+
+            "UPDATE users SET checked_currency = ?, last_currency = ?, capitalization = ?, slider_value = ?, " +
+                    "interest = ?, deposit = ?, money = ?, note = ?, data = ? WHERE username = ?",
+
+            user.getCheckedCurrency(),
+            user.getLastCurrency(),
+            user.isCapitalization(),
+            user.getSliderValue(),
+            user.getInterest(),
+            user.isDeposit(),
+            user.getMoney(),
+            user.getNote(),
+            user.getData(),
+            username
+        );
+    }
+
+    @Override
+    public void updateVisit(String username, String IP) {
+        String sql = "UPDATE users SET last_visit = ?, IP = ? where username = ?";
+
+        getJdbcTemplate().update(
+                sql, new Object[] {new Date(), IP, username});
 
     }
 
-//    @Override
-//    public void update(User valid) {
-//        getJdbcTemplate().update(
-//            "UPDATE users SET checked_currency = ?, last_currency = ?, capitalization = ?, slider_value = ?, interest = ?, deposit = ?, money = ?, note = ?, data = ? where username = ?",
-//            valid.getCheckedCurrency(),
-//            valid.getLastCurrency(),
-//            valid.isCapitalization(),
-//            valid.getSliderValue(),
-//            valid.getInterest(),
-//            valid.isDeposit(),
-//            valid.getMoney(),
-//            valid.getNote(),
-//            valid.getData(),
-//            user.getUsername()
-//        );
-//    }
+    @Override
+    public void insertUser(User user) {
+        String sql = "INSERT INTO users (username, password, userpic, last_visit) VALUES (?, ?, ?, ?)";
 
-//    @Override
-//    public void updateLastVisit(String IP) {
-//        String sql = "UPDATE users SET last_visit = ?, IP = ? where username = ?";
-//
-//        getJdbcTemplate().update(
-//                sql, new Object[]{new Date(), IP, user.getUsername()});
-//
-//    }
+        getJdbcTemplate().update(
+                sql, new Object[] { user.getUsername(), user.getPassword(), user.getUserpic(), new Date()});
+    }
 }

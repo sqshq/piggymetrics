@@ -1,13 +1,17 @@
 package com.piggymetrics.controllers;
 
-import com.piggymetrics.model.PiggyUser;
+import com.piggymetrics.model.User;
 import com.piggymetrics.helpers.ResponseBody;
+import com.piggymetrics.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 
 
 @RestController
@@ -25,21 +29,40 @@ public class UserController {
      */
 
     @Autowired
-    private PiggyUser user;
+    private UserService userService;
 
+    @Secured("ROLE_USER")
     @RequestMapping("/save")
-    public ResponseBody launchApp(@Valid PiggyUser valid, BindingResult result) {
+    public ResponseBody saveChanges(@Valid User user, BindingResult result, Principal principal) {
+
+        if (result.hasErrors() || principal == null) {
+            // @todo log an error
+            return new ResponseBody("fail", result.toString());
+        }
+
+        try {
+            userService.saveChanges(principal.getName(), user);
+        } catch (Exception e) {
+            // @todo log an error
+            return new ResponseBody("fail", e.getMessage());
+        }
+
+        return new ResponseBody("success");
+    }
+
+    @RequestMapping("/register")
+    public Object registerUser(@Valid User register, BindingResult result, HttpServletRequest request) {
 
         if (result.hasErrors()) {
             return new ResponseBody("fail", result.toString());
         }
 
         try {
-            user.applyChanges(valid);
+            userService.addUser(register, request);
+            return userService.getUser(register.getUsername(), request);
         } catch (Exception e) {
             return new ResponseBody("fail", e.getMessage());
         }
 
-        return new ResponseBody("success");
     }
 }

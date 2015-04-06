@@ -1,29 +1,29 @@
 package com.piggymetrics.controllers;
 
-import com.piggymetrics.model.PiggyUser;
-import com.piggymetrics.service.PiggyUserService;
+import com.piggymetrics.model.User;
+import com.piggymetrics.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 @Controller
 public class AppController {
 
     @Autowired
-    private PiggyUserService userService;
+    private UserService userService;
 
     private ObjectMapper mapper = new ObjectMapper();
 
 	@RequestMapping("/")
-	public String launchApp(ModelMap model, Principal principal) {
+	public String launchApp(ModelMap model, Principal principal, HttpServletRequest request) {
 
         try {
-
-            PiggyUser current = userService.getUser(principal.getName());
+            User current = userService.getUser(principal.getName(), request);
 
             model.addAttribute("user", mapper.writeValueAsString(current));
             model.addAttribute("authorized", current.isAuthorized());
@@ -39,15 +39,15 @@ public class AppController {
 	@RequestMapping("/demo")
 	public String launchDemoApp(ModelMap model) {
 
-        PiggyUser demo = userService.getDemoUser();
-
         try {
+            User demo = userService.getDemoUser();
             model.addAttribute("user", mapper.writeValueAsString(demo));
             model.addAttribute("authorized", true);
             model.addAttribute("demo", true);
         } catch (Exception e) {
             // @todo log an error
         }
+
         return "app/base";
     }
 

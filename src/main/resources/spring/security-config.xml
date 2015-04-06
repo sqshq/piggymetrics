@@ -1,12 +1,9 @@
 <beans:beans xmlns="http://www.springframework.org/schema/security"
              xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xmlns:context="http://www.springframework.org/schema/context"
              xsi:schemaLocation="http://www.springframework.org/schema/beans
 	         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 	         http://www.springframework.org/schema/security
-	         http://www.springframework.org/schema/security/spring-security-3.2.xsd
-             http://www.springframework.org/schema/context
-             http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	         http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
     <http auto-config="true" use-expressions="true">
 
@@ -14,9 +11,9 @@
             <cache-control />
         </headers>
 
-        <form-login login-page="/login"
+        <form-login login-page="/"
                     default-target-url="/"
-                    authentication-failure-url="/login?error"
+                    authentication-failure-url="/?error"
                     username-parameter="username"
                     password-parameter="password"
                     login-processing-url="/user/login"
@@ -32,11 +29,11 @@
     </http>
 
     <!-- Select users and user_roles from database -->
-    <authentication-manager>
+    <authentication-manager alias="authenticationManager">
         <authentication-provider>
             <jdbc-user-service data-source-ref="dataSource"
-                               users-by-username-query="select username,password,enabled from users where username=?"
-                               authorities-by-username-query="select username, role from user_roles where username =?"/>
+                               users-by-username-query="select username, password, enabled from users where username = ?"
+                               authorities-by-username-query="select username, role from users where username = ?"/>
         </authentication-provider>
     </authentication-manager>
 

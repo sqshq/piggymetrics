@@ -1,15 +1,15 @@
 package com.piggymetrics.dao.interfaces;
 
-import com.piggymetrics.model.PiggyUser;
+import com.piggymetrics.model.User;
 
 public interface UserDao {
 
-    public PiggyUser select(String username);
+    public User select(String username);
 
-    public void insert();
+    public void update(String username, User user);
 
-//    public void update(User valid);
+    public void updateVisit(String username, String IP);
 
-//    public void updateLastVisit(String IP);
+    public void insertUser(User user);
 
 }

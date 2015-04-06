@@ -3,14 +3,14 @@ package com.piggymetrics.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.piggymetrics.model.PiggyUser;
 import org.springframework.jdbc.core.RowMapper;
+import com.piggymetrics.model.User;
 
 public class UserMapper implements RowMapper {
 
-    public PiggyUser mapRow(ResultSet set, int rowNum) throws SQLException {
+    public User mapRow(ResultSet set, int rowNum) throws SQLException {
 
-        PiggyUser user = new PiggyUser();
+        User user = new User();
 
         user.setDeposit(set.getBoolean("deposit"));
         user.setCapitalization(set.getBoolean("capitalization"));
@@ -32,6 +32,7 @@ public class UserMapper implements RowMapper {
         user.setSliderValue(set.getDouble("slider_value"));
         user.setUsd(set.getDouble("usd"));
         user.setEur(set.getDouble("eur"));
+
         user.setAuthorized(true);
 
         return user;

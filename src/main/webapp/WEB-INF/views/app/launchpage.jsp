@@ -79,15 +79,15 @@
         <div class="fliptext"><spring:message code="orlogin"/></div>
         <div id="registrationforms">
           <!-- SIGN UP FORMS -->
-          <form action="../user/registration" id="signup" method="post" autocomplete="off">
-            <input class="backforms" name="reg_user_name" id="backloginform" placeholder="<spring:message code="chooselogin"/>" type="text"/><br>
-            <input class="backforms" name="reg_user_password" id="backpasswordform" placeholder="<spring:message code="password"/>" type="password"/>
+          <form action="../user/register" id="signup" method="post" autocomplete="off">
+            <input class="backforms" name="username" id="backloginform" placeholder="<spring:message code="chooselogin"/>" type="text"/><br>
+            <input class="backforms" name="password" id="backpasswordform" placeholder="<spring:message code="password"/>" type="password"/>
             <input class="ghostform" name="ghreg" type="text"/>
             <button class="regbutton" type="submit" name="registration"><spring:message code="register"/></button>
           </form>
         </div>
         <div id="mailform">
-          <form action="../user/registration" id="mail" method="post" autocomplete="off">
+          <form action="../user/register" id="mail" method="post" autocomplete="off">
             <input name="usermail" id="backmailform" placeholder=" электропочта" type="text"/><br>
             <button class="mailbutton" type="submit" name="mailbutton">Получать напоминания</button>
           </form>
