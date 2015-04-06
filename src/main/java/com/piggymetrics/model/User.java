@@ -2,10 +2,17 @@ package com.piggymetrics.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.piggymetrics.dao.interfaces.UserDao;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.MessageSourceAware;
 import org.springframework.stereotype.Component;
+import javax.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Locale;
 
 @Component
 @Getter
@@ -22,24 +29,29 @@ public class User {
 
     @JsonIgnore
     private String emailHash;
+
     @JsonIgnore
     private String lastMail;
-    @JsonIgnore
-    private User itself;
 
+    @Length(min = 3, max = 20, message = "badUsername")
     private String username;
+
     @JsonIgnore
+    @Length(min = 6, max = 80, message = "badPassword")
     private String password;
+
+    @Email(message = "badEmail")
+    private String email;
     private String checkedCurrency;
     private String lastCurrency;
     private String userpic;
-    private String email;
     private String lastVisit;
     private String data;
     private String note;
 
-    private Integer interest;
+    @Min(0)
     private Integer money;
+    private Integer interest;
     private Integer mailing;
 
     private Double sliderValue;

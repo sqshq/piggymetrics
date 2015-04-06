@@ -21,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 @Service
-public class UserService implements UserServiceInterface, MessageSourceAware {
+public class UserService implements UserServiceInterface {
 
     @Autowired
     @Qualifier("authenticationManager")
@@ -30,13 +30,8 @@ public class UserService implements UserServiceInterface, MessageSourceAware {
     @Autowired
     private UserDao userDao;
 
-    private Locale locale = LocaleContextHolder.getLocale();
+    @Autowired
     private MessageSource messageSource;
-
-    @Override
-    public void setMessageSource(MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
 
     @Transactional
     public User getUser(String username, HttpServletRequest request) {
@@ -45,16 +40,16 @@ public class UserService implements UserServiceInterface, MessageSourceAware {
         userDao.updateVisit(username, request.getRemoteAddr(), request.getLocale().getLanguage());
 
         if (user.getUserpic() == null) {
-            user.setUserpic(messageSource.getMessage("userpic", null, locale));
+            user.setUserpic(messageSource.getMessage("userpic", null, request.getLocale()));
         }
 
         return user;
     }
 
     @Transactional
-    public User getDemoUser() {
+    public User getDemoUser(HttpServletRequest request) {
 
-        User user = userDao.select(messageSource.getMessage("demo", null, locale));
+        User user = userDao.select(messageSource.getMessage("demo", null, request.getLocale()));
         user.setUsername("Demo");
 
         return user;

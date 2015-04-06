@@ -7,11 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 
 public interface UserServiceInterface {
 
-    public void setMessageSource(MessageSource messageSource);
-
     public User getUser(String username, HttpServletRequest request);
 
-    public User getDemoUser();
+    public User getDemoUser(HttpServletRequest request);
 
     public void saveChanges(String username, User user);
 

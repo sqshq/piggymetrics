@@ -36,10 +36,10 @@ public class AppController {
     }
 
 	@RequestMapping("/demo")
-	public String launchDemoApp(ModelMap model) {
+	public String launchDemoApp(ModelMap model, HttpServletRequest request) {
 
         try {
-            User demo = userService.getDemoUser();
+            User demo = userService.getDemoUser(request);
             model.addAttribute("user", mapper.writeValueAsString(demo));
             model.addAttribute("authorized", true);
             model.addAttribute("demo", true);
