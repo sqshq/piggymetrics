@@ -11,10 +11,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>4.1.1.RELEASE</spring.version>
         <spring.security.version>3.2.3.RELEASE</spring.security.version>
+        <spring.context.version>3.1.2.RELEASE</spring.context.version>
         <mysql.connector.version>5.1.30</mysql.connector.version>
         <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
         <validation.api.version>1.0.0.GA</validation.api.version>
+        <javax.mail.version>1.4</javax.mail.version>
         <compiler.version>2.3.2</compiler.version>
+        <log4j.version>1.2.16</log4j.version>
         <lombok.version>1.16.2</lombok.version>
         <jackson.version>2.5.1</jackson.version>
         <joda.version>2.7</joda.version>
@@ -134,7 +137,36 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate.validator.version}</version>
-            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${javax.mail.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.mail</groupId>
+                    <artifactId>mail</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>javax.jms</groupId>
+                    <artifactId>jms</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jdmk</groupId>
+                    <artifactId>jmxtools</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sun.jmx</groupId>
+                    <artifactId>jmxri</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
     </dependencies>

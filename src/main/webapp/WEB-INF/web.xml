@@ -22,7 +22,17 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
-	<!-- Spring MVC -->
+    <!--Log4j-->
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>classpath:spring/log-config.xml</param-value>
+    </context-param>
+
+    <!-- Spring MVC -->
     <servlet>
 		<servlet-name>PiggyMetrics</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>

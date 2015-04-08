@@ -7,6 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -16,6 +17,8 @@ public class AppController {
 
     @Autowired
     private UserService userService;
+
+    static final Logger logger = Logger.getLogger(AppController.class);
 
     private ObjectMapper mapper = new ObjectMapper();
 
@@ -29,7 +32,7 @@ public class AppController {
         } catch (NullPointerException e) {
             model.addAttribute("authorized", false);
         } catch (Exception e) {
-            // @todo log an error
+            logger.error(e);
         }
 
         return "app/base";
@@ -44,7 +47,7 @@ public class AppController {
             model.addAttribute("authorized", true);
             model.addAttribute("demo", true);
         } catch (Exception e) {
-            // @todo log an error
+            logger.error(e);
         }
 
         return "app/base";
