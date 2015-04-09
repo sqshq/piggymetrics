@@ -2,7 +2,7 @@
 function jsonParse(obj) {
 	if (typeof obj != 'undefined') {
 
-		user = new User (obj.username, obj.lastVisit, obj.userpic, obj.usd, obj.eur, obj.checkedCurrency, obj.lastCurrency, obj.sliderValue, obj.note); //@todo убрать 60 и 70
+		user = new User (obj.username, obj.lastVisit, obj.userpic, obj.usd, obj.eur, obj.checkedCurrency, obj.lastCurrency, obj.sliderValue, obj.note);
 		savings = new Savings (obj.money, !!Number(obj.deposit), !!Number(obj.capitalization), obj.interest);
 
 		if (obj.data !== null) {

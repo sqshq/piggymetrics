@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.piggymetrics.dao.interfaces.UserDao;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceAware;
@@ -60,8 +63,12 @@ public class User {
 
     public String getLastVisit() {
 
-        // @todo возвращать правду
-        return "01/05/2015";
+        DateTimeFormatter input  = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.S");
+        DateTimeFormatter output = DateTimeFormat.forPattern("dd/MM/yyyy");
+
+        DateTime visit = input.parseDateTime(this.lastVisit);
+
+        return output.print(visit);
     }
 
 }

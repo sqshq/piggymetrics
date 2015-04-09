@@ -4,6 +4,7 @@ import com.piggymetrics.helpers.LangMessage;
 import com.piggymetrics.model.User;
 import com.piggymetrics.helpers.ResponseBody;
 import com.piggymetrics.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.context.MessageSource;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BindingResult;
@@ -28,12 +29,14 @@ public class UserController {
     @Autowired
     private LangMessage lang;
 
+    static final Logger logger = Logger.getLogger(UserController.class);
+
     @Secured("ROLE_USER")
     @RequestMapping("/save/{data}")
     public ResponseBody saveChanges(@PathVariable String data, @Valid User user, BindingResult result, HttpServletRequest request, Principal principal) {
 
         if (result.hasErrors()) {
-            // @todo log an error
+            logger.error(result.getFieldError().getDefaultMessage());
             return new ResponseBody("fail", lang.get(result.getFieldError().getDefaultMessage(), request));
         }
 
@@ -46,7 +49,7 @@ public class UserController {
         } catch (DuplicateKeyException e) {
             return new ResponseBody("fail", lang.get("emailExists", request));
         } catch (Exception e) {
-            // @todo log an error
+            logger.error(e);
             return new ResponseBody("fail", lang.get("error", request));
         }
 
@@ -66,7 +69,7 @@ public class UserController {
         } catch (DuplicateKeyException e) {
             return new ResponseBody("fail", lang.get("usernameExists", request));
         } catch (Exception e) {
-            // @todo log an error
+            logger.error(e);
             return new ResponseBody("fail", lang.get("error", request));
         }
     }

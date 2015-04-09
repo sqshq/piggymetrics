@@ -29,7 +29,7 @@
 
     <context-param>
         <param-name>log4jConfigLocation</param-name>
-        <param-value>classpath:spring/log-config.xml</param-value>
+        <param-value>classpath:config/log4j.xml</param-value>
     </context-param>
 
     <!-- Spring MVC -->
