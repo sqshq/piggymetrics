@@ -880,6 +880,8 @@ function jsonDataSave() {
 				deposit: +savings.deposit,
 				capitalization: +savings.capitalization,
 				interest: savings.percent,
+				usd: user.usd,
+				eur: user.eur,
 				data: JSON.stringify({incomes: incomes, expenses: expenses})
 			}
 		};

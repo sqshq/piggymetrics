@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.security.Principal;
 
-
 @RestController
 @RequestMapping(value = "/user")
 public class UserController {
@@ -37,13 +36,16 @@ public class UserController {
         if (result.hasErrors()) {
             logger.error(result.getFieldError().getDefaultMessage());
             return new ResponseBody("fail", lang.get(result.getFieldError().getDefaultMessage(), request));
+        } else {
+            user.setUsername(principal.getName());
+            user.setAuthorized(true);
         }
 
         try {
             if (data.equals("email")) {
-                userService.saveEmail(principal.getName(), user);
+                userService.saveEmail(user);
             } else {
-                userService.saveChanges(principal.getName(), user);
+                userService.saveChanges(user, request);
             }
         } catch (DuplicateKeyException e) {
             return new ResponseBody("fail", lang.get("emailExists", request));

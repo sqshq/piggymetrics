@@ -62,10 +62,10 @@ public class User implements Serializable {
 
     public String getLastVisit() {
 
-        DateTimeFormatter input  = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.S");
+        DateTimeFormatter input = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.S");
         DateTimeFormatter output = DateTimeFormat.forPattern("dd/MM/yyyy");
 
-        DateTime visit = input.parseDateTime(this.lastVisit);
+        DateTime visit = lastVisit == null ? DateTime.now() : input.parseDateTime(lastVisit);
 
         return output.print(visit);
     }

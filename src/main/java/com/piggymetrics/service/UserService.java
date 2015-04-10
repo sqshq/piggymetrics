@@ -32,9 +32,8 @@ public class UserService implements UserServiceInterface {
 
     @Transactional
     public User getUser(String username, HttpServletRequest request) {
-        System.out.println("get user");
+
         User user = userDao.select(username);
-        userDao.updateVisit(username, request.getRemoteAddr(), request.getLocale().getLanguage());
 
         if (user.getUserpic() == null) {
             user.setUserpic(lang.get("userpic", request));
@@ -53,13 +52,13 @@ public class UserService implements UserServiceInterface {
     }
 
     @Transactional
-    public void saveChanges(String username, User user) {
-        userDao.update(username, user);
+    public void saveChanges(User user, HttpServletRequest request) {
+        userDao.update(user, request.getRemoteAddr(), request.getLocale().getLanguage());
     }
 
     @Transactional
-    public void saveEmail(String username, User user) {
-        userDao.saveEmail(username, user);
+    public void saveEmail(User user) {
+        userDao.saveEmail(user);
     }
 
     @Transactional
@@ -69,7 +68,7 @@ public class UserService implements UserServiceInterface {
 
         StandardPasswordEncoder encoder = new StandardPasswordEncoder();
         user.setPassword(encoder.encode(password));
-        userDao.insertUser(user);
+        userDao.insertUser(user, request.getRemoteAddr(), request.getLocale().getLanguage());
 
         authUser(user.getUsername(), password, request);
     }

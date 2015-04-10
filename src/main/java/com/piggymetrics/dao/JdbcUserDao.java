@@ -4,6 +4,8 @@ import com.piggymetrics.domain.User;
 import com.piggymetrics.dao.interfaces.UserDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -22,25 +24,59 @@ public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
     }
 
     @Override
-    public void insertUser(User user) {
-        String sql = "INSERT INTO users (username, password, userpic, last_visit) VALUES (?, ?, ?, ?)";
+    public User insertUser(User user, String IP, String language) {
+        String sql = "INSERT INTO users (username, password, userpic, last_visit, IP, language) VALUES (?, ?, ?, ?)";
 
         getJdbcTemplate().update(
-                sql, user.getUsername(), user.getPassword(), user.getUserpic(), new Date());
+                sql, user.getUsername(), user.getPassword(), user.getUserpic(), new Date(), IP, language);
+
+        return user;
     }
 
+    @Override
+    @CachePut(value="userCache", key="#user.username")
+    public User update(User user, String IP, String language) {
+
+        getJdbcTemplate().update(
+
+                "UPDATE users SET checked_currency = ?, last_currency = ?, capitalization = ?, slider_value = ?, interest = ?, " +
+                        "deposit = ?, money = ?, note = ?, data = ?, last_visit = ?, IP = ?, language = ? WHERE username = ?",
+
+                user.getCheckedCurrency(),
+                user.getLastCurrency(),
+                user.isCapitalization(),
+                user.getSliderValue(),
+                user.getInterest(),
+                user.isDeposit(),
+                user.getMoney(),
+                user.getNote(),
+                user.getData(),
+                new Date(),
+                IP,
+                language,
+                user.getUsername()
+        );
+
+        return user;
+    }
 
     @Override
-    public void saveEmail(String username, User user) {
+    public void saveEmail(User user) {
 
         String sql = "UPDATE users SET email = ? where username = ?";
 
         getJdbcTemplate().update(
-                sql, user.getEmail(), username);
+                sql, user.getEmail(), user.getUsername());
     }
 
     @Override
+    @Cacheable(value="userCache", key="#username")
     public User select(String username) {
+        try {
+            Thread.sleep(3000L);
+        } catch (InterruptedException e) {
+            throw new IllegalStateException(e);
+        }
 
         String sql = "SELECT * FROM users JOIN settings WHERE username = ?";
 
@@ -55,33 +91,4 @@ public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
         }
     }
 
-    @Override
-    public void update(String username, User user) {
-
-        getJdbcTemplate().update(
-
-            "UPDATE users SET checked_currency = ?, last_currency = ?, capitalization = ?, slider_value = ?, " +
-                    "interest = ?, deposit = ?, money = ?, note = ?, data = ? WHERE username = ?",
-
-            user.getCheckedCurrency(),
-            user.getLastCurrency(),
-            user.isCapitalization(),
-            user.getSliderValue(),
-            user.getInterest(),
-            user.isDeposit(),
-            user.getMoney(),
-            user.getNote(),
-            user.getData(),
-            username
-        );
-    }
-
-    @Override
-    public void updateVisit(String username, String IP, String language) {
-
-        String sql = "UPDATE users SET last_visit = ?, IP = ?, language = ? where username = ?";
-
-        getJdbcTemplate().update(
-                sql, new Date(), IP, language, username);
-    }
 }

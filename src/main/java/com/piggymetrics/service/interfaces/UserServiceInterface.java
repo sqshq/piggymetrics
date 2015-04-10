@@ -10,7 +10,7 @@ public interface UserServiceInterface {
 
     public User getDemoUser(HttpServletRequest request);
 
-    public void saveChanges(String username, User user);
+    public void saveChanges(User user, HttpServletRequest request);
 
     public void addUser(User user, HttpServletRequest request);
 }

@@ -4,14 +4,12 @@ import com.piggymetrics.domain.User;
 
 public interface UserDao {
 
-    public void insertUser(User user);
+    public User insertUser(User user, String IP, String language);
 
-    public void saveEmail(String username, User user);
+    public User update(User user, String IP, String language);
+
+    public void saveEmail(User user);
 
     public User select(String username);
-
-    public void update(String username, User user);
-
-    public void updateVisit(String username, String IP, String language);
 
 }
