@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
-import com.piggymetrics.model.User;
+import com.piggymetrics.domain.User;
 
 public class UserMapper implements RowMapper {
 

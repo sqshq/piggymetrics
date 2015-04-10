@@ -2,7 +2,7 @@ package com.piggymetrics.service;
 
 import com.piggymetrics.dao.interfaces.UserDao;
 import com.piggymetrics.helpers.LangMessage;
-import com.piggymetrics.model.User;
+import com.piggymetrics.domain.User;
 import com.piggymetrics.service.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Locale;
 
 @Service
 public class UserService implements UserServiceInterface {

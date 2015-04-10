@@ -1,7 +1,6 @@
 package com.piggymetrics.helpers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.piggymetrics.model.User;
+import com.piggymetrics.domain.User;
 import com.piggymetrics.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,7 +17,9 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Autowired
     private UserService userService;
-    private ObjectMapper mapper = new ObjectMapper();
+
+    @Autowired
+    private JsonMapper mapper;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

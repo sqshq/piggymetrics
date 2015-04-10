@@ -1,6 +1,6 @@
 package com.piggymetrics.dao;
 
-import com.piggymetrics.model.User;
+import com.piggymetrics.domain.User;
 import com.piggymetrics.dao.interfaces.UserDao;
 
 import org.springframework.beans.factory.annotation.Autowired;

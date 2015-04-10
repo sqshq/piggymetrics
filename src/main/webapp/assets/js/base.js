@@ -1,13 +1,12 @@
 // From json to objects
 function jsonParse(obj) {
 	if (typeof obj != 'undefined') {
-
 		user = new User (obj.username, obj.lastVisit, obj.userpic, obj.usd, obj.eur, obj.checkedCurrency, obj.lastCurrency, obj.sliderValue, obj.note);
 		savings = new Savings (obj.money, !!Number(obj.deposit), !!Number(obj.capitalization), obj.interest);
 
 		if (obj.data !== null) {
-			expenses = JSON.parse(obj.data).expenses;
-			incomes = JSON.parse(obj.data).incomes;
+			expenses = sanitize(JSON.parse(obj.data).expenses);
+			incomes = sanitize(JSON.parse(obj.data).incomes);
 		}
 	}
 }
@@ -59,6 +58,33 @@ $('#minus').click(function() {
 	$('#logout').submit();
 });
 
+var entityMap = {
+	"&": "&amp;",
+	"<": "&lt;",
+	">": "&gt;",
+	'"': '&quot;',
+	"'": '&#39;',
+	"/": '&#x2F;'
+};
+
+function escape(string) {
+	return String(string).replace(/[&<>"'\/]/g, function (s) {
+		return entityMap[s];
+	});
+}
+
+function sanitize(obj) {
+
+	$.each( obj, function( index, item ){
+		$.each( item, function( key, value ){
+			obj[index][key] = escape(value);
+		});
+	});
+
+	return obj;
+}
+
+
 function initGreetingPage() {
 
 	$("#launchpage").fadeOut(50);
@@ -92,8 +118,8 @@ function initGreetingPage() {
 	initSavingsSlider();
 	$("#savings-slider").data({"checkedPercent": user.checkedPercent});
 
+	$("#lefttitle").prepend(escape(user.login));
 	$("#righttitle").append(user.lastVisit);
-	$("#lefttitle").prepend(user.login);
 
 	// Fill data on settings page beforehand
 	addSavings();
@@ -143,7 +169,7 @@ function greetingPageAgain() {
 	});
 	$("#righttitle, #lefttitle").empty();
 	$("#righttitle").append('<span class="bluetext">last seen: </span>' + user.lastVisit);
-	$("#lefttitle").append(user.login + '<span class="bluetext"> metrics</span>');
+	$("#lefttitle").append(escape(user.login) + '<span class="bluetext"> metrics</span>');
 }
 function showGreetingUnits() {
 	$("#lefttitle").fadeIn(500);

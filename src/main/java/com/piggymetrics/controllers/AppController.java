@@ -1,8 +1,8 @@
 package com.piggymetrics.controllers;
 
-import com.piggymetrics.model.User;
+import com.piggymetrics.domain.User;
+import com.piggymetrics.helpers.JsonMapper;
 import com.piggymetrics.service.UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,10 @@ public class AppController {
     @Autowired
     private UserService userService;
 
-    static final Logger logger = Logger.getLogger(AppController.class);
+    @Autowired
+    private JsonMapper mapper;
 
-    private ObjectMapper mapper = new ObjectMapper();
+    static final Logger logger = Logger.getLogger(AppController.class);
 
 	@RequestMapping("/")
 	public String launchApp(ModelMap model, Principal principal, HttpServletRequest request) {

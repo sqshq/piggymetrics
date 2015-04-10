@@ -91,13 +91,13 @@ function getConverted(column) {
 		if (column == incomes) {
 			if (firstitem == undefined) {firstitem = key; $("#incomeslider").data("firstitem", key); }
 			incomesSumMonth += Math.round(column[key].converted);
-			$("#circle-select-1, #circle-select-2, #circle-select-3").append('<option value="' + column[key].income_id + '">' + column[key].title + '</option>'); 
+			$("#circle-select-1, #circle-select-2, #circle-select-3").append('<option value="' + parseInt(column[key].income_id, 10) + '">' + escape(column[key].title) + '</option>');
 		}
 		else {
 			if (firstitem == undefined) {firstitem = key; $("#expenseslider").data("firstitem", key); }
 			else if (seconditem == undefined) {seconditem = key; $("#expenseslider").data("seconditem", key); }
 			expensesSumMonth += Math.round(column[key].converted);
-			$("#circle-select-1, #circle-select-2, #circle-select-3").append('<option value="' + (parseInt(column[key].expense_id, 10) + 100) + '">' + column[key].title + '</option>'); 
+			$("#circle-select-1, #circle-select-2, #circle-select-3").append('<option value="' + (parseInt(column[key].expense_id, 10) + 100) + '">' + escape(column[key].title) + '</option>');
 		}
 	}
 	// Round delta for simplicity interface

@@ -1,6 +1,6 @@
 package com.piggymetrics.dao.interfaces;
 
-import com.piggymetrics.model.User;
+import com.piggymetrics.domain.User;
 
 public interface UserDao {
 

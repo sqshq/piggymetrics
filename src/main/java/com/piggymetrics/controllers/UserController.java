@@ -1,11 +1,10 @@
 package com.piggymetrics.controllers;
 
 import com.piggymetrics.helpers.LangMessage;
-import com.piggymetrics.model.User;
+import com.piggymetrics.domain.User;
 import com.piggymetrics.helpers.ResponseBody;
 import com.piggymetrics.service.UserService;
 import org.apache.log4j.Logger;
-import org.springframework.context.MessageSource;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BindingResult;
 import org.springframework.beans.factory.annotation.Autowired;

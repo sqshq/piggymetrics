@@ -2,11 +2,11 @@ package com.piggymetrics.helpers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Service
+@Component
 public class LangMessage {
 
     @Autowired

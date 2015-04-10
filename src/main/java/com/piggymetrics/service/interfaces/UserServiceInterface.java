@@ -1,7 +1,6 @@
 package com.piggymetrics.service.interfaces;
 
-import com.piggymetrics.model.User;
-import org.springframework.context.MessageSource;
+import com.piggymetrics.domain.User;
 
 import javax.servlet.http.HttpServletRequest;
 

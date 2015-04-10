@@ -1,4 +1,4 @@
-package com.piggymetrics.model;
+package com.piggymetrics.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.piggymetrics.dao.interfaces.UserDao;
@@ -8,23 +8,22 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.MessageSourceAware;
 import org.springframework.stereotype.Component;
 import javax.validation.constraints.Min;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Locale;
+import java.io.Serializable;
 
 @Component
 @Getter
 @Setter
-public class User {
+public class User implements Serializable {
 
     @Autowired
     @JsonIgnore
-    private UserDao userDao;
+    transient private UserDao userDao;
+    private static final long serialVersionUID = 1L;
 
     private boolean authorized;
     private boolean capitalization;
