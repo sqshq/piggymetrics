@@ -22,20 +22,11 @@
     <task:executor id="executor" pool-size="5"/>
     <task:scheduler id="scheduler" pool-size="10"/>
 
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/views/"/>
-        <property name="suffix" value=".jsp"/>
-    </bean>
-
     <bean id="messageSource"
           class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basename" value="classpath:i18n/i18n"/>
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
-
-    <mvc:resources mapping="/assets/**" location="/assets/" />
-
-    <mvc:annotation-driven />
 
     <mvc:annotation-driven>
         <mvc:argument-resolvers>

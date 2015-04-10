@@ -33,7 +33,7 @@ public class UserService implements UserServiceInterface {
 
     @Transactional
     public User getUser(String username, HttpServletRequest request) {
-
+        System.out.println("get user");
         User user = userDao.select(username);
         userDao.updateVisit(username, request.getRemoteAddr(), request.getLocale().getLanguage());
 

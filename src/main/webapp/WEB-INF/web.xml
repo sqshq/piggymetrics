@@ -39,7 +39,7 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
-				classpath:spring/core-config.xml
+				classpath:spring/servlet.xml
 			</param-value>
 		</init-param>
         <load-on-startup>1</load-on-startup>
@@ -53,20 +53,18 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:spring/core-config.xml
-			classpath:spring/security-config.xml,
-			classpath:spring/db-config.xml
+			classpath:spring/*config.xml
 		</param-value>
-	</context-param>
-
-	<context-param>
-		<param-name>spring.profiles.active</param-name>
-		<param-value>dev</param-value>
 	</context-param>
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
+
+	<context-param>
+		<param-name>spring.profiles.active</param-name>
+		<param-value>dev</param-value>
+	</context-param>
 
 	<!-- Spring Security -->
 	<filter>
