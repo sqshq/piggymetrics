@@ -25,7 +25,7 @@ public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
 
     @Override
     public User insertUser(User user, String IP, String language) {
-        String sql = "INSERT INTO users (username, password, userpic, last_visit, IP, language) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO users (username, password, userpic, last_visit, IP, language) VALUES (?, ?, ?, ?, ?, ?)";
 
         getJdbcTemplate().update(
                 sql, user.getUsername(), user.getPassword(), user.getUserpic(), new Date(), IP, language);
@@ -72,11 +72,6 @@ public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
     @Override
     @Cacheable(value="userCache", key="#username")
     public User select(String username) {
-        try {
-            Thread.sleep(3000L);
-        } catch (InterruptedException e) {
-            throw new IllegalStateException(e);
-        }
 
         String sql = "SELECT * FROM users JOIN settings WHERE username = ?";
 

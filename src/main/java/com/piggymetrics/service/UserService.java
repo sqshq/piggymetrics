@@ -1,8 +1,8 @@
 package com.piggymetrics.service;
 
 import com.piggymetrics.dao.interfaces.UserDao;
-import com.piggymetrics.helpers.LangMessage;
 import com.piggymetrics.domain.User;
+import com.piggymetrics.helpers.LangMessage;
 import com.piggymetrics.service.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

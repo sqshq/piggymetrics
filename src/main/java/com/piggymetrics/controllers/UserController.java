@@ -1,7 +1,7 @@
 package com.piggymetrics.controllers;
 
-import com.piggymetrics.helpers.LangMessage;
 import com.piggymetrics.domain.User;
+import com.piggymetrics.helpers.LangMessage;
 import com.piggymetrics.helpers.ResponseBody;
 import com.piggymetrics.service.UserService;
 import org.apache.log4j.Logger;

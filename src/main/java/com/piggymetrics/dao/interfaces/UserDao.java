@@ -8,8 +8,8 @@ public interface UserDao {
 
     public User update(User user, String IP, String language);
 
-    public void saveEmail(User user);
-
     public User select(String username);
+
+    public void saveEmail(User user);
 
 }
