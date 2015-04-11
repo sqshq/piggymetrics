@@ -40,7 +40,6 @@ public class BackupService implements BackupServiceInterface {
 
     @Scheduled(cron="${backup.schedule}")
     public void backupUsersData() {
-        System.out.println("backup try");
         try {
             List<User> users = userDao.selectForBackup();
             for (User user : users) {

@@ -51,6 +51,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 <script src="/assets/js/touchscreens.js"></script>
 <script src="/assets/js/extrascripts.js"></script>
+
+<script>var language = "<spring:message code="language"/>";</script>
 <script src="/assets/js/translation.js"></script>
 
 <script src="assets/js/${authorized ? "launch.js" : "unauth_launch.js"}"></script>
