@@ -29,8 +29,8 @@ public class QuotesService implements QuotesServiceInterface {
 
     static final Logger logger = Logger.getLogger(QuotesService.class);
 
-    final String usdId = "R01235";
-    final String eurId = "R01239";
+    private final String usdId = "R01235";
+    private final String eurId = "R01239";
 
     @Scheduled(cron="${quotes.schedule}")
     public void parseQuotes() {
@@ -50,7 +50,7 @@ public class QuotesService implements QuotesServiceInterface {
             quotesDao.update(usd, eur);
 
         } catch (Exception e) {
-            logger.error(e);
+            logger.error("Quotes parsing failed", e);
         }
     }
 }

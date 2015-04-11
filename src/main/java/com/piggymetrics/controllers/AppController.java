@@ -33,7 +33,7 @@ public class AppController {
         } catch (NullPointerException e) {
             model.addAttribute("authorized", false);
         } catch (Exception e) {
-            logger.error(e);
+            logger.error("App Conroller", e);
         }
 
         return "app/base";
@@ -48,7 +48,7 @@ public class AppController {
             model.addAttribute("authorized", true);
             model.addAttribute("demo", true);
         } catch (Exception e) {
-            logger.error(e);
+            logger.error("App Demo Conroller", e);
         }
 
         return "app/base";

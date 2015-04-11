@@ -12,7 +12,10 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
@@ -86,4 +89,30 @@ public class JdbcUserDao extends JdbcDaoSupport implements UserDao {
         }
     }
 
+    @Override
+    public List<User> selectForBackup() {
+
+        String sql = "SELECT username, email, data, note, money, checked_currency, deposit, interest, capitalization, language " +
+                "FROM users  WHERE backup = 1 AND email IS NOT NULL";
+
+        List<Map<String, Object>> rows = getJdbcTemplate().queryForList(sql);
+        List<User> users = new ArrayList<User>();
+
+        for (Map row : rows) {
+            User user = new User();
+            user.setUsername((String) row.get("username"));
+            user.setEmail((String) row.get("email"));
+            user.setData((String) row.get("data"));
+            user.setNote((String) row.get("note"));
+            user.setMoney((Integer) row.get("money"));
+            user.setCheckedCurrency((String) row.get("checked_currency"));
+            user.setDeposit((Boolean) row.get("deposit"));
+            user.setInterest((Integer) row.get("interest"));
+            user.setCapitalization((Boolean) row.get("capitalization"));
+            user.setLanguage((String) row.get("language"));
+            users.add(user);
+        }
+
+        return users;
+    }
 }

@@ -50,6 +50,7 @@ public class User implements Serializable {
     private String lastVisit;
     private String data;
     private String note;
+    private String language;
 
     @Min(0)
     private Integer money;

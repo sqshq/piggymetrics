@@ -50,7 +50,7 @@ public class UserController {
         } catch (DuplicateKeyException e) {
             return new ResponseBody("fail", lang.get("emailExists", request));
         } catch (Exception e) {
-            logger.error(e);
+            logger.error("Saving failed", e);
             return new ResponseBody("fail", lang.get("error", request));
         }
 
@@ -70,7 +70,7 @@ public class UserController {
         } catch (DuplicateKeyException e) {
             return new ResponseBody("fail", lang.get("usernameExists", request));
         } catch (Exception e) {
-            logger.error(e);
+            logger.error("Registration failed", e);
             return new ResponseBody("fail", lang.get("error", request));
         }
     }
