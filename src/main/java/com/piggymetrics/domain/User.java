@@ -70,5 +70,4 @@ public class User implements Serializable {
 
         return output.print(visit);
     }
-
 }

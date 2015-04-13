@@ -60,7 +60,7 @@
         <form action="../demo" method="post" autocomplete="off">
           <button class="demobutton"><spring:message code="info10"/></button>
         </form>
-        <a id="infofooter" href="https://github.com/sqshq/PiggyMetrics">&copy; 2014 sqshq.com</a>
+        <a id="infofooter" href="https://github.com/sqshq/PiggyMetrics">&copy; 2015 sqshq.com</a>
         <a id="iconsfooter" href="/assets/pages/attribution.html">icons attribution</a>
       </div>
       <div id="regpage">
