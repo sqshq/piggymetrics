@@ -1,22 +1,20 @@
 # Piggy Metrics
 **A Simple way to deal with personal finances**
 
-This is a small web application which could help you to estimate regular expenses and analyze your own financial statistics.
+This is [a small web application](http://my-piggymetrics.rhcloud.com) which could help you to estimate regular expenses and analyze your own financial statistics.
 
-[piggymetrics.com](http://piggymetrics.com)
+![Piggy Metrics](http://hsto.org/files/bc9/d77/26d/bc9d7726d68548ba96f6a680cdabdbd7.gif)
 
 ## Structure
 
-PHP-backend based on simple MVC skeleton. Here's the main features:
+Spring MVC based backend with the following functions:
 
 - sign up / login users
 - multi-language Demo account
-- uploading and color correcting user's avatars
 - saving user's data
 - parsing current quotes from The Central Bank of Russia XML
 - multi-language autodetect (english/russian packs included)
-- sending e-mail reminders (once a month by default)
-- changing e-mail reminders period (by the link from e-mail)
+- regularly automatic backup to email
 
 js/jQuery frontend:
 
