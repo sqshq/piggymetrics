@@ -37,6 +37,18 @@
         </mvc:argument-resolvers>
     </mvc:annotation-driven>
 
+    <mvc:interceptors>
+        <bean class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+            <property name="cacheSeconds" value="0"/>
+            <property name="alwaysUseFullPath" value="true"/>
+            <property name="cacheMappings">
+                <props>
+                    <prop key="/assets/**">7776000</prop>
+                </props>
+            </property>
+        </bean>
+    </mvc:interceptors>
+
     <cache:annotation-driven />
 
     <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
