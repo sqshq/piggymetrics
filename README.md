@@ -22,6 +22,15 @@ js/jQuery frontend:
 - incomes, expenses, savings and notes input
 - live statistics/forecasts computation
 
+## Run in Docker container
+- `make build`
+- `make run`
+- `hit http://localhost:8080`
+
+## Notes
+- database password is provided in the [Makefile](Makefile), application gets it from environment variable. You can specify jdbc connection stuff in [dev.properties](/src/main/resources/config/dev.properties) file
+- [dev.log4j.xml](/src/main/resources/config/dev.log4j.xml) and [dev.properties](/src/main/resources/config/dev.properties) files may contain email credentials for log email reports and backup functioning
+
 ## Support
 
 PiggyMetrics is open source, and would greatly appreciate your help. Feel free to contact me with any questions, especially if you found some bugs or issues

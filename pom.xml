@@ -16,7 +16,7 @@
         <hibernate.validator.version>4.3.1.Final</hibernate.validator.version>
         <validation.api.version>1.0.0.GA</validation.api.version>
         <javax.mail.version>1.4</javax.mail.version>
-        <compiler.version>2.3.2</compiler.version>
+        <compiler.version>3.1</compiler.version>
         <log4j.version>1.2.16</log4j.version>
         <ehcache.version>2.9.0</ehcache.version>
         <lombok.version>1.16.2</lombok.version>

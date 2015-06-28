@@ -1155,8 +1155,8 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 	font-size: 13px;
 	padding: 20px;
 	padding-top: 30px;
-	width: 360px;
-	height: 60%
+	width: 365px;
+	height: 70%;
 }
 
 /* MODAL WINDOWS */
