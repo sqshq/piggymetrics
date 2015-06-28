@@ -25,7 +25,7 @@ js/jQuery frontend:
 ## Run in Docker container
 - `make build`
 - `make run`
-- `hit http://localhost:8080`
+- hit `http://localhost:8080`
 
 ## Notes
 - database password is provided in the [Makefile](Makefile), application gets it from environment variable. You can specify jdbc connection stuff in [dev.properties](/src/main/resources/config/dev.properties) file
