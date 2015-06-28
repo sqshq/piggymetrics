@@ -22,15 +22,21 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 
+	<!--Spring & Log4j environment (dev/prod)-->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>classpath:config/dev.log4j.xml</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>spring.profiles.active</param-name>
+		<param-value>dev</param-value>
+	</context-param>
+
     <!--Log4j-->
     <listener>
         <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
     </listener>
-
-    <context-param>
-        <param-name>log4jConfigLocation</param-name>
-        <param-value>classpath:config/log4j.xml</param-value>
-    </context-param>
 
     <!-- Spring MVC -->
     <servlet>
@@ -60,11 +66,6 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-
-	<context-param>
-		<param-name>spring.profiles.active</param-name>
-		<param-value>dev</param-value>
-	</context-param>
 
 	<!-- Spring Security -->
 	<filter>
