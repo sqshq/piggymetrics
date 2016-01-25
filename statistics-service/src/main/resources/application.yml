@@ -1,0 +1,26 @@
+security:
+  oauth2:
+    client:
+      clientId: statistics-service
+      clientSecret: password
+      accessTokenUri: http://localhost:8888/uaa/oauth/token
+      grant-type: client_credentials
+      scope: server
+    resource:
+      user-info-uri: http://localhost:8888/uaa/user
+
+#spring:
+#  data:
+#    mongodb:
+#      host: account-mongodb
+#      username: user
+#      password: strong-password-here #${MONGODB_PASSWORD}
+#      database: piggymetrics
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+server:
+  context-path: /statistics
+  port: 11111
