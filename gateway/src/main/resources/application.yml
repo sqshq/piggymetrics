@@ -6,15 +6,15 @@ zuul:
         stripPrefix: false
     account-service:
         path: /accounts/**
-        url: http://localhost:9999
+        serviceId: account-service
         stripPrefix: false
     statistics-service:
         path: /statistics/**
-        url: http://localhost:11111
+        serviceId: statistics-service
         stripPrefix: false
     notification-service:
         path: /notifications/**
-        url: http://localhost:22222
+        serviceId: notification-service
         stripPrefix: false
 
 logging:
