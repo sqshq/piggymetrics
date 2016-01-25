@@ -1,0 +1,7 @@
+server:
+  port: 8888
+  context-path: /uaa
+
+logging:
+  level:
+    org.springframework.security: DEBUG

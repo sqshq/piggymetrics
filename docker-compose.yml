@@ -1,0 +1,36 @@
+#TODO убрать dev.env и запускать все с вводом пароля из командной строки
+
+gateway:
+  build: gateway
+  restart: always
+  ports:
+    - 80:8080
+  links:
+    - redis
+    - account-service
+
+account-service:
+  build: account-service
+  restart: always
+  env_file: dev.env #TODO убрать
+  ports:
+    - 9000:8080 #TODO убрать
+  links:
+    - account-mongodb
+    - redis
+
+account-mongodb:
+  build: mongodb
+  restart: always
+  env_file: dev.env #TODO убрать
+  environment:
+    - INIT_DUMP=account_dump.js
+  #TODO попробовать вольюм без виртуалбокса
+  ports: 
+    - 27017:27017 #TODO убрать
+
+redis:
+  image: redis
+  restart: always
+  ports:
+    - 6379:6379 #TODO убрать
