@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: registry
+
+eureka:
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    server:
+      waitTimeInMsWhenSyncEmpty: 0
