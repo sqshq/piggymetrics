@@ -19,7 +19,6 @@ public class AccountController {
 		return "hello from account service, " + principal.getName();
 	}
 
-	//@PreAuthorize("#oauth2.hasScope('ui')")
 	@RequestMapping(path = "/fire", method = RequestMethod.GET)
 	public String fire(Principal principal) {
 		return "fired: " + client.fire();
