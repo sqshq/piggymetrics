@@ -24,399 +24,489 @@
 </head>
 <body>
 
-<div id="settings_hat"></div>
+    <div id="settings_hat"></div>
 
-<div id="lastlogo">
-    <div id="lastlogoflipper">
-        <div id="logo_settings">
-            <div id="logoclickplace"></div><div id="bubble"><div id="indicator"></div></div>
-        </div>
-        <div id="logo_statistic"></div>
-    </div>
-</div>
-<section class="toppage">
-
-    <!-- GREETING PAGE -->
-
-    <div id="logo_greeting"></div>
-    <div id="centerbox">
-        <div id="avatarcontainer" class="forward plus">
-            <div class="avatar"></div>
-        </div>
-    </div>
-    <div id="lefttitle"><span class="bluetext"> metrics</span></div>
-    <div id="righttitle"><span class="bluetext">last seen: </span></div>
-    <div id="bottombuttons">
-        <div id="plus" class="plus">
-            <div id="plusborder">
-                <div id="plusone"></div>
-                <div id="plustwo"></div>
+    <div id="lastlogo">
+        <div id="lastlogoflipper">
+            <div id="logo_settings">
+                <div id="logoclickplace"></div><div id="bubble"><div id="indicator"></div></div>
             </div>
-            <div id="plustext">Get in</div>
+            <div id="logo_statistic"></div>
         </div>
-        <form action="user/logout" id="logout" method="post" autocomplete="off">
-            <div id="minus">
-                <div id="minusborder">
-                    <div id="minusone"></div>
+    </div>
+
+    <section class="toppage">
+
+        <!-- GREETING PAGE -->
+
+        <div id="logo_greeting"></div>
+        <div id="centerbox">
+            <div id="avatarcontainer" class="forward plus">
+                <div class="avatar"></div>
+            </div>
+        </div>
+        <div id="lefttitle"><span class="bluetext"> metrics</span></div>
+        <div id="righttitle"><span class="bluetext">last seen: </span></div>
+        <div id="bottombuttons">
+            <div id="plus" class="plus">
+                <div id="plusborder">
+                    <div id="plusone"></div>
+                    <div id="plustwo"></div>
                 </div>
-                <div id="minustext">Log out</div>
+                <div id="plustext">Get in</div>
             </div>
-        </form>
-    </div>
+            <form action="user/logout" id="logout" method="post" autocomplete="off">
+                <div id="minus">
+                    <div id="minusborder">
+                        <div id="minusone"></div>
+                    </div>
+                    <div id="minustext">Log out</div>
+                </div>
+            </form>
+        </div>
 
-    <!-- SETTINGS PAGE -->
+        <!-- SETTINGS PAGE -->
 
-    <div id="settingspage">
-        <div id="swipefield"></div>
+        <div id="settingspage">
+            <div id="swipefield"></div>
 
-        <div id="incomes" class="columns"><div class="incomes-sprite-title zoomplus incomebutton"></div>
-            <div id="noincomes" class="incomebutton">
-                <div class="hoverplace"></div>
-                <div class="majorplusitem">
+            <div id="incomes" class="columns"><div class="incomes-sprite-title zoomplus incomebutton"></div>
+                <div id="noincomes" class="incomebutton">
+                    <div class="hoverplace"></div>
+                    <div class="majorplusitem">
+                        <div class="plusitemborder"></div>
+                        <div class="plusitemone"></div>
+                        <div class="plusitemtwo"></div>
+                    </div>
+                    <span class="plusitemtitle">Add income</span>
+                    <span class="plusitemitalic">Empty space</span>
+                </div>
+                <div class="plusitem" id="incomesplusitem">
+                    <div class="plusitemborder incomebutton"></div>
+                    <div class="plusitemone"></div>
+                    <div class="plusitemtwo"></div>
+                </div>
+                <div class="blueline"></div>
+                <div class="brownline"></div>
+                <div id="incomedown"><div class="arrowup"></div>forth</div>
+                <div id="incomeup"><div class="arrowdown"></div>back</div>
+                <div class="frame">
+                    <div id="incomewrapper" class="wrapper">
+                        <div id="incomeslider"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="expenses" class="columns"><div class="expenses-sprite-title zoomplus expensebutton"></div>
+                <div id="noexpenses" class="expensebutton">
+                    <div class="hoverplace"></div>
+                    <div class="majorplusitem">
+                        <div class="plusitemborder expensebutton"></div>
+                        <div class="plusitemone"></div>
+                        <div class="plusitemtwo"></div>
+                    </div>
+                    <span class="plusitemtitle">Add expense</span>
+                    <span class="plusitemitalic">Empty space</span>
+                </div>
+                <div class="plusitem" id="expensesplusitem">
                     <div class="plusitemborder"></div>
                     <div class="plusitemone"></div>
                     <div class="plusitemtwo"></div>
                 </div>
-                <span class="plusitemtitle">Add income</span>
-                <span class="plusitemitalic">Empty space</span>
-            </div>
-            <div class="plusitem" id="incomesplusitem">
-                <div class="plusitemborder incomebutton"></div>
-                <div class="plusitemone"></div>
-                <div class="plusitemtwo"></div>
-            </div>
-            <div class="blueline"></div>
-            <div class="brownline"></div>
-            <div id="incomedown"><div class="arrowup"></div>forth</div>
-            <div id="incomeup"><div class="arrowdown"></div>back</div>
-            <div class="frame">
-                <div id="incomewrapper" class="wrapper">
-                    <div id="incomeslider"></div>
-                </div>
-            </div>
-        </div>
-        <div id="expenses" class="columns"><div class="expenses-sprite-title zoomplus expensebutton"></div>
-            <div id="noexpenses" class="expensebutton">
-                <div class="hoverplace"></div>
-                <div class="majorplusitem">
-                    <div class="plusitemborder expensebutton"></div>
-                    <div class="plusitemone"></div>
-                    <div class="plusitemtwo"></div>
-                </div>
-                <span class="plusitemtitle">Add expense</span>
-                <span class="plusitemitalic">Empty space</span>
-            </div>
-            <div class="plusitem" id="expensesplusitem">
-                <div class="plusitemborder"></div>
-                <div class="plusitemone"></div>
-                <div class="plusitemtwo"></div>
-            </div>
-            <div class="blueline"></div>
-            <div class="brownline"></div>
-            <div id="expensedown"><div class="arrowup"></div>forth</div>
-            <div id="expenseup"><div class="arrowdown"></div>back</div>
-            <div class="frame">
-                <div id="expensewrapper" class="wrapper">
-                    <div id="expenseslider"></div>
-                </div>
-            </div>
-        </div>
-        <div id="savings" class="columns"><div class="savings-sprite-title"></div>
-            <div class="blueline"></div>
-            <div class="brownline"></div>
-            <div id="topsavingsline">
-                <div id="piggyicon"></div>
-                <span class="savingstitle14">My spare money</span>
-                <span class="savingstitle12">At the moment</span>
-                <div id="rublebox"></div><div id="rublesign"></div>
-                <input type="text" name="savingsvalue" id="savingsvalue" data-a-sep=" " data-v-min="0" data-v-max="999999999" data-l-zero="deny" maxlength="12" autocomplete="off">
-            </div>
-            <div id="bottomsavingsline">
-                <input type="checkbox" name="deposit" id="deposit">
-                <label for="deposit" class="button"></label>
-                <label for="deposit" class="savingsdeposit">Accumulation account</label>
-                <span class="savingspercent">Interest</span>
-                <input type="text" name="percentvalue" id="percentvalue" data-a-sep=""  data-v-min="0.00" data-v-max="99.99" data-l-zero="deny" data-a-sign=" %" data-w-empty="sign" data-p-sign="s" maxlength="5" data-a-pad="false" size="6" data-a-dec="." autocomplete="off">
-                <input type="checkbox" name="capitalization" id="capitalization">
-                <label for="capitalization" class="button"></label>
-                <label for="capitalization" class="savingscapital">Monthly capitalization</label>
-            </div>
-        </div>
-        <div id="savebutton"><div id="leftborder"></div><div id="centerborder"></div><div id="rightborder"></div><div id="save"></div></div>
-    </div>
-
-    <form action="user/save" id="saveoptions" method="post" autocomplete="off"></form>
-
-    <!-- NOTES WINDOW -->
-    <div id="overlay"></div>
-    <div id="add-notes">
-        <div class="modal-content">
-            <div class="notes-title">Financial notes</div>
-            <div class="modal-close"><div class="close-sign"></div></div>
-            <div class="notes-save"><div class="modal-save-icon"></div><div class="modal-save-text">Save changes</div></div>
-            <textarea id="notes" class="notes-input" autocomplete="off" maxlength="5000"></textarea>
-        </div>
-    </div>
-    <!-- MODAL WINDOWS -->
-
-    <div id="add-modal">
-        <div class="modal-content">
-            <div class="modal-title mainmodaltitle"></div>
-            <div class="modal-close"><div class="close-sign"></div></div>
-            <input type="text" name="modalvalue" class="modalvalue" data-a-sep=" " data-v-min="0" data-v-max="999999999" data-l-zero="deny" maxlength="12" autocomplete="off" value="0">
-            <div class="modalselects">
-                <select class="modalcurrency">
-                    <option value="rub">rubles</option>
-                    <option selected="selected" value="doll">dollars</option>
-                    <option value="euro">euro</option>
-                </select>
-
-                <select class="modalperiod">
-                    <option value="year">Per year</option>
-                    <option value="quarter">Per quarter</option>
-                    <option selected="selected" value="month">Per month</option>
-                    <option value="day">Per day</option>
-                    <option value="hour">Per hour</option>
-                </select>
-            </div>
-            <div class="initicons"><div id="chooseicon" class="cart-icon"></div><div class="initicons-arrow"></div></div>
-            <input class="modaltitle" placeholder="Title" type="text" autocomplete="off" maxlength="18"/>
-            <div class="modal-save"><div class="modal-save-icon"></div><div class="modal-save-text">Save changes</div></div>
-            <div class="modal-delete"><div id="modaldeletecross"></div><div class="modal-delete-text">Remove</div></div>
-
-            <!-- Expenses table -->
-            <div class="modalexpensessurface">
-                <div class="modal-title">Choose an icon</div>
-                <table class="modaltable modalforward" id="modalexpensetable">
-                    <tr>
-                        <td><div class="imgbox"><div class="iconbox auto"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox gas"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox home"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox baby"></div></div></td>
-                    </tr>
-                    <tr>
-                        <td><div class="imgbox"><div class="iconbox cart"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox clothes"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox phone"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox utilities"></div></div></td>
-                    </tr>
-                    <tr>
-                        <td><div class="imgbox"><div class="iconbox island"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox earth"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox meal"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox sport"></div></div></td>
-                    </tr>
-                    <tr>
-                        <td><div class="imgbox"><div class="iconbox medical"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox tv"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox smoking"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox other"></div></div></td>
-                    </tr>
-                </table>
-            </div>
-
-            <!-- Incomes table -->
-            <div class="modalincomessurface">
-                <div class="modal-title">Choose an icon</div>
-                <table class="modaltable modalforward" id="modalincomestable">
-                    <tr>
-                        <td><div class="imgbox"><div class="iconbox edu"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox graphs"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox wallet"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox case"></div></div></td>
-                    </tr>
-                    <tr>
-                        <td><div class="imgbox"><div class="iconbox rub"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox euro"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox doll"></div></div></td>
-                        <td><div class="imgbox"><div class="iconbox gbp"></div></div></td>
-                    </tr>
-                </table>
-            </div>
-
-        </div>
-    </div>
-
-</section>
-<!-- LAST PAGE -->
-<section class="bottompage">
-    <div id="mainblock">
-        <div id="setcurrency">
-            <div id="usdcurr" class="currunchecked">Usd</div>
-            <div id="eurcurr" class="currunchecked">Eur</div>
-            <div id="rubcurr" class="currunchecked">Rub</div>
-        </div>
-        <div id="expense-cursor">
-            <div class="cursorline"></div>
-            <div class="cursorpoint"></div>
-        </div>
-        <div id="incomes-cursor">
-            <div class="cursorline"></div>
-            <div class="cursorpoint"></div>
-        </div>
-        <div id="expenses-lines-container"></div>
-        <div id="incomes-lines-container"></div>
-
-        <div id="deltatitle" class="flag">Incomes &mdash; expenses<div class="triangle"></div></div>
-        <div id="savingstitle" class="flag">Savings<div class="triangle"></div></div>
-
-        <div id="outermaindiv"> <div class="linesbackground"></div>
-            <div id="outermaincursordiv"> <input class="knob" id="outer-circle-cursor"/> </div>
-            <input class="knob" id="outer-circle"/>
-            <div class="topmaincircletitle lightcircletitle"></div>
-            <div id="outer-circle-value" class="boldcircletitle"></div></span>
-            <div class="bottommaincircletitle"><span class="boldcircletitle curr"></span><span class="lightcircletitle">/ Month</span></div>
-            <div id="innermaindiv"> <input class="knob" id="inner-circle"/> </div>
-            <div id="maincircleline"></div>
-            <div id="maincircle100percent"><span class="lightcircletitle">100%</span></div>
-            <div id="outer-circle-percent"><span class="lightcircletitle"></span></div>
-        </div>
-
-        <div id="small-circles-container">
-            <div id="firstcirclediv">
-                <div id="firstcircledivflipper">
-                    <div class="frontcircle"> <div class="linesbackground"></div>
-                        <input class="knob" id="first-circle" />
-                        <div class="cursordiv"> <input class="knob" id="first-circle-cursor"/> </div>
-                        <div id="first-circle-title" class="circletoptitle lightcircletitle"></div>
-                        <div id="first-circle-value" class="circlevalue boldcircletitle"></div></span>
-                        <div class="bottomcircletitle"><span class="boldcircletitle curr"></span><span class="lightcircletitle">/ Hour</span></div>
-                        <div id="first-circle-percent"><span class="lightcircletitle"></span></div>
-                        <div class="circleline"></div>
-                        <div class="circle100percent"><span class="lightcircletitle">100%</span></div>
+                <div class="blueline"></div>
+                <div class="brownline"></div>
+                <div id="expensedown"><div class="arrowup"></div>forth</div>
+                <div id="expenseup"><div class="arrowdown"></div>back</div>
+                <div class="frame">
+                    <div id="expensewrapper" class="wrapper">
+                        <div id="expenseslider"></div>
                     </div>
-                    <div class="backcircle">
-                        <canvas id="movingcircle-1" width="200" height="200"></canvas>
-                        <div class="circletoptitle lightcircletitle">Choose any<br>item</div>
-                        <div class="circlesselect">
-                            <select id="circle-select-1" class="selectcircles"></select>
+                </div>
+            </div>
+            <div id="savings" class="columns"><div class="savings-sprite-title"></div>
+                <div class="blueline"></div>
+                <div class="brownline"></div>
+                <div id="topsavingsline">
+                    <div id="piggyicon"></div>
+                    <span class="savingstitle14">My spare money</span>
+                    <span class="savingstitle12">At the moment</span>
+                    <div id="rublebox"></div><div id="rublesign"></div>
+                    <input type="text" name="savingsvalue" id="savingsvalue" data-a-sep=" " data-v-min="0" data-v-max="999999999" data-l-zero="deny" maxlength="12" autocomplete="off">
+                </div>
+                <div id="bottomsavingsline">
+                    <input type="checkbox" name="deposit" id="deposit">
+                    <label for="deposit" class="button"></label>
+                    <label for="deposit" class="savingsdeposit">Accumulation account</label>
+                    <span class="savingspercent">Interest</span>
+                    <input type="text" name="percentvalue" id="percentvalue" data-a-sep=""  data-v-min="0.00" data-v-max="99.99" data-l-zero="deny" data-a-sign=" %" data-w-empty="sign" data-p-sign="s" maxlength="5" data-a-pad="false" size="6" data-a-dec="." autocomplete="off">
+                    <input type="checkbox" name="capitalization" id="capitalization">
+                    <label for="capitalization" class="button"></label>
+                    <label for="capitalization" class="savingscapital">Monthly capitalization</label>
+                </div>
+            </div>
+            <div id="savebutton"><div id="leftborder"></div><div id="centerborder"></div><div id="rightborder"></div><div id="save"></div></div>
+        </div>
+
+        <form action="user/save" id="saveoptions" method="post" autocomplete="off"></form>
+
+        <!-- NOTES WINDOW -->
+        <div id="overlay"></div>
+        <div id="add-notes">
+            <div class="modal-content">
+                <div class="notes-title">Financial notes</div>
+                <div class="modal-close"><div class="close-sign"></div></div>
+                <div class="notes-save"><div class="modal-save-icon"></div><div class="modal-save-text">Save changes</div></div>
+                <textarea id="notes" class="notes-input" autocomplete="off" maxlength="5000"></textarea>
+            </div>
+        </div>
+        <!-- MODAL WINDOWS -->
+
+        <div id="add-modal">
+            <div class="modal-content">
+                <div class="modal-title mainmodaltitle"></div>
+                <div class="modal-close"><div class="close-sign"></div></div>
+                <input type="text" name="modalvalue" class="modalvalue" data-a-sep=" " data-v-min="0" data-v-max="999999999" data-l-zero="deny" maxlength="12" autocomplete="off" value="0">
+                <div class="modalselects">
+                    <select class="modalcurrency">
+                        <option value="rub">rubles</option>
+                        <option selected="selected" value="doll">dollars</option>
+                        <option value="euro">euro</option>
+                    </select>
+
+                    <select class="modalperiod">
+                        <option value="year">Per year</option>
+                        <option value="quarter">Per quarter</option>
+                        <option selected="selected" value="month">Per month</option>
+                        <option value="day">Per day</option>
+                        <option value="hour">Per hour</option>
+                    </select>
+                </div>
+                <div class="initicons"><div id="chooseicon" class="cart-icon"></div><div class="initicons-arrow"></div></div>
+                <input class="modaltitle" placeholder="Title" type="text" autocomplete="off" maxlength="18"/>
+                <div class="modal-save"><div class="modal-save-icon"></div><div class="modal-save-text">Save changes</div></div>
+                <div class="modal-delete"><div id="modaldeletecross"></div><div class="modal-delete-text">Remove</div></div>
+
+                <!-- Expenses table -->
+                <div class="modalexpensessurface">
+                    <div class="modal-title">Choose an icon</div>
+                    <table class="modaltable modalforward" id="modalexpensetable">
+                        <tr>
+                            <td><div class="imgbox"><div class="iconbox auto"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox gas"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox home"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox baby"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="imgbox"><div class="iconbox cart"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox clothes"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox phone"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox utilities"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="imgbox"><div class="iconbox island"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox earth"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox meal"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox sport"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="imgbox"><div class="iconbox medical"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox tv"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox smoking"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox other"></div></div></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- Incomes table -->
+                <div class="modalincomessurface">
+                    <div class="modal-title">Choose an icon</div>
+                    <table class="modaltable modalforward" id="modalincomestable">
+                        <tr>
+                            <td><div class="imgbox"><div class="iconbox edu"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox graphs"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox wallet"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox case"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td><div class="imgbox"><div class="iconbox rub"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox euro"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox doll"></div></div></td>
+                            <td><div class="imgbox"><div class="iconbox gbp"></div></div></td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!-- LAST PAGE -->
+    <section class="bottompage">
+        <div id="mainblock">
+            <div id="setcurrency">
+                <div id="usdcurr" class="currunchecked">Usd</div>
+                <div id="eurcurr" class="currunchecked">Eur</div>
+                <div id="rubcurr" class="currunchecked">Rub</div>
+            </div>
+            <div id="expense-cursor">
+                <div class="cursorline"></div>
+                <div class="cursorpoint"></div>
+            </div>
+            <div id="incomes-cursor">
+                <div class="cursorline"></div>
+                <div class="cursorpoint"></div>
+            </div>
+            <div id="expenses-lines-container"></div>
+            <div id="incomes-lines-container"></div>
+
+            <div id="deltatitle" class="flag">Incomes &mdash; expenses<div class="triangle"></div></div>
+            <div id="savingstitle" class="flag">Savings<div class="triangle"></div></div>
+
+            <div id="outermaindiv"> <div class="linesbackground"></div>
+                <div id="outermaincursordiv"> <input class="knob" id="outer-circle-cursor"/> </div>
+                <input class="knob" id="outer-circle"/>
+                <div class="topmaincircletitle lightcircletitle"></div>
+                <div id="outer-circle-value" class="boldcircletitle"></div></span>
+                <div class="bottommaincircletitle"><span class="boldcircletitle curr"></span><span class="lightcircletitle">/ Month</span></div>
+                <div id="innermaindiv"> <input class="knob" id="inner-circle"/> </div>
+                <div id="maincircleline"></div>
+                <div id="maincircle100percent"><span class="lightcircletitle">100%</span></div>
+                <div id="outer-circle-percent"><span class="lightcircletitle"></span></div>
+            </div>
+
+            <div id="small-circles-container">
+                <div id="firstcirclediv">
+                    <div id="firstcircledivflipper">
+                        <div class="frontcircle"> <div class="linesbackground"></div>
+                            <input class="knob" id="first-circle" />
+                            <div class="cursordiv"> <input class="knob" id="first-circle-cursor"/> </div>
+                            <div id="first-circle-title" class="circletoptitle lightcircletitle"></div>
+                            <div id="first-circle-value" class="circlevalue boldcircletitle"></div></span>
+                            <div class="bottomcircletitle"><span class="boldcircletitle curr"></span><span class="lightcircletitle">/ Hour</span></div>
+                            <div id="first-circle-percent"><span class="lightcircletitle"></span></div>
+                            <div class="circleline"></div>
+                            <div class="circle100percent"><span class="lightcircletitle">100%</span></div>
                         </div>
-                        <div id="circle-select-1-back"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="secondcirclediv">
-                <div id="secondcircledivflipper">
-                    <div class="frontcircle"> <div class="linesbackground"></div>
-                        <input class="knob" id="second-circle" />
-                        <div class="cursordiv"> <input class="knob" id="second-circle-cursor"/> </div>
-                        <div id="second-circle-title" class="circletoptitle lightcircletitle"></div>
-                        <div id="second-circle-value" class="circlevalue boldcircletitle"></div></span>
-                        <div class="bottomcircletitle"><span class="boldcircletitle curr"></span><span class="lightcircletitle">/ Day</span></div>
-                        <div id="second-circle-percent"><span class="lightcircletitle"></span></div>
-                        <div class="circleline"></div>
-                        <div class="circle100percent"><span class="lightcircletitle">100%</span></div>
-                    </div>
-                    <div class="backcircle">
-                        <canvas id="movingcircle-2" width="200" height="200"></canvas>
-                        <div class="circletoptitle lightcircletitle">Choose any<br>item</div>
-                        <div class="circlesselect">
-                            <select id="circle-select-2" class="selectcircles"></select>
+                        <div class="backcircle">
+                            <canvas id="movingcircle-1" width="200" height="200"></canvas>
+                            <div class="circletoptitle lightcircletitle">Choose any<br>item</div>
+                            <div class="circlesselect">
+                                <select id="circle-select-1" class="selectcircles"></select>
+                            </div>
+                            <div id="circle-select-1-back"></div>
                         </div>
-                        <div id="circle-select-2-back"></div>
                     </div>
                 </div>
-            </div>
 
-            <div id="thirdcirclediv">
-                <div id="thirdcircledivflipper">
-                    <div class="frontcircle"> <div class="linesbackground"></div>
-                        <div class="cursordiv"> <input class="knob" id="third-circle-cursor"/> </div>
-                        <div id="third-circle-title" class="circletoptitle lightcircletitle"></div>
-                        <div id="third-circle-value" class="circlevalue boldcircletitle"></div></span>
-                        <div class="bottomcircletitle"><span class="boldcircletitle curr"></span><span class="lightcircletitle">/ Year</span></div>
-                        <div id="third-circle-percent"><span class="lightcircletitle"></span></div>
-                        <div class="circleline"></div>
-                        <div class="circle100percent"><span class="lightcircletitle">100%</span></div>
-                        <input class="knob" id="third-circle" />
-                    </div>
-                    <div class="backcircle">
-                        <canvas id="movingcircle-3" width="200" height="200"></canvas>
-                        <div class="circletoptitle lightcircletitle">Choose any<br>item</div>
-                        <div class="circlesselect">
-                            <select id="circle-select-3" class="selectcircles"></select>
+                <div id="secondcirclediv">
+                    <div id="secondcircledivflipper">
+                        <div class="frontcircle"> <div class="linesbackground"></div>
+                            <input class="knob" id="second-circle" />
+                            <div class="cursordiv"> <input class="knob" id="second-circle-cursor"/> </div>
+                            <div id="second-circle-title" class="circletoptitle lightcircletitle"></div>
+                            <div id="second-circle-value" class="circlevalue boldcircletitle"></div></span>
+                            <div class="bottomcircletitle"><span class="boldcircletitle curr"></span><span class="lightcircletitle">/ Day</span></div>
+                            <div id="second-circle-percent"><span class="lightcircletitle"></span></div>
+                            <div class="circleline"></div>
+                            <div class="circle100percent"><span class="lightcircletitle">100%</span></div>
                         </div>
-                        <div id="circle-select-3-back"></div>
+                        <div class="backcircle">
+                            <canvas id="movingcircle-2" width="200" height="200"></canvas>
+                            <div class="circletoptitle lightcircletitle">Choose any<br>item</div>
+                            <div class="circlesselect">
+                                <select id="circle-select-2" class="selectcircles"></select>
+                            </div>
+                            <div id="circle-select-2-back"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="thirdcirclediv">
+                    <div id="thirdcircledivflipper">
+                        <div class="frontcircle"> <div class="linesbackground"></div>
+                            <div class="cursordiv"> <input class="knob" id="third-circle-cursor"/> </div>
+                            <div id="third-circle-title" class="circletoptitle lightcircletitle"></div>
+                            <div id="third-circle-value" class="circlevalue boldcircletitle"></div></span>
+                            <div class="bottomcircletitle"><span class="boldcircletitle curr"></span><span class="lightcircletitle">/ Year</span></div>
+                            <div id="third-circle-percent"><span class="lightcircletitle"></span></div>
+                            <div class="circleline"></div>
+                            <div class="circle100percent"><span class="lightcircletitle">100%</span></div>
+                            <input class="knob" id="third-circle" />
+                        </div>
+                        <div class="backcircle">
+                            <canvas id="movingcircle-3" width="200" height="200"></canvas>
+                            <div class="circletoptitle lightcircletitle">Choose any<br>item</div>
+                            <div class="circlesselect">
+                                <select id="circle-select-3" class="selectcircles"></select>
+                            </div>
+                            <div id="circle-select-3-back"></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="firstpendant">
+                    <div class="pendant-circle"></div>
+                    <span class="lightcircletitle pendantfont">Per hour</span>
+                    <div class="pendantline"></div>
+                </div>
+                <div id="secondpendant">
+                    <div class="pendant-circle"></div>
+                    <span class="lightcircletitle pendantfont">Per day</span>
+                    <div class="pendantline"></div>
+                </div>
+                <div id="thirdpendant">
+                    <div class="pendant-circle"></div>
+                    <span class="lightcircletitle pendantfont">Per year</span>
+                    <div class="pendantline"></div>
+                </div>
+            </div>
+
+            <div id="savings-slider-container">
+                <span class="savings-slider">part of the spare money which you'll send to accumulation account every month:</span>
+                <div id="savings-slider"></div>
+                <div id="savingsTip0">Without monthly deposit refill</div>
+                <div id="savingsTip100">All savings go to deposit every month</div>
+            </div>
+
+            <div id="savingscircles">
+                <div id="after-savings">
+                    <div class="savings-circle-title lightcircletitle">In a year</div>
+                    <div id="after-savings-value" class="boldcircletitle"></div></span>
+                    <div class="savings-circle-currency boldcircletitle"></div>
+                </div>
+                <div id="before-savings">
+                    <div class="savings-circle-title lightcircletitle">At the moment</div>
+                    <div id="before-savings-value" class="boldcircletitle"></div></span>
+                    <div class="savings-circle-currency boldcircletitle"></div>
+                </div>
+            </div>
+
+            <div id="savingschart">
+                <canvas id="horizontal"></canvas>
+                <canvas id="chartline"></canvas>
+                <div id="month0"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"></div></div>
+                <div class="months"><div id="month1" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
+                <div class="months"><div id="month2" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
+                <div class="months"><div id="month3" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
+                <div class="months"><div id="month4" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
+                <div class="months"><div id="month5" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></span></div></span></div></div>
+                <div class="months"><div id="month6" class="in-month"><div class="small-month-circle"></div><div class="large-month-circle"><div class="bluedot"></div></div><div class="month-name"></div><div class="large-month-val"><span class="val"></span> <span class="curr"></div><div class="month-val"></div></div></div>
+                <div class="months"><div id="month7" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
+                <div class="months"><div id="month8" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
+                <div class="months"><div id="month9" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
+                <div class="months"><div id="month10" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
+                <div class="months"><div id="month11" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
+                <div class="months"><div id="month12" class="in-month"><div class="small-month-circle"></div><div class="large-month-circle"><div class="bluedot"></div></div><div class="month-name"></div><div class="large-month-val"><span class="val"></span> <span class="curr"></div><div class="month-val"></div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="launchpage">
+        <div id="flipper">
+            <div class="FRONTCARD">
+                <div id="piggy"></div>
+                <div id="logotext"></div>
+                <div class="flipinfo" id="info"></div>
+                <div id="secondenter"></div>
+                <div id="preloader"></div>
+                <div id="wrapper">
+                    <!-- LOG IN FORMS -->
+                    <div id="cube">
+                        <form action="user/login" id="auth" method="post" autocomplete="off">
+                            <div class="side" id="side1">
+                                <div id="backlogin"></div>
+                                <div id="enter"></div>
+                                <input class="frontforms" id="frontloginform" name="user_name" placeholder="enter your login" type="text" autocomplete="off"/>
+                            </div>
+                            <div class="side" id="side2">
+                                <div id="backpassword"></div>
+                                <input class="frontforms" id="frontpasswordform" name="user_password" placeholder="password" type="password" autocomplete="off"/>
+                            </div>
+                            <input class="ghostform" name="ghauth" id="ghauth" type="text"/>
+                        </form>
+                    </div>
+                </div>
+                <div class="fliptext">Or <a href="#">create new account</a></div>
+            </div>
+
+            <div class="BACKCARD">
+                <div id="infopage">
+                    <span class="frominfo" id="infosubtitle">Piggy Metrics is the new simple way to deal with personal finances</span>
+                    <span class="frominfo" id="infotitle">This is how it works</span>
+                    <div class="infoflipback frominfo"></div>
+                    <div id="infoleft" class="infocolumn frominfo">
+                        <div id="leftcolumn">enter planned periodic<br>incomes and expenses<br>
+                            <div class="columnimage"></div>
+                            <span class="columnfooter">Plan or estimate your regular expenses. Divide them into categories. Сomponents of your budget<br>will always be near to hand</span>
+                        </div>
+                    </div>
+                    <div id="infocenter"class=" infocolumn frominfo">
+                        <div id="centercolumn">check all your savings<br>at the moment<br>
+                            <div class="columnimage"></div>
+                            <span class="columnfooter">Regularly update the value of your savings.<br>Follow the progress.</span>
+                        </div>
+                    </div>
+                    <div id="inforight"class="infocolumn frominfo">
+                        <div id="rightcolumn">analyze financial statistics<br>and forecasts<br>
+                            <div class="columnimage"></div>
+                            <span class="columnfooter">Based on this information, you’ll get statistics for your budget and forecast of savings<br>for the year ahead</span>
+                        </div>
+                    </div>
+                    <div id="infoline"></div>
+                    <div id="infolinetext" class="frominfo">Try without registration</div>
+                    <form action="/demo" method="post" autocomplete="off">
+                        <button class="demobutton">Demo account</button>
+                    </form>
+                    <a id="infofooter" href="https://github.com/sqshq/PiggyMetrics">&copy; 2016 sqshq.com</a>
+                    <a id="iconsfooter" href="/icons">icons attribution</a>
+                </div>
+                <div id="regpage">
+                    <div id="franklin">
+                        <div class="avatar"></div>
+                    </div>
+                    <div id="upload-wrapper"><div id="plusavatar"></div>
+                        <div align="center">
+                            <form action="/user/upload" method="post" enctype="multipart/form-data" id="uploadButton" autocomplete="off">
+                                <div class="inputWrapper"><input class="fileInput" name="ImageFile" id="imageInput" type="file"/></div>
+                            </form>
+                            <div id="output"></div>
+                        </div>
+                    </div>
+                    <div id="createaccount"></div>
+                    <div class="fliptext">Or <a href="#">use existing account</a></div>
+                    <div id="registrationforms">
+                        <!-- SIGN UP FORMS -->
+                        <form action="/user/registration" id="signup" method="post" autocomplete="off">
+                            <input class="backforms" name="reg_user_name" id="backloginform" placeholder=" enter a login" type="text"/><br>
+                            <input class="backforms" name="reg_user_password" id="backpasswordform" placeholder=" password" type="password"/>
+                            <input class="ghostform" name="ghreg" type="text"/>
+                            <button class="regbutton" type="submit" name="registration">r e g i s t e r</button>
+                        </form>
+                    </div>
+                    <div id="mailform">
+                        <form action="/user/registration" id="mail" method="post" autocomplete="off">
+                            <input name="usermail" id="backmailform" placeholder=" электропочта" type="text"/><br>
+                            <button class="mailbutton" type="submit" name="mailbutton">Получать напоминания</button>
+                        </form>
+                        <span class="mailforminfo">Регистрация прошла успешно.<br>
+                        <span class="mailforminfosmall">Мы предлагаем вам ввести адрес электронной почты, чтобы периодически получать напоминания.
+                        Именно <i>регулярное</i> наблюдение за состоянием бюджета принесет плоды.</span></span>
+
+                        <div id="skipmail"><a href="#">Пропустить этот шаг</a></div>
                     </div>
                 </div>
             </div>
-            <div id="firstpendant">
-                <div class="pendant-circle"></div>
-                <span class="lightcircletitle pendantfont">Per hour</span>
-                <div class="pendantline"></div>
-            </div>
-            <div id="secondpendant">
-                <div class="pendant-circle"></div>
-                <span class="lightcircletitle pendantfont">Per day</span>
-                <div class="pendantline"></div>
-            </div>
-            <div id="thirdpendant">
-                <div class="pendant-circle"></div>
-                <span class="lightcircletitle pendantfont">Per year</span>
-                <div class="pendantline"></div>
-            </div>
         </div>
+    </section>
 
-        <div id="savings-slider-container">
-            <span class="savings-slider">part of the spare money which you'll send to accumulation account every month:</span>
-            <div id="savings-slider"></div>
-            <div id="savingsTip0">Without monthly deposit refill</div>
-            <div id="savingsTip100">All savings go to deposit every month</div>
-        </div>
-
-        <div id="savingscircles">
-            <div id="after-savings">
-                <div class="savings-circle-title lightcircletitle">In a year</div>
-                <div id="after-savings-value" class="boldcircletitle"></div></span>
-                <div class="savings-circle-currency boldcircletitle"></div>
-            </div>
-            <div id="before-savings">
-                <div class="savings-circle-title lightcircletitle">At the moment</div>
-                <div id="before-savings-value" class="boldcircletitle"></div></span>
-                <div class="savings-circle-currency boldcircletitle"></div>
-            </div>
-        </div>
-
-        <div id="savingschart">
-            <canvas id="horizontal"></canvas>
-            <canvas id="chartline"></canvas>
-            <div id="month0"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"></div></div>
-            <div class="months"><div id="month1" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
-            <div class="months"><div id="month2" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
-            <div class="months"><div id="month3" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
-            <div class="months"><div id="month4" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
-            <div class="months"><div id="month5" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></span></div></span></div></div>
-            <div class="months"><div id="month6" class="in-month"><div class="small-month-circle"></div><div class="large-month-circle"><div class="bluedot"></div></div><div class="month-name"></div><div class="large-month-val"><span class="val"></span> <span class="curr"></div><div class="month-val"></div></div></div>
-            <div class="months"><div id="month7" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
-            <div class="months"><div id="month8" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
-            <div class="months"><div id="month9" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
-            <div class="months"><div id="month10" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
-            <div class="months"><div id="month11" class="in-month"><div class="small-month-circle"></div><div class="month-name"></div><div class="month-val"><span class="val"></span> <span class="curr"></div></span></div></div>
-            <div class="months"><div id="month12" class="in-month"><div class="small-month-circle"></div><div class="large-month-circle"><div class="bluedot"></div></div><div class="month-name"></div><div class="large-month-val"><span class="val"></span> <span class="curr"></div><div class="month-val"></div></div></div>
-        </div>
-    </div>
-</section>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/touchscreens.js"></script>
+    <script src="js/extrascripts.js"></script>
+    <script src="js/translation.js"></script>
+    <script src="js/unauth_launch.js" charset="utf-8"></script>
+    <script src="js/dashboard.js" charset="utf-8"></script>
+    <script src="js/base.js" charset="utf-8"></script>
+    <script type="text/javascript">var savePermit=true;</script>
 
 
-
-
-
-
-
-
-
-<script src="js/jquery.min.js"></script>
-<script src="js/touchscreens.js"></script>
-<script src="js/extrascripts.js"></script>
-<script src="js/translation.js"></script>
-<script src="js/launch.js" charset="utf-8"></script>
-<script src="js/dashboard.js" charset="utf-8"></script>
-<script src="js/base.js" charset="utf-8"></script>
-<script type="text/javascript">var savePermit=true;</script>
-
-
-
-<!-- if ($this->user_data) echo "<script type=\"text/javascript\">jsonParse($this->user_data);</script>"; -->
 </body>
 </html>
