@@ -1,33 +1,33 @@
-@font-face { 
+@font-face {
 	font-family: 'Museo-100';
 	src: url('../fonts/museo-100/museo-100.eot');
 	src: local('@%@'),
-		url('../fonts/museo-100/museo-100.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/museo-100/museo-100.woff') format('woff'),
-		url('../fonts/museo-100/museo-100.svg') format('svg'),
-		url('../fonts/museo-100/museo-100.ttf') format('truetype');
+	url('../fonts/museo-100/museo-100.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/museo-100/museo-100.woff') format('woff'),
+	url('../fonts/museo-100/museo-100.svg') format('svg'),
+	url('../fonts/museo-100/museo-100.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
-@font-face { 
+@font-face {
 	font-family: 'Museo-300';
 	src: url('../fonts/museo-300/museo-300.eot');
 	src: local('@%@'),
-		url('../fonts/museo-300/museo-300.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/museo-300/museo-300.woff') format('woff'),
-		url('../fonts/museo-300/museo-300.svg') format('svg'),
-		url('../fonts/museo-300/museo-300.ttf') format('truetype');
+	url('../fonts/museo-300/museo-300.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/museo-300/museo-300.woff') format('woff'),
+	url('../fonts/museo-300/museo-300.svg') format('svg'),
+	url('../fonts/museo-300/museo-300.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
-@font-face { 
+@font-face {
 	font-family: 'Museo-500';
 	src: url('../fonts/museo-500/museo-500.eot');
 	src: local('@%@'),
-		url('../fonts/museo-500/museo-500.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/museo-500/museo-500.woff') format('woff'),
-		url('../fonts/museo-500/museo-500.svg') format('svg'),
-		url('../fonts/museo-500/museo-500.ttf') format('truetype');
+	url('../fonts/museo-500/museo-500.eot?#iefix') format('embedded-opentype'),
+	url('../fonts/museo-500/museo-500.woff') format('woff'),
+	url('../fonts/museo-500/museo-500.svg') format('svg'),
+	url('../fonts/museo-500/museo-500.ttf') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -91,13 +91,12 @@ input[type="text"], input[type="password"], textarea {
 	-webkit-border-radius: 0px;
 	-moz-border-radius: 0px;
 	border-radius: 0px;
-	margin-bottom: 20px;
 }
 ::-moz-selection {
-    background: rgb(255, 221, 45);
+	background: rgb(255, 221, 45);
 }
 ::selection {
-    background: rgb(255, 221, 45);
+	background: rgb(255, 221, 45);
 }
 *:focus {outline:0px none transparent;}
 
@@ -111,7 +110,7 @@ input[type="text"], input[type="password"], textarea {
 	height: 42px;
 }
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
-	only screen and (min-resolution: 144dpi) {
+only screen and (min-resolution: 144dpi) {
 	#chooseicon, .itembackground, .iconbox, .itemlinebackground, #circle-select-1-back, #circle-select-2-back, #circle-select-3-back {
 		background-image: url("../images/icons@2x.png");
 	}
@@ -204,8 +203,9 @@ input[type="text"], input[type="password"], textarea {
 	-ms-transition: 0.3s ease-out;
 	-webkit-transition: 0.3s ease-out;
 	transition: 0.3s ease-out;
+	background: url("../images/logo_large.gif") no-repeat;
 	background-size: 137px 204px;
-	background: url("../images/logo_large.gif") no-repeat center;
+	background-position: center;
 	width: 172px;
 	height: 204px;
 	position: absolute;
@@ -318,7 +318,7 @@ input {
 	animation: 0.5s unzoomavatar ease-out;
 }
 .avatar {
-	background: url("../userpics/default.jpg") center center no-repeat;
+	background: url("../images/userpic.jpg") center center no-repeat;
 	position: absolute;
 	box-shadow:0px 0px 0px 5px white inset;
 	width: 100%;
@@ -404,7 +404,7 @@ input {
 	top: 0; left: 0; right: 0; bottom: 0;
 	margin: auto;
 	background-color: #cfe6ec;
-	}
+}
 #plusone {
 	width: 2px;
 	height: 50%;
@@ -724,7 +724,7 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 	box-shadow: inset 0 0 0 1px #b4d6da, 1px 1px 1px #ebebeb;
 }
 #deposit:checked ~ .savingscapital, #deposit:checked ~ .savingspercent, #deposit:checked ~ input#percentvalue {
-  color: #4b4b4b;
+	color: #4b4b4b;
 }
 .savingstitle14 {
 	font-family: "Museo-300";
@@ -1058,14 +1058,14 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 	-o-transform: translateY(71px);
 	-ms-transform: translateY(71px);
 	transform: translateY(71px);
-	}
+}
 .sliderdown {
 	-webkit-transform: translateY(-71px);
 	-moz-transform: translateY(-71px);
 	-o-transform: translateY(-71px);
 	-ms-transform: translateY(-71px);
 	transform: translateY(-71px);
-	}
+}
 .endoflist {
 	-webkit-animation: 0.5s endoflist ease-out;
 	-moz-animation: 0.5s endoflist ease-out;
@@ -1154,8 +1154,8 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 	font-size: 13px;
 	padding: 20px;
 	padding-top: 30px;
-	width: 365px;
-	height: 70%;
+	width: 360px;
+	height: 60%
 }
 
 /* MODAL WINDOWS */
@@ -1493,7 +1493,7 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 	background-color: white;
 	position: absolute;
 	top: 14%; left: 42px;
-	
+
 }
 #modalincomestable {
 	text-align: center;
@@ -2205,7 +2205,7 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 	height: 100px;
 }
 #firstpendant > .pendant-circle {
-	bottom: 77px; 
+	bottom: 77px;
 	border: 2px solid #d3d8ce;
 }
 #firstpendant > .pendantline {
@@ -2224,7 +2224,7 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 	height: 100px;
 }
 #secondpendant > .pendant-circle {
-	bottom: 57px; 
+	bottom: 57px;
 	border: 2px solid #b9b2b4;
 }
 #secondpendant > .pendantline {
@@ -2243,7 +2243,7 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 	height: 100px;
 }
 #thirdpendant > .pendant-circle {
-	bottom: 37px; 
+	bottom: 37px;
 	border: 2px solid #abb1bf;
 }
 #thirdpendant > .pendantline {
@@ -2551,7 +2551,7 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 		height: 620px; top:19%;
 	}
 	#savingschart {
-		bottom: 10px; 
+		bottom: 10px;
 	}
 	#savingscircles {
 		bottom: 0px;
@@ -2598,11 +2598,11 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 		top: -12%;
 	}
 	#infopage {
-		height: 610px; 
+		height: 610px;
 		margin-top: -70px;
 	}
 	#infosubtitle {
-	top: 40px;
+		top: 40px;
 	}
 	#infotitle {
 		top: 75px;
@@ -2645,7 +2645,7 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 
 @media screen and (max-width: 1100px) {
 	.columns {
-		width: 300px; top:24%; 
+		width: 300px; top:24%;
 	}
 	#savings {
 		left: 20%; right: -450px; bottom: 0;
@@ -2659,7 +2659,7 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 }
 @media screen and (min-width: 1100px) {
 	.columns {
-		width: 340px; top:24%; 
+		width: 340px; top:24%;
 	}
 	#savings {
 		left: 21%; right: -490px; bottom: 0;
@@ -2716,7 +2716,7 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 		top: 8%;
 	}
 	.columns {
-		top:16%; 
+		top:16%;
 	}
 	#logo_settings {
 		height: 100px;
@@ -2809,23 +2809,23 @@ input#deposit:checked + label.button:after, input#capitalization:checked + label
 		height: 260px;
 	}
 	#before-savings-value {
-	font-size: 24px;
+		font-size: 24px;
 	}
 }
 
 /*================ @2x IMAGES FOR RETINA DISPLAYS ================   */
 
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5),
-		only screen and (min-resolution: 144dpi) {
+only screen and (min-resolution: 144dpi) {
 	#logo_greeting, #logo_settings {
 		background-image: url("../images/logo_large@2x.gif");
 	}
 	#logo_statistic {
-	background: url("../images/logotext_large@2x.gif");
-	background-size: 172px 65px;
+		background: url("../images/logotext_large@2x.gif");
+		background-size: 172px 65px;
 	}
 	.imgbox:hover {
-	border: 2px solid white;
+		border: 2px solid white;
 	}
 }
 

@@ -1,7 +1,7 @@
 // Launch after authorization
 $(window).load(function() {
 	$("#preloader, #lastlogo").show();
-	var userAvatar = $("<img />").attr("src","images/" + user.avatar);
+	var userAvatar = $("<img />").attr("src","images/userpic.jpg");
 	$(userAvatar).load(function() {
 		setTimeout(initGreetingPage, 500);
 	});
@@ -12,4 +12,6 @@ $(window).load(function() {
 	else {
 		is_mobile = false;
 	}
+
+	testFillObjects();
 }); 
