@@ -267,19 +267,19 @@ function checkPeriod(period) {
     var periodText;
     switch (period) {
         case "year":
-            periodText = language.periodYear;
+            periodText = " / per year";
             break;
         case "quarter":
-            periodText = language.periodQuarter;
+            periodText = " / per quater";
             break;
         case "month":
-            periodText = language.periodMonth;
+            periodText = " / per month";
             break;
         case "day":
-            periodText = language.periodDay;
+            periodText = " / per day";
             break;
         case "hour":
-            periodText = language.periodHour;
+            periodText = " / per hour";
             break;
     }
     return periodText
@@ -443,12 +443,12 @@ function itemClick(item) {
         whichColumn = expenses;
 
     if (itemDiv.hasClass("incomeitem")) {
-        $(".mainmodaltitle").empty().append(language.changeInc);
+        $(".mainmodaltitle").empty().append("Change income");
         incomesExpenses = "income";
         whichColumn = incomes;
     }
     else {
-        $(".mainmodaltitle").empty().append(language.changeExp);
+        $(".mainmodaltitle").empty().append("Change expense");
     }
     $(".initicons").data({"iconselected": itemIcon, "add-edit": "edit", "incomes-expenses": incomesExpenses + "s"});
     $("#chooseicon").removeClass().addClass(itemIcon);
@@ -517,12 +517,12 @@ $("#noincomes, #noexpenses, .zoomplus, .plusitemborder").click(function() {
     if ($(this).hasClass("incomebutton")) {
         $(".initicons").data({"iconselected": "wallet", "add-edit": "add", "incomes-expenses": "incomes"});
         $("#chooseicon").removeClass().addClass("wallet");
-        $(".mainmodaltitle").append(language.addInc);
+        $(".mainmodaltitle").append("Add income");
     }
     else {
         $(".initicons").data({"iconselected": "cart", "add-edit": "add", "incomes-expenses": "expenses"});
         $("#chooseicon").removeClass().addClass("cart");
-        $(".mainmodaltitle").append(language.addExp);
+        $(".mainmodaltitle").append("Add expense");
     }
     $(".modalvalue, .modaltitle").show();
     $("#overlay, #add-modal").addClass("modal-show");
@@ -857,13 +857,13 @@ function launchStatistic() {
             step: (incomesSumMonth-expensesSumMonth) / 20,
             range: {
                 'min': [ 0 ],
-                'max': [Math.abs(incomesSumMonth-expensesSumMonth)] //[ Math.abs( (Math.round(incomesSumMonth / 10) * 10 ) - (Math.round(expensesSumMonth / 10) * 10) ) ]
+                'max': [Math.abs(incomesSumMonth-expensesSumMonth)]
             }
         }, true);
 
     }
     else {
-        alert(language.noItemsAllert)
+        alert("Please, add at least one item for each column")
     }
 
     jsonDataSave();

@@ -172,8 +172,8 @@ function initStatisticPage() {
 	}
 
 	// LINES CONTAINER
-	$("#expenses-lines-container").html('<div class="lines-title">' + language.expStructure + ' <span class="grey">(' + separateNumber(expensesSumMonth) + '<span class="greysmall"><span class="greysmallval curr"></span>' + language.perMonth + '</span>)<span></span></div>')
-	$("#incomes-lines-container").html('<div class="lines-title">' + language.incStructure + ' <span class="grey">(' + separateNumber(incomesSumMonth) + '<span class="greysmall"><span class="greysmallval curr"></span>' + language.perMonth + '</span>)<span></span></div>')
+	$("#expenses-lines-container").html('<div class="lines-title"> Expenses structure <span class="grey">(' + separateNumber(expensesSumMonth) + '<span class="greysmall"><span class="greysmallval curr"></span>/Month</span>)<span></span></div>')
+	$("#incomes-lines-container").html('<div class="lines-title"> Incomes structure <span class="grey">(' + separateNumber(incomesSumMonth) + '<span class="greysmall"><span class="greysmallval curr"></span>/Month</span>)<span></span></div>')
 	// Sort id in columns in descending order
 	var incomesIdSorted = Object.keys(incomes).sort(function(a,b){return incomes[b].converted - incomes[a].converted})
 	var expensesIdSorted = Object.keys(expenses).sort(function(a,b){return expenses[b].converted - expenses[a].converted})
@@ -184,7 +184,7 @@ function initStatisticPage() {
 		else {container = "#expenses-lines-container"; idSorted = expensesIdSorted; maxConvertedId = expensesIdSorted[0]; sum = expensesSumMonth; i=100}
 
 		idSorted.forEach(function(id) {
-			$(container).append('<div id="line-' + i + '" class="itemline"><span class="lineitemtitle lightcircletitle">' + column[id].title + '</span><div class="lineitempercent">'+ Math.round(100 * column[id].converted / sum) +'%</div><div class="lineitemvalue">' + separateNumber(Math.round(column[id].converted)) + ' <span class="boldcircletitle curr lineitemcurr"></span><span class="lightcircletitle lineitemcurr">' + language.perMonth + '</span></div><div class="leftpoint"></div><div id="linebackground-'+ i +'" class="itemlinebackground"></div></div>');
+			$(container).append('<div id="line-' + i + '" class="itemline"><span class="lineitemtitle lightcircletitle">' + column[id].title + '</span><div class="lineitempercent">'+ Math.round(100 * column[id].converted / sum) +'%</div><div class="lineitemvalue">' + separateNumber(Math.round(column[id].converted)) + ' <span class="boldcircletitle curr lineitemcurr"></span><span class="lightcircletitle lineitemcurr">/Month</span></div><div class="leftpoint"></div><div id="linebackground-'+ i +'" class="itemlinebackground"></div></div>');
 			$("#line-" + i).data({"item": column[id]}).css({"width": Math.round(100 * column[ id ].converted / column[maxConvertedId].converted ) + "%"});
 			$("#linebackground-" + i).addClass(column[id].icon);
 			i++;
@@ -427,7 +427,7 @@ function initStatisticPage() {
 
 	if (incomesSumMonth > expensesSumMonth) {
 		setTimeout(function() {
-			$(".topmaincircletitle").html(language.spareMoney);
+			$(".topmaincircletitle").html("Spare");
 			simpleanimatecircle.call($("#inner-circle"), 0, 100, 1200);
 			$("#outer-circle-value").css({"color": "black"});
 			$("#incomes-cursor").hide();
@@ -436,7 +436,7 @@ function initStatisticPage() {
 	}
 	else {
 		setTimeout(function() {
-			$(".topmaincircletitle").html(language.lossMoney);
+			$(".topmaincircletitle").html("Loss");
 			simpleanimatecircle.call($("#inner-circle"), 0, 100, 800);
 			$("#outer-circle-value").css({"color": "#eaa7a7"});
 			$("#expense-cursor").hide();
@@ -708,7 +708,7 @@ $('#savings-slider').on('slide', function() {
 	var canvas = document.getElementById("horizontal"),
 			currentDate = new Date(),
 			currentMonth = currentDate.getMonth(),
-			allMonths = language.allMonths;
+			allMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	if (canvas.getContext) {
 		var ctx = canvas.getContext("2d");
 		ctx.canvas.width  = $("#savingschart").width();
