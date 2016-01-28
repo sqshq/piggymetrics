@@ -393,20 +393,7 @@ input[class="frontforms"]:-moz-placeholder{font-family: Arial; font-size: 15px; 
 	height: 180px;
 	z-index: 3;
 }
-#upload-wrapper:hover > #plusavatar {
-	opacity: 1;
-	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=100);
-}
-.fileInput {
-	cursor: pointer;
-	height: 100%;
-	position:absolute;
-	top: 0;
-	right: 0;
-	font-size:140px;
-	color:white;
-	opacity: 0;
-}
+
 .hidden {
 	opacity: 0;
 	-moz-opacity: 0;
