@@ -65,9 +65,9 @@ function getConverted(column) {
 		switch (column[key].currency) {
 			case "rub": column[key].converted = column[key].value;
 				break;
-			case "euro": column[key].converted = (column[key].value * user.eur).toFixed(3);
+			case "euro": column[key].converted = (column[key].value * global.eur).toFixed(3);
 				break;
-			case "doll": column[key].converted = (column[key].value * user.usd).toFixed(3);
+			case "doll": column[key].converted = (column[key].value * global.usd).toFixed(3);
 				break;
 		}
 		switch (column[key].period) {
@@ -83,9 +83,9 @@ function getConverted(column) {
 		}
 		switch (user.checkedCurr) {
 			case "rub": break;
-			case "eur": column[key].converted = (column[key].converted / user.eur).toFixed(3);
+			case "eur": column[key].converted = (column[key].converted / global.eur).toFixed(3);
 				break;
-			case "usd": column[key].converted = (column[key].converted / user.usd).toFixed(3);
+			case "usd": column[key].converted = (column[key].converted / global.usd).toFixed(3);
 				break;
 		}
 		if (column == incomes) {
@@ -115,18 +115,18 @@ function initStatisticPage() {
 		switch (user.checkedCurr) {
 			case "rub":
 				if (user.lastCurr == "rub") { break; }
-				else if (user.lastCurr == "usd") { savings.freeMoney = (savings.freeMoney * user.usd).toFixed(3); }
-				else if (user.lastCurr == "eur") { savings.freeMoney = (savings.freeMoney * user.eur).toFixed(3); }
+				else if (user.lastCurr == "usd") { savings.freeMoney = (savings.freeMoney * global.usd).toFixed(3); }
+				else if (user.lastCurr == "eur") { savings.freeMoney = (savings.freeMoney * global.eur).toFixed(3); }
 				break;
 			case "eur":
 				if (user.lastCurr == "eur") { break; }
-				else if (user.lastCurr == "usd") { savings.freeMoney = (savings.freeMoney * user.usd / user.eur).toFixed(3); }
-				else if (user.lastCurr == "rub") { savings.freeMoney = (savings.freeMoney / user.eur).toFixed(3); }
+				else if (user.lastCurr == "usd") { savings.freeMoney = (savings.freeMoney * global.usd / global.eur).toFixed(3); }
+				else if (user.lastCurr == "rub") { savings.freeMoney = (savings.freeMoney / global.eur).toFixed(3); }
 				break;
 			case "usd":
 				if (user.lastCurr == "usd") { break; }
-				else if (user.lastCurr == "eur") { savings.freeMoney = (savings.freeMoney * user.eur / user.usd).toFixed(3); }
-				else if (user.lastCurr == "rub") { savings.freeMoney = (savings.freeMoney / user.usd).toFixed(3); }
+				else if (user.lastCurr == "eur") { savings.freeMoney = (savings.freeMoney * global.eur / global.usd).toFixed(3); }
+				else if (user.lastCurr == "rub") { savings.freeMoney = (savings.freeMoney / global.usd).toFixed(3); }
 				break;
 		}
 		user.lastCurr = user.checkedCurr;

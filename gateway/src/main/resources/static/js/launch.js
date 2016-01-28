@@ -1,25 +1,33 @@
-var is_mobile = false;
-var savePermit=true;
+var global = {
+    mobileClient: false,
+    savePermit: true,
+    usd: 0,
+    eur: 0
+}
 
 $(window).load(function(){
 
-	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+	if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
 		FastClick.attach(document.body);
-		is_mobile = true;
+        global.mobileClient = true;
 	}
 
-	var user_logged_in = false;
+    $.getJSON("http://api.fixer.io/latest?base=RUB", function( data ) {
+        global.eur = 1 / data.rates.EUR;
+        global.usd = 1 / data.rates.USD;
+    });
 
-	if (user_logged_in) {
-		launchApplication();
+	var userIsLoggedIn = true;
+
+	if (userIsLoggedIn) {
+		showGreetingPage();
 	} else {
 		showLoginForm();
 	}
 });
 
-function launchApplication() {
+function showGreetingPage() {
 	testFillObjects();
-	$("#preloader, #lastlogo").show();
 	var userAvatar = $("<img />").attr("src","images/userpic.jpg");
 	$(userAvatar).load(function() {
 		setTimeout(initGreetingPage, 500);

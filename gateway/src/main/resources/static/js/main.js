@@ -11,7 +11,7 @@
 //}
 
 function testFillObjects() {
-    user = new User ("sqshq", "01/02/2014", 35.5810, 49.0484, "rub", "rub", 0.8, "Зарплата приходит на карточку 11 числа\n\n\nСтипуха - 15-го\n\n\n\n===\n\nСпрятал заначку в гараже 22к");
+    user = new User ("sqshq", "01/02/2014", "rub", "rub", 0.8, "Зарплата приходит на карточку 11 числа\n\n\nСтипуха - 15-го\n\n\n\n===\n\nСпрятал заначку в гараже 22к");
     savings = new Savings ("120000", true, true, "10");
     AddIncome("1", "Зарплата", "wallet", "rub", "month", "96000");
     AddIncome("2", "Стипендия", "edu", "rub", "month", "10000");
@@ -26,11 +26,9 @@ function testFillObjects() {
 }
 
 var user = {};
-function User(username, lastVisit, usd, eur, checkedCurrency, lastCurrency, sliderValue, note) {
+function User(username, lastVisit, checkedCurrency, lastCurrency, sliderValue, note) {
     this.login = username;
     this.lastVisit = lastVisit;
-    this.usd = usd;
-    this.eur = eur;
     this.checkedCurr = checkedCurrency;
     this.lastCurr = lastCurrency;
     this.checkedPercent = sliderValue;
@@ -100,6 +98,7 @@ function sanitize(obj) {
 
 function initGreetingPage() {
 
+    $("#preloader, #lastlogo").show();
     $("#loginpage").fadeOut(50);
     $(".avatar").css({"background": "url(images/userpic.jpg) center center no-repeat", "background-size": "100% 100%"});
     $("#logo_greeting").fadeIn(0, function() {
@@ -814,7 +813,7 @@ $(".bottompage").bind('DOMMouseScroll mousewheel', function (e){
 $("#swipefield, #savings, #savebutton, #settings_hat").swipe( {
     swipe:function(event, direction, distance, duration, fingerCount) {
         if (direction == "up" || direction == "left") {
-            if (is_mobile) launchStatistic();
+            if (global.mobileClient) launchStatistic();
         }
     },
     threshold:0
@@ -822,7 +821,7 @@ $("#swipefield, #savings, #savebutton, #settings_hat").swipe( {
 $(".bottompage").swipe( {
     swipe:function(event, direction, distance, duration, fingerCount) {
         if (direction == "down" || direction == "right") {
-            if (is_mobile) fadeStatistic();
+            if (global.mobileClient) fadeStatistic();
         }
     },
     threshold:0
@@ -870,9 +869,8 @@ function launchStatistic() {
 
 }
 
-// Save all data on server
 function jsonDataSave() {
-    if (user.login !== undefined && savePermit) {
+    if (user.login !== undefined && global.savePermit) {
 
         var saveOptions = {
             datatype: 	"json",
@@ -885,8 +883,8 @@ function jsonDataSave() {
                 deposit: +savings.deposit,
                 capitalization: +savings.capitalization,
                 interest: savings.percent,
-                usd: user.usd,
-                eur: user.eur,
+                usd: global.usd,
+                eur: global.eur,
                 data: JSON.stringify({incomes: incomes, expenses: expenses})
             }
         };
@@ -900,9 +898,8 @@ function jsonDataSave() {
     }
 }
 
-// Fade 4 page
 function fadeStatistic() {
-    // Change Savings options
+
     switch (user.checkedCurr) {
         case "rub": $("#rublesign").css({"background-position": "-150px 0"});
             break;
@@ -913,9 +910,9 @@ function fadeStatistic() {
     }
     $("#savingsvalue").autoNumeric('set', savings.freeMoney);
     moveRuble();
-    // run page animation
+
     $(".toppage, .bottompage").removeClass("sectionDown");
     setTimeout(function() { $("#lastlogoflipper").removeClass("flippedcard"); }, 220);
-    // set chart in proper position
+
     setTimeout(function() { drawChartLine(91); $(".bottompage").css({"display": "none"}); }, 500);
 }
