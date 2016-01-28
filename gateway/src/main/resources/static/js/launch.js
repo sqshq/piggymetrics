@@ -17,7 +17,7 @@ $(window).load(function(){
         global.usd = 1 / data.rates.USD;
     });
 
-	var userIsLoggedIn = true;
+	var userIsLoggedIn = false;
 
 	if (userIsLoggedIn) {
 		showGreetingPage();
