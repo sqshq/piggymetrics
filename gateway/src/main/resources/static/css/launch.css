@@ -13,18 +13,18 @@ only screen and (min-resolution: 144dpi) {
 
 /*========================== CARDS WRAPPER ===========================*/
 
-#launchpage {
+#loginpage {
 	top:0; bottom: 0; left:0; right: 0;
 	position: absolute;
 	margin: auto;
 	width: 300px;
 	height: 500px;
-	-webkit-perspective: 1000;
+	-webkit-perspective: 1000px;
 	-moz-perspective: 1000px;
 	-ms-perspective: 1000px;
 	-o-perspective: 1000px;
-	perspective: 1000;
-	/*display: none; /* DELETE IT WITH INCLUDE LOUNCH PAGE */
+	perspective: 1000px;
+	display: none;
 }
 .CCattribution {
 	position: relative;
@@ -40,7 +40,7 @@ only screen and (min-resolution: 144dpi) {
 	color: #7ba1b4;
 }
 
-#launchpage, .front, .back {
+#loginpage, .front, .back {
 	width: 300px;
 	height: 500px;
 }
@@ -112,19 +112,19 @@ only screen and (min-resolution: 144dpi) {
 	-o-transform: rotateY(0deg);
 	transform: rotateY(0deg);
 }
-.spinthatshit{
-	-webkit-animation: 1s spinthatshit ease-out;
-	-moz-animation: 1s spinthatshit ease-out;
-	-o-animation: 1s spinthatshit ease-out;
-	-ms-animation: 1s spinthatshit ease-out;
-	animation: 1s spinthatshit ease-out;
+.auto-shake{
+	-webkit-animation: 1s auto-shake ease-out;
+	-moz-animation: 1s auto-shake ease-out;
+	-o-animation: 1s auto-shake ease-out;
+	-ms-animation: 1s auto-shake ease-out;
+	animation: 1s auto-shake ease-out;
 }
-.spinagain{
-	-webkit-animation: 1.6s spinagain ease-out;
-	-moz-animation: 1.6s spinagain ease-out;
-	-o-animation: 1.6s spinagain ease-out;
-	-ms-animation: 1.6s spinagain ease-out;
-	animation: 1.6s spinagain ease-out;
+.hover-shake{
+	-webkit-animation: 1.6s hover-shake ease-out;
+	-moz-animation: 1.6s hover-shake ease-out;
+	-o-animation: 1.6s hover-shake ease-out;
+	-ms-animation: 1.6s hover-shake ease-out;
+	animation: 1.6s hover-shake ease-out;
 }
 .loadingspin{
 	-webkit-animation: 2s loadingspin;
@@ -677,7 +677,7 @@ only screen and (min-resolution: 144dpi) {
 
 /* SPIN THAT SHIT */
 
-@-webkit-keyframes spinthatshit {
+@-webkit-keyframes auto-shake {
 	0% {
 		-webkit-transform: rotate(0deg);
 	}
@@ -697,7 +697,7 @@ only screen and (min-resolution: 144dpi) {
 		-webkit-transform: rotate(0deg);
 	}
 }
-@-moz-keyframes spinthatshit {
+@-moz-keyframes auto-shake {
 	0% {
 		-moz-transform: rotate(0deg);
 	}
@@ -717,7 +717,7 @@ only screen and (min-resolution: 144dpi) {
 		-moz-transform: rotate(0deg);
 	}
 }
-@-o-keyframes spinthatshit {
+@-o-keyframes auto-shake {
 	0% {
 		-o-transform: rotate(0deg);
 	}
@@ -737,7 +737,7 @@ only screen and (min-resolution: 144dpi) {
 		-o-transform: rotate(0deg);
 	}
 }
-@-ms-keyframes spinthatshit {
+@-ms-keyframes auto-shake {
 	0% {
 		-ms-transform: rotate(0deg);
 	}
@@ -757,7 +757,7 @@ only screen and (min-resolution: 144dpi) {
 		-ms-transform: rotate(0deg);
 	}
 }
-@keyframes spinthatshit {
+@keyframes auto-shake {
 	0% {
 		transform: rotate(0deg);
 	}
@@ -780,7 +780,7 @@ only screen and (min-resolution: 144dpi) {
 
 /* SPIN AGAIN */
 
-@-webkit-keyframes spinagain {
+@-webkit-keyframes hover-shake {
 	0% {
 		-webkit-transform: rotate(0deg);
 	}
@@ -800,7 +800,7 @@ only screen and (min-resolution: 144dpi) {
 		-webkit-transform: rotate(0deg);
 	}
 }
-@-moz-keyframes spinagain {
+@-moz-keyframes hover-shake {
 	0% {
 		-moz-transform: rotate(0deg);
 	}
@@ -820,7 +820,7 @@ only screen and (min-resolution: 144dpi) {
 		-moz-transform: rotate(0deg);
 	}
 }
-@-o-keyframes spinagain {
+@-o-keyframes hover-shake {
 	0% {
 		-o-transform: rotate(0deg);
 	}
@@ -840,7 +840,7 @@ only screen and (min-resolution: 144dpi) {
 		-o-transform: rotate(0deg);
 	}
 }
-@-ms-keyframes spinagain {
+@-ms-keyframes hover-shake {
 	0% {
 		-ms-transform: rotate(0deg);
 	}
@@ -860,7 +860,7 @@ only screen and (min-resolution: 144dpi) {
 		-ms-transform: rotate(0deg);
 	}
 }
-@keyframes spinagain {
+@keyframes hover-shake {
 	0% {
 		transform: rotate(0deg);
 	}

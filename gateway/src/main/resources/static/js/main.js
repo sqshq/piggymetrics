@@ -100,21 +100,13 @@ function sanitize(obj) {
 
 function initGreetingPage() {
 
-    $("#launchpage").fadeOut(50);
+    $("#loginpage").fadeOut(50);
     $(".avatar").css({"background": "url(images/userpic.jpg) center center no-repeat", "background-size": "100% 100%"});
     $("#logo_greeting").fadeIn(0, function() {
         $("#centerbox").show(0,function() {
-            setTimeout( function() { showGreetingUnits(); } , 300)
+            setTimeout( function() { showGreetingUnits() } , 300)
         });
     });
-
-    /* Initiate settings page on press plus or enter
-     $(document).on("keyup", function (e) {
-     if (e.which == 13) {
-     setTimeout(initSettingsPage, 400);
-     }
-     });
-     */
 
     $(".plus").click(function() {
         setTimeout(initSettingsPage, 200);
