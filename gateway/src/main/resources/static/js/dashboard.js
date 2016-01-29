@@ -10,6 +10,7 @@ $("#inner-circle").knob({
 	"displayInput": false,
 	"fgColor": "#e6eff1"
 });
+
 $("#outer-circle").data({ "width": 265 }).knob({
 	"readOnly": true,
 	"width": 265,
@@ -18,6 +19,7 @@ $("#outer-circle").data({ "width": 265 }).knob({
 	"displayInput": false,
 	"fgColor": "#a59b9e"
 });
+
 $("#outer-circle-cursor").knob({
 	"cursor": 0.5,
 	"readOnly": true,
@@ -27,6 +29,7 @@ $("#outer-circle-cursor").knob({
 	"displayInput": false,
 	"fgColor":"#898989"
 });
+
 $("#first-circle").data({ "width": 165 }).knob({
 	"readOnly": true,
 	"width": 165,
@@ -35,6 +38,7 @@ $("#first-circle").data({ "width": 165 }).knob({
 	"displayInput": false,
 	"fgColor": "#efefef"
 });
+
 $("#second-circle").data({ "width": 165 }).knob({
 	"readOnly": true,
 	"width": 165,
@@ -43,6 +47,7 @@ $("#second-circle").data({ "width": 165 }).knob({
 	"displayInput": false,
 	"fgColor": "#e0ded5"
 });
+
 $("#third-circle").data({ "width": 165 }).knob({
 	"readOnly": true,
 	"width": 165,
@@ -51,6 +56,7 @@ $("#third-circle").data({ "width": 165 }).knob({
 	"displayInput": false,
 	"fgColor": "#b6aeb0"
 });
+
 $("#first-circle-cursor, #second-circle-cursor, #third-circle-cursor").knob({
 	"cursor": 0.5,
 	"readOnly": true,
