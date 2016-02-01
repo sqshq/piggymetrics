@@ -12,11 +12,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.token.grant.client.ClientCredentialsResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 
 @SpringBootApplication
 @EnableResourceServer
@@ -24,10 +26,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableOAuth2Client
 @EnableFeignClients
 @EnableScheduling
+@EnableConfigurationProperties
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
-@EnableConfigurationProperties
-public class AccountApplication {
+public class AccountApplication extends ResourceServerConfigurerAdapter {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AccountApplication.class, args);
@@ -47,5 +49,12 @@ public class AccountApplication {
 	@Bean
 	public OAuth2RestTemplate clientCredentialsRestTemplate() {
 		return new OAuth2RestTemplate(clientCredentialsResourceDetails());
+	}
+
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+				.antMatchers("/registration").permitAll()
+				.anyRequest().access("#oauth2.hasScope('ui')");
 	}
 }

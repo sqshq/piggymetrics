@@ -35,7 +35,7 @@ public class AuthApplication {
 
 	@Configuration
 	@EnableWebSecurity
-	protected static class LoginConfig extends WebSecurityConfigurerAdapter {
+	protected static class webSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		@Autowired
 		private MongoUserDetailsService userDetailsService;
