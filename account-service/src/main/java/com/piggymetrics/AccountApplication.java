@@ -10,7 +10,6 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.security.oauth2.client.feign.OAuth2FeignRequestInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
@@ -25,7 +24,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 @EnableDiscoveryClient
 @EnableOAuth2Client
 @EnableFeignClients
-@EnableScheduling
 @EnableConfigurationProperties
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
@@ -54,7 +52,7 @@ public class AccountApplication extends ResourceServerConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/registration").permitAll()
-				.anyRequest().access("#oauth2.hasScope('ui')");
+				.antMatchers("/registration", "/demo").permitAll()
+				.anyRequest().authenticated();
 	}
 }

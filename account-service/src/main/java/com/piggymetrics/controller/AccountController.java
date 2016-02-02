@@ -18,11 +18,6 @@ public class AccountController {
 		return null;
 	}
 
-	@RequestMapping(path = "/demo", method = RequestMethod.GET)
-	public Account getDemoAccount() {
-		return null;
-	}
-
 	@RequestMapping(path = "/current", method = RequestMethod.GET)
 	public Account getCurrentAccount(Principal principal) {
 		return null;
@@ -30,6 +25,12 @@ public class AccountController {
 
 	@RequestMapping(path = "/current", method = RequestMethod.PUT)
 	public void saveCurrentAccount(Principal principal) {
+
+	}
+
+	@RequestMapping(path = "/demo", method = RequestMethod.GET)
+	public Account getDemoAccount() {
+		return null;
 	}
 
 	@RequestMapping(path = "/registration", method = RequestMethod.POST)

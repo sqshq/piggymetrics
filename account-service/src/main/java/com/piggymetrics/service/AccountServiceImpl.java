@@ -10,7 +10,6 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	private StatisticsClient client;
 
-	//@Scheduled(fixedDelay = 10000)
 	public void fire() {
 		System.out.println(client.fire());
 	}
