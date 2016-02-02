@@ -12,7 +12,7 @@ public class Account {
 	@Id
 	private String accountId;
 
-	private String login;
+	private String name;
 
 	private String email;
 
@@ -34,12 +34,12 @@ public class Account {
 		this.accountId = accountId;
 	}
 
-	public String getLogin() {
-		return login;
+	public String getName() {
+		return name;
 	}
 
-	public void setLogin(String login) {
-		this.login = login;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getEmail() {
