@@ -22,7 +22,7 @@ public class MongoUserDetailsService implements UserDetailsService {
 //		}
 
 		User user = new User();
-		user.setUsername("sqshq");
+		user.setUsername("username");
 		user.setPassword("password");
 
 		return user;
