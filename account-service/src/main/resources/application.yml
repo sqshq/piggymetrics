@@ -9,13 +9,14 @@ security:
     resource:
       user-info-uri: http://localhost:8888/uaa/user
 
-#spring:
-#  data:
-#    mongodb:
-#      host: account-mongodb
+spring:
+  data:
+    mongodb:
+      host: localhost #account-mongodb
 #      username: user
-#      password: strong-password-here #${MONGODB_PASSWORD}
-#      database: piggymetrics
+#      password: password #${MONGODB_PASSWORD}
+      database: piggymetrics
+      port: 27017
 
 logging:
   level:
