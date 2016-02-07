@@ -9,5 +9,5 @@ public interface AccountService {
 
 	Account findByName(String name);
 
-	void saveChanges(String name, Account account);
+	void saveChanges(String name, Account update);
 }

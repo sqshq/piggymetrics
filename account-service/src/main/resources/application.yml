@@ -7,14 +7,14 @@ security:
       grant-type: client_credentials
       scope: server
     resource:
-      user-info-uri: http://localhost:8888/uaa/user
+      user-info-uri: http://localhost:8888/uaa/users/current
 
 spring:
   data:
     mongodb:
-      host: localhost #account-mongodb
-#      username: user
-#      password: password #${MONGODB_PASSWORD}
+      host: account-mongodb
+      username: service
+      password: ${MONGODB_PASSWORD}
       database: piggymetrics
       port: 27017
 

@@ -7,7 +7,7 @@ security:
       grant-type: client_credentials
       scope: server
     resource:
-      user-info-uri: http://localhost:8888/uaa/user
+      user-info-uri: http://localhost:8888/uaa/users/current
 
 #spring:
 #  data:

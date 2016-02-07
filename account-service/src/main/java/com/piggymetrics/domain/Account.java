@@ -1,8 +1,12 @@
 package com.piggymetrics.domain;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -10,29 +14,24 @@ import java.util.List;
 public class Account {
 
 	@Id
-	private String accountId;
-
 	private String name;
-
-	private String email;
 
 	private Date lastSeen;
 
+	@Valid
+	@NotEmpty
 	private List<Item> incomes;
 
+	@Valid
+	@NotEmpty
 	private List<Item> expenses;
 
+	@Valid
+	@NotNull
 	private Saving saving;
 
+	@Length(min = 0, max = 20_000)
 	private String note;
-
-	public String getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
-	}
 
 	public String getName() {
 		return name;
@@ -40,14 +39,6 @@ public class Account {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	public Date getLastSeen() {

@@ -5,11 +5,9 @@ import com.piggymetrics.domain.User;
 import com.piggymetrics.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
@@ -30,12 +28,12 @@ public class AccountController {
 	}
 
 	@RequestMapping(path = "/current", method = RequestMethod.PUT)
-	public void saveCurrentAccount(Principal principal, Account account) {
+	public void saveCurrentAccount(Principal principal, @Valid @RequestBody Account account) {
 		accountService.saveChanges(principal.getName(), account);
 	}
 
 	@RequestMapping(path = "/registration", method = RequestMethod.POST)
-	public Account createNewAccount(User user) {
+	public Account createNewAccount(@Valid @RequestBody User user) {
 		return accountService.create(user);
 	}
 }
