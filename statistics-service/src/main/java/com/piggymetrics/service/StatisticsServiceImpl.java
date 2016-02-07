@@ -2,7 +2,9 @@ package com.piggymetrics.service;
 
 import com.piggymetrics.domain.Account;
 import com.piggymetrics.domain.Statistics;
+import org.springframework.stereotype.Service;
 
+@Service
 public class StatisticsServiceImpl implements StatisticsService {
 
 	@Override
