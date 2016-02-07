@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/sqshq/PiggyMetrics.svg?branch=master)](https://travis-ci.org/sqshq/PiggyMetrics)
+
 # Piggy Metrics
 **A Simple way to deal with personal finances**
 
