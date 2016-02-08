@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = AccountApplication.class)
 @WebAppConfiguration
-public class AccountControllerIntegrationTest {
+public class AccountControllerTest {
 
 	private static final ObjectMapper mapper = new ObjectMapper();
 

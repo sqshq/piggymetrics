@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = AccountApplication.class)
@@ -33,12 +32,6 @@ public class AccountRepositoryTest {
 		assertEquals(stub.getNote(), found.getNote());
 		assertEquals(stub.getIncomes().size(), found.getIncomes().size());
 		assertEquals(stub.getExpenses().size(), found.getExpenses().size());
-	}
-
-	@Test
-	public void shouldReturnNullWhenNothingFound() {
-		Account found = repository.findByName("never existing");
-		assertNull(found);
 	}
 
 	private Account getStubAccount() {
