@@ -1,4 +1,4 @@
-package com.piggymetrics.auth.service;
+package com.piggymetrics.auth.service.security;
 
 import com.piggymetrics.auth.domain.User;
 import com.piggymetrics.auth.repository.UserRepository;

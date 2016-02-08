@@ -10,11 +10,10 @@ import org.springframework.util.Assert;
 @Service
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserRepository repository;
+	private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	@Autowired
-	private BCryptPasswordEncoder encoder;
+	private UserRepository repository;
 
 	@Override
 	public void create(User user) {
