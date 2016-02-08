@@ -16,9 +16,4 @@
 		<module>statistics-service</module>
 	</modules>
 
-	<build>
-		<plugins>
-		</plugins>
-	</build>
-
 </project>
