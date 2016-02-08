@@ -83,6 +83,7 @@ public class AuthApplication {
 
 		@Override
 		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+			// TODO
 			// @formatter:off
 			clients.inMemory()
 					.withClient("browser")
