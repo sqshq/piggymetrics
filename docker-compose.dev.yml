@@ -1,0 +1,31 @@
+version: '2'
+services:
+  registry:
+    env_file: dev.env
+    build: registry
+    ports:
+      - 8761:8761
+
+  gateway:
+    env_file: dev.env
+    build: gateway
+    ports:
+      - 80:4000
+
+  account-service:
+    env_file: dev.env
+    build: account-service
+    ports:
+      - 7000:7000
+
+  account-mongodb:
+    env_file: dev.env
+    ports:
+      - 27017:27017
+
+#  - образы билдятся, а не пулятся
+#  - проброшены порты наружу
+#  - расшарен вольюм для разработки фронта
+#  - пароли для монги введены сразу
+#
+#  https://docs.docker.com/compose/extends/#different-environments

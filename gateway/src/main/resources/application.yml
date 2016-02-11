@@ -2,7 +2,7 @@ zuul:
   routes:
     auth-service:
         path: /uaa/**
-        url: http://localhost:8888
+        url: http://auth-service:5000
         stripPrefix: false
     account-service:
         path: /accounts/**
@@ -21,4 +21,4 @@ logging:
   level.: INFO
 
 server:
-  port: 7777
+  port: 4000

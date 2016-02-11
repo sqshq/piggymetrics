@@ -1,36 +1,40 @@
-#TODO убрать dev.env и запускать все с вводом пароля из командной строки
+version: '2'
+services:
+  registry:
+    image: sqshq/piggymetrics-registry
+    restart: always
+    logging:
+      options:
+        max-size: "30m"
+        max-file: "10"
 
-gateway:
-  build: gateway
-  restart: always
-  ports:
-    - 80:8080
-  links:
-    - redis
-    - account-service
+  gateway:
+    image: sqshq/piggymetrics-gateway
+    restart: always
+    logging:
+      options:
+        max-size: "30m"
+        max-file: "10"
 
-account-service:
-  build: account-service
-  restart: always
-  env_file: dev.env #TODO убрать
-  ports:
-    - 9000:8080 #TODO убрать
-  links:
-    - account-mongodb
-    - redis
+  account-service:
+    image: sqshq/piggymetrics-account-service
+    restart: always
+    logging:
+      options:
+        max-size: "30m"
+        max-file: "10"
 
-account-mongodb:
-  build: mongodb
-  restart: always
-  env_file: dev.env #TODO убрать
-  environment:
-    - INIT_DUMP=account_dump.js
-  #TODO попробовать вольюм без виртуалбокса
-  ports: 
-    - 27017:27017 #TODO убрать
+  account-mongodb:
+    build: mongodb
+    image: sqshq/piggymetrics-account-mongodb
+    restart: always
+    logging:
+      options:
+        max-size: "30m"
+        max-file: "10"
+    environment:
+      - INIT_DUMP=account_dump.js
 
-redis:
-  image: redis
-  restart: always
-  ports:
-    - 6379:6379 #TODO убрать
+#для дев версии запускать docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+#      запомнить это для прод версии
+#      а потом в дев версии прописать намертво дев-пароли

@@ -3,11 +3,11 @@ security:
     client:
       clientId: statistics-service
       clientSecret: password
-      accessTokenUri: http://localhost:8888/uaa/oauth/token
+      accessTokenUri: http://auth-service:5000/uaa/oauth/token
       grant-type: client_credentials
       scope: server
     resource:
-      user-info-uri: http://localhost:8888/uaa/users/current
+      user-info-uri: http://auth-service:5000/uaa/users/current
 
 spring:
   data:
@@ -23,4 +23,4 @@ logging:
 
 server:
   context-path: /statistics
-  port: 11111
+  port: 8000

@@ -2,4 +2,4 @@ FROM java:8-jre
 ADD ./target/gateway.jar /app/
 CMD ["java", "-jar", "/app/gateway.jar"]
 
-EXPOSE 8080
+EXPOSE 4000

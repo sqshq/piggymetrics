@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 5000
   context-path: /uaa
 
 logging:
