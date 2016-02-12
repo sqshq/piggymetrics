@@ -8,7 +8,7 @@ db.accounts.update(
    { "_id": "demo" },
    {
    "_id": "demo",
-   "lastSeen": 1455230224279,
+   "lastSeen": new Date(),
    "note": "demo note",
    "expenses": [
       {

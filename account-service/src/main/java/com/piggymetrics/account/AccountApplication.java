@@ -52,7 +52,7 @@ public class AccountApplication extends ResourceServerConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/registration").permitAll()
+				.antMatchers("/registration" , "/demo").permitAll()
 				.anyRequest().authenticated();
 	}
 }
