@@ -3,6 +3,8 @@ spring:
     name: account-service
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     serviceUrl:
       defaultZone: http://registry:8761/eureka/
