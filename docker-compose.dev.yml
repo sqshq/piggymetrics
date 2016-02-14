@@ -1,31 +1,35 @@
 version: '2'
 services:
   registry:
-    env_file: dev.env
     build: registry
     ports:
       - 8761:8761
 
   gateway:
-    env_file: dev.env
     build: gateway
+
+  auth-service:
+    environment:
+      MONGODB_PASSWORD: dev-password
+    build: auth-service
     ports:
-      - 80:4000
+      - 5000:5000
+
+  auth-mongodb:
+    environment:
+      MONGODB_PASSWORD: dev-password
+    ports:
+      - 27000:27017
 
   account-service:
-    env_file: dev.env
+    environment:
+      MONGODB_PASSWORD: dev-password
     build: account-service
     ports:
       - 7000:7000
 
   account-mongodb:
-    env_file: dev.env
+    environment:
+      MONGODB_PASSWORD: dev-password
     ports:
-      - 27017:27017
-
-#  - образы билдятся, а не пулятся
-#  - проброшены порты наружу
-#  - расшарен вольюм для разработки фронта
-#  - пароли для монги введены сразу
-#
-#  https://docs.docker.com/compose/extends/#different-environments
+      - 27001:27017

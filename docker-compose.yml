@@ -11,6 +11,29 @@ services:
   gateway:
     image: sqshq/piggymetrics-gateway
     restart: always
+    ports:
+      - 80:4000
+    logging:
+      options:
+        max-size: "30m"
+        max-file: "10"
+
+  auth-service:
+    image: sqshq/piggymetrics-auth-service
+    restart: always
+    environment:
+      MONGODB_PASSWORD:
+    logging:
+      options:
+        max-size: "30m"
+        max-file: "10"
+
+  auth-mongodb:
+    build: mongodb
+    image: sqshq/piggymetrics-auth-mongodb
+    restart: always
+    environment:
+      MONGODB_PASSWORD:
     logging:
       options:
         max-size: "30m"
@@ -19,6 +42,8 @@ services:
   account-service:
     image: sqshq/piggymetrics-account-service
     restart: always
+    environment:
+      MONGODB_PASSWORD:
     logging:
       options:
         max-size: "30m"
@@ -28,13 +53,10 @@ services:
     build: mongodb
     image: sqshq/piggymetrics-account-mongodb
     restart: always
+    environment:
+      INIT_DUMP: account_dump.js
+      MONGODB_PASSWORD:
     logging:
       options:
         max-size: "30m"
         max-file: "10"
-    environment:
-      - INIT_DUMP=account_dump.js
-
-#для дев версии запускать docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
-#      запомнить это для прод версии
-#      а потом в дев версии прописать намертво дев-пароли

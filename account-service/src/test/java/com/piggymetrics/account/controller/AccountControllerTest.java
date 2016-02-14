@@ -132,7 +132,7 @@ public class AccountControllerTest {
 		user.setPassword("password");
 
 		String json = mapper.writeValueAsString(user);
-
+		System.out.println(json);
 		mockMvc.perform(post("/registration").principal(new UserPrincipal("test")).contentType(MediaType.APPLICATION_JSON).content(json))
 				.andExpect(status().isOk());
 	}

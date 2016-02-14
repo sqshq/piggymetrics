@@ -1,7 +1,16 @@
-server:
-  port: 5000
-  context-path: /uaa
+spring:
+  data:
+    mongodb:
+      host: auth-mongodb
+      username: user
+      password: ${MONGODB_PASSWORD}
+      database: piggymetrics
+      port: 27017
 
 logging:
   level:
     org.springframework.security: DEBUG
+
+server:
+  port: 5000
+  context-path: /uaa
