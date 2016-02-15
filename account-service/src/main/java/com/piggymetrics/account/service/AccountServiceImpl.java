@@ -95,6 +95,10 @@ public class AccountServiceImpl implements AccountService {
 
 		repository.save(account);
 
-		statisticsClient.updateStatistics(name, account);
+		try {
+			statisticsClient.updateStatistics(name, account);
+		} catch (Exception e) {
+			log.error("error during statistics update", e);
+		}
 	}
 }
