@@ -17,6 +17,6 @@ public class ErrorHandler {
 	@ExceptionHandler(IllegalArgumentException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public void processValidationError(IllegalArgumentException e) {
-		log.debug("Returning HTTP 400 Bad Request", e);
+		log.info("Returning HTTP 400 Bad Request", e);
 	}
 }
