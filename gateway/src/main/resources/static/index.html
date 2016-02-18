@@ -55,7 +55,7 @@
                     </div>
                     <div id="plustext">Get in</div>
                 </div>
-                <form action="user/logout" id="logout" method="post" autocomplete="off">
+                <form id="logout" autocomplete="off">
                     <div id="minus">
                         <div id="minusborder">
                             <div id="minusone"></div>
@@ -415,13 +415,12 @@
                                 <div class="side" id="side1">
                                     <div id="backlogin"></div>
                                     <div id="enter"></div>
-                                    <input class="frontforms" id="frontloginform" name="user_name" placeholder="enter your login" type="text" autocomplete="off"/>
+                                    <input class="frontforms" id="frontloginform" name="username" placeholder="enter your login" type="text" autocomplete="off"/>
                                 </div>
                                 <div class="side" id="side2">
                                     <div id="backpassword"></div>
-                                    <input class="frontforms" id="frontpasswordform" name="user_password" placeholder="password" type="password" autocomplete="off"/>
+                                    <input class="frontforms" id="frontpasswordform" name="password" placeholder="password" type="password" autocomplete="off"/>
                                 </div>
-                                <input class="ghostform" name="ghauth" id="ghauth" type="text"/>
                             </form>
                         </div>
                     </div>
@@ -460,30 +459,29 @@
                         <a id="iconsfooter" href="attribution.html">icons attribution</a>
                     </div>
                     <div id="regpage">
-                        <div id="franklin" class="fliptext">
+                        <div id="franklin">
                             <div class="avatar"></div>
                         </div>
                         <div id="createaccount"></div>
                         <div class="fliptext">Or <a href="#">use existing account</a></div>
                         <div id="registrationforms">
-                            <!-- SIGN UP FORMS -->
-                            <form action="/user/registration" id="signup" method="post" autocomplete="off">
+                            <form id="signup" autocomplete="off">
                                 <input class="backforms" name="reg_user_name" id="backloginform" placeholder=" enter a login" type="text"/><br>
                                 <input class="backforms" name="reg_user_password" id="backpasswordform" placeholder=" password" type="password"/>
-                                <input class="ghostform" name="ghreg" type="text"/>
                                 <button class="regbutton" type="submit" name="registration">r e g i s t e r</button>
                             </form>
                         </div>
                         <div id="mailform">
-                            <form action="/user/registration" id="mail" method="post" autocomplete="off">
-                                <input name="usermail" id="backmailform" placeholder=" электропочта" type="text"/><br>
-                                <button class="mailbutton" type="submit" name="mailbutton">Получать напоминания</button>
+                            <form id="mail" autocomplete="off">
+                                <input name="usermail" id="backmailform" placeholder="e-mail address" type="text"/><br>
+                                <button class="mailbutton" type="submit" name="mailbutton">Subscribe to notifications</button>
                             </form>
-                            <span class="mailforminfo">Регистрация прошла успешно.<br>
-                            <span class="mailforminfosmall">Мы предлагаем вам ввести адрес электронной почты, чтобы периодически получать напоминания.
-                            Именно <i>регулярное</i> наблюдение за состоянием бюджета принесет плоды.</span></span>
-
-                            <div id="skipmail"><a href="#">Пропустить этот шаг</a></div>
+                            <span class="mailforminfo">Thank you for registration.<br>
+                                <span class="mailforminfosmall">
+                                    We suggest you to enter an e-mail address so we can occasionally remind you about the service. Continuous tracking your budget statistics might be especially effective.
+                                </span>
+                            </span>
+                            <div id="skipmail"><a href="#">Skip this step</a></div>
                         </div>
                     </div>
                 </div>

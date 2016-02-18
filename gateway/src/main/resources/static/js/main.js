@@ -1,17 +1,10 @@
-//function jsonParse(obj) {
-//	if (typeof obj != 'undefined') {
-//		user = new User (obj.username, obj.lastVisit, obj.userpic, obj.usd, obj.eur, obj.checkedCurrency, obj.lastCurrency, obj.sliderValue, obj.note);
-//		savings = new Savings (obj.money, !!Number(obj.deposit), !!Number(obj.capitalization), obj.interest);
-//
-//		if (obj.data !== null) {
-//			expenses = sanitize(JSON.parse(obj.data).expenses);
-//			incomes = sanitize(JSON.parse(obj.data).incomes);
-//		}
-//	}
-//}
+var user = {},
+    savings = {},
+    incomes = {},
+    expenses = {};
 
 function testFillObjects() {
-    user = new User ("sqshq", "01/02/2014", "rub", "rub", 0.8, "Зарплата приходит на карточку 11 числа\n\n\nСтипуха - 15-го\n\n\n\n===\n\nСпрятал заначку в гараже 22к");
+    user = new User ("sqshq", "01/02/2014", "rub", "Зарплата приходит на карточку 11 числа\n\n\nСтипуха - 15-го\n\n\n\n===\n\nСпрятал заначку в гараже 22к");
     savings = new Savings ("120000", true, true, "10");
     AddIncome("1", "Зарплата", "wallet", "rub", "month", "96000");
     AddIncome("2", "Стипендия", "edu", "rub", "month", "10000");
@@ -25,23 +18,29 @@ function testFillObjects() {
     AddExpense("8", "Сигареты", "smoking", "rub", "day", "100");
 }
 
-var user = {};
-function User(username, lastVisit, checkedCurrency, lastCurrency, sliderValue, note) {
+function initAccount(account) {
+    user = new User(account.name, account.lastSeen, account.saving.currency, account.note);
+    savings = new Savings (account.saving.amount, account.saving.deposit, account.saving.capitalization, account.saving.interest);
+
+    // foreach
+}
+
+function User(username, lastSeen, currency, note) {
     this.login = username;
-    this.lastVisit = lastVisit;
-    this.checkedCurr = checkedCurrency;
-    this.lastCurr = lastCurrency;
-    this.checkedPercent = sliderValue;
+    this.lastSeen = lastSeen;
+    this.checkedCurr = currency.toLowerCase();
+    this.lastCurr = currency.toLowerCase();
+    this.checkedPercent = 1;
     this.notes = note;
 }
-var savings = {};
+
 function Savings(money, deposit, capitalization, interest) {
     this.freeMoney = money;
     this.deposit = deposit;
     this.capitalization = capitalization;
     this.percent = interest;
 }
-var incomes = {};
+
 function AddIncome(income_id, title, icon, currency, period, value){
     incomes[income_id] = {
         income_id: income_id,
@@ -52,7 +51,7 @@ function AddIncome(income_id, title, icon, currency, period, value){
         value: value
     }
 }
-var expenses = {};
+
 function AddExpense(expense_id, title, icon, currency, period, value){
     expenses[expense_id] = {
         expense_id: expense_id,
@@ -66,7 +65,7 @@ function AddExpense(expense_id, title, icon, currency, period, value){
 
 // Log out button
 $('#minus').click(function() {
-    $('#logout').submit();
+    logout();
 });
 
 var entityMap = {
@@ -123,7 +122,7 @@ function initGreetingPage() {
     $("#savings-slider").data({"checkedPercent": user.checkedPercent});
 
     $("#lefttitle").prepend(escape(user.login));
-    $("#righttitle").append(user.lastVisit);
+    $("#righttitle").append(user.lastSeen);
 
     // Fill data on settings page beforehand
     addSavings();
@@ -172,7 +171,7 @@ function greetingPageAgain() {
         setTimeout(initSettingsPage, 200);
     });
     $("#righttitle, #lefttitle").empty();
-    $("#righttitle").append('<span class="bluetext">last seen: </span>' + user.lastVisit);
+    $("#righttitle").append('<span class="bluetext">last seen: </span>' + user.lastSeen);
     $("#lefttitle").append(escape(user.login) + '<span class="bluetext"> metrics</span>');
 }
 function showGreetingUnits() {
