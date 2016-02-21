@@ -71,29 +71,29 @@ function getConverted(column) {
 	var firstitem, seconditem;
 	for (var key in column) {
 		switch (column[key].currency) {
-			case "rub": column[key].converted = column[key].value;
+			case "RUB": column[key].converted = column[key].value;
 				break;
-			case "euro": column[key].converted = (column[key].value * global.eur).toFixed(3);
+			case "EUR": column[key].converted = (column[key].value * global.eur).toFixed(3);
 				break;
-			case "doll": column[key].converted = (column[key].value * global.usd).toFixed(3);
+			case "USD": column[key].converted = (column[key].value * global.usd).toFixed(3);
 				break;
 		}
 		switch (column[key].period) {
-			case "month": break;
-			case "hour": column[key].converted = (column[key].converted * 730).toFixed(3);
+			case "MONTH": break;
+			case "HOUR": column[key].converted = (column[key].converted * 730).toFixed(3);
 				break;
-			case "day": column[key].converted = (column[key].converted * 30.41666667).toFixed(3);
+			case "DAY": column[key].converted = (column[key].converted * 30.41666667).toFixed(3);
 				break;
-			case "quarter": column[key].converted = (column[key].converted / 3).toFixed(3);
+			case "QUARTER": column[key].converted = (column[key].converted / 3).toFixed(3);
 				break;
-			case "year": column[key].converted = (column[key].converted / 12).toFixed(3);
+			case "YEAR": column[key].converted = (column[key].converted / 12).toFixed(3);
 				break;
 		}
 		switch (user.checkedCurr) {
-			case "rub": break;
-			case "eur": column[key].converted = (column[key].converted / global.eur).toFixed(3);
+			case "RUB": break;
+			case "EUR": column[key].converted = (column[key].converted / global.eur).toFixed(3);
 				break;
-			case "usd": column[key].converted = (column[key].converted / global.usd).toFixed(3);
+			case "USD": column[key].converted = (column[key].converted / global.usd).toFixed(3);
 				break;
 		}
 		if (column == incomes) {
@@ -120,20 +120,20 @@ function initStatisticPage() {
 
 	changeCurrency = function () {
 		switch (user.checkedCurr) {
-			case "rub":
-				if (user.lastCurr == "rub") { break; }
-				else if (user.lastCurr == "usd") { savings.freeMoney = (savings.freeMoney * global.usd).toFixed(3); }
-				else if (user.lastCurr == "eur") { savings.freeMoney = (savings.freeMoney * global.eur).toFixed(3); }
+			case "RUB":
+				if (user.lastCurr == "RUB") { break; }
+				else if (user.lastCurr == "USD") { savings.freeMoney = (savings.freeMoney * global.usd).toFixed(3); }
+				else if (user.lastCurr == "EUR") { savings.freeMoney = (savings.freeMoney * global.eur).toFixed(3); }
 				break;
-			case "eur":
-				if (user.lastCurr == "eur") { break; }
-				else if (user.lastCurr == "usd") { savings.freeMoney = (savings.freeMoney * global.usd / global.eur).toFixed(3); }
-				else if (user.lastCurr == "rub") { savings.freeMoney = (savings.freeMoney / global.eur).toFixed(3); }
+			case "EUR":
+				if (user.lastCurr == "EUR") { break; }
+				else if (user.lastCurr == "USD") { savings.freeMoney = (savings.freeMoney * global.usd / global.eur).toFixed(3); }
+				else if (user.lastCurr == "RUB") { savings.freeMoney = (savings.freeMoney / global.eur).toFixed(3); }
 				break;
-			case "usd":
-				if (user.lastCurr == "usd") { break; }
-				else if (user.lastCurr == "eur") { savings.freeMoney = (savings.freeMoney * global.eur / global.usd).toFixed(3); }
-				else if (user.lastCurr == "rub") { savings.freeMoney = (savings.freeMoney / global.usd).toFixed(3); }
+			case "USD":
+				if (user.lastCurr == "USD") { break; }
+				else if (user.lastCurr == "EUR") { savings.freeMoney = (savings.freeMoney * global.eur / global.usd).toFixed(3); }
+				else if (user.lastCurr == "RUB") { savings.freeMoney = (savings.freeMoney / global.usd).toFixed(3); }
 				break;
 		}
 		user.lastCurr = user.checkedCurr;
@@ -267,13 +267,13 @@ function initStatisticPage() {
 							}
 						});
 					}
-					depositMonthSavings[0] = monthSavings[0]
+					depositMonthSavings[0] = monthSavings[0];
 					for (var i=1; i < 13; i++) {
-						depositMonthSavings[i] = ( deltaDeposit + parseInt(depositMonthSavings[ (i-1) ], 10) + ( parseInt(depositMonthSavings[ (i-1) ], 10) * percent * 30.41666667 / 36500 ) ) // including delta in the last month!
+						depositMonthSavings[i] = ( deltaDeposit + parseInt(depositMonthSavings[ (i-1) ], 10) + ( parseInt(depositMonthSavings[ (i-1) ], 10) * percent * 30.41666667 / 36500 ) ) // including delta in the last MONTH!
 						monthSavings[i] = (depositMonthSavings[i] + (deltaNoDeposit * i));
 					}
 				}
-				else {	 // capitalization turned off (percent adds in the last month)
+				else {	 // capitalization turned off (percent adds in the last MONTH)
 					if (delta === 0) {
 						$('#savings-slider').css({"opacity": "0.5"}).attr('disabled', 'disabled');
 						$("#savingsTip100, #savingsTip0").hide();
@@ -423,11 +423,11 @@ function initStatisticPage() {
 	// Change currency stuff
 	$("#rubcurr, #eurcurr, #usdcurr").removeClass("currchecked");
 	switch (user.checkedCurr) {
-		case "rub": $(".curr").html(" Rub ").data("curr", " rub."); $(".savings-circle-currency").html(" Rubles "); $("#rubcurr").addClass("currchecked");
+		case "RUB": $(".curr").html(" Rub ").data("curr", " rub."); $(".savings-circle-currency").html(" Rubles "); $("#rubcurr").addClass("currchecked");
 			break;
-		case "eur": $(".curr, .savings-circle-currency").html(" Eur ").data("curr", " \u20ac"); $("#eurcurr").addClass("currchecked");
+		case "EUR": $(".curr, .savings-circle-currency").html(" Eur ").data("curr", " \u20ac"); $("#eurcurr").addClass("currchecked");
 			break;
-		case "usd": $(".curr, .savings-circle-currency").html(" USD ").data("curr", " $"); $("#usdcurr").addClass("currchecked");
+		case "USD": $(".curr, .savings-circle-currency").html(" USD ").data("curr", " $"); $("#usdcurr").addClass("currchecked");
 			break;
 	}
 
@@ -556,13 +556,13 @@ function simpleanimatecircle(before, after, duration) {
 // Currency buttons
 $(".currunchecked").click(function() {
 	if (this.id == "eurcurr") {
-		user.checkedCurr = "eur";
+		user.checkedCurr = "EUR";
 	}
 	else if (this.id == "usdcurr") {
-		user.checkedCurr = "usd";
+		user.checkedCurr = "USD";
 	}
 	else {
-		user.checkedCurr = "rub";
+		user.checkedCurr = "RUB";
 	}
 	runConvert();
 

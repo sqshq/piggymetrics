@@ -138,24 +138,6 @@ public class AccountServiceTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void shouldFailWhenExpenesIsEmpty() {
-		final Account update = new Account();
-		update.setIncomes(Arrays.asList(new Item()));
-
-		when(accountService.findByName("test")).thenReturn(new Account());
-		accountService.saveChanges("test", update);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void shouldFailWhenIncomesIsEmpty() {
-		final Account update = new Account();
-		update.setExpenses(Arrays.asList(new Item()));
-
-		when(accountService.findByName("test")).thenReturn(new Account());
-		accountService.saveChanges("test", update);
-	}
-
-	@Test(expected = IllegalArgumentException.class)
 	public void shouldFailWhenNoAccountsExistedWithGivenName() {
 		final Account update = new Account();
 		update.setIncomes(Arrays.asList(new Item()));

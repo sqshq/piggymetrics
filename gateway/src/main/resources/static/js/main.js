@@ -3,45 +3,31 @@ var user = {},
     incomes = {},
     expenses = {};
 
-//function testFillObjects() {
-//    user = new User ("sqshq", "01/02/2014", "rub", "Зарплата приходит на карточку 11 числа\n\n\nСтипуха - 15-го\n\n\n\n===\n\nСпрятал заначку в гараже 22к");
-//    savings = new Savings ("120000", true, true, "10");
-//    AddIncome("1", "Зарплата", "wallet", "rub", "month", "96000");
-//    AddIncome("2", "Стипендия", "edu", "rub", "month", "10000");
-//    AddExpense("1", "Обслуживание авто", "auto", "rub", "month", "36000");
-//    AddExpense("2", "Бензин", "gas", "rub", "month", "4000");
-//    AddExpense("3", "Продукты", "meal", "rub", "month", "5200");
-//    AddExpense("4", "Аренда квартиры", "home", "rub", "month", "15000");
-//    AddExpense("5", "Коммуналка", "utilities", "rub", "month", "1500");
-//    AddExpense("6", "Шмотки", "clothes", "rub", "quarter", "2300");
-//    AddExpense("7", "Отпуск", "island", "euro", "year", "1800");
-//    AddExpense("8", "Сигареты", "smoking", "rub", "day", "100");
-//}
-
 function initAccount(account) {
     user = new User(account.name, account.lastSeen, account.saving.currency, account.note);
     savings = new Savings (account.saving.amount, account.saving.deposit, account.saving.capitalization, account.saving.interest);
 
-    AddIncome("1", "Стипендия", "edu", "rub", "month", "10000");
-    AddExpense("1", "Сигареты", "smoking", "rub", "day", "100");
-    //if (account.incomes) {
-    //    for (i = 0; i < account.incomes.length; i++) {
-    //        AddIncome(i + 1, account.incomes[i].title, account.incomes[i].icon, account.incomes[i].currency, account.incomes[i].period, account.incomes[i].amount);
-    //    }
-    //}
-    //
-    //if (account.expenses) {
-    //    for (i = 0; i < account.incomes.length; i++) {
-    //        AddIncome(i + 1, account.incomes[i].title, account.incomes[i].icon, account.incomes[i].currency, account.incomes[i].period, account.incomes[i].amount);
-    //    }
-    //}
+    if (account.incomes) {
+        for (i = 0; i < account.incomes.length; i++) {
+            AddIncome(i + 1, account.incomes[i].title, account.incomes[i].icon, account.incomes[i].currency, account.incomes[i].period, account.incomes[i].amount);
+        }
+    }
+
+    if (account.expenses) {
+        for (i = 0; i < account.incomes.length; i++) {
+            AddIncome(i + 1, account.incomes[i].title, account.incomes[i].icon, account.incomes[i].currency, account.incomes[i].period, account.incomes[i].amount);
+        }
+    }
 }
 
 function User(username, lastSeen, currency, note) {
+
+    var seen = new Date(lastSeen);
+
     this.login = username;
-    this.lastSeen = new Date(lastSeen).toLocaleDateString();
-    this.checkedCurr = currency.toLowerCase();
-    this.lastCurr = currency.toLowerCase();
+    this.lastSeen = (seen.getMonth() + 1) + "/" + seen.getDate()  + "/" + seen.getFullYear();;
+    this.checkedCurr = currency;
+    this.lastCurr = currency;
     this.checkedPercent = 1;
     this.notes = note;
 }
@@ -60,7 +46,7 @@ function AddIncome(income_id, title, icon, currency, period, value){
         icon: icon,
         currency: currency,
         period: period,
-        value: value
+        value: value.toString()
     }
 }
 
@@ -71,7 +57,7 @@ function AddExpense(expense_id, title, icon, currency, period, value){
         icon: icon,
         currency: currency,
         period: period,
-        value: value
+        value: value.toString()
     }
 }
 
@@ -144,11 +130,11 @@ function initGreetingPage() {
 
 function initSettingsPage() {
     switch (user.checkedCurr) {
-        case "rub": $("#rublesign").css({"background-position": "-150px 0"});
+        case "RUB": $("#rublesign").css({"background-position": "-150px 0"});
             break;
-        case "eur": $("#rublesign").css({"background-position": "-386px 0"});
+        case "EUR": $("#rublesign").css({"background-position": "-386px 0"});
             break;
-        case "usd": $("#rublesign").css({"background-position": "-354px 0"});
+        case "USD": $("#rublesign").css({"background-position": "-354px 0"});
             break;
     }
 
@@ -221,15 +207,15 @@ function addSavings() {
 
 // Filling Incomes and Expenses columns
 function addItems() {
-    Object.keys(incomes).forEach(function(keys) {
-        var value = incomes[keys].value.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 </span><span class="lightdigit20">');
-        $("#incomeslider").append('<div onclick="itemClick(this)" class="incomeitem" id="income-' + incomes[keys].income_id + '"><span class="title11museo300">' + incomes[keys].title + '</span><p class="title9museo300"><span class="bolddigit20">' + value + ' </span>' + checkCurrency(incomes[keys].currency) + checkPeriod(incomes[keys].period) + '</span></p><div class="itembackground"></div></div>');
-        $("#income-" + incomes[keys].income_id).data({"id": incomes[keys].income_id, "icon": incomes[keys].icon, "value": incomes[keys].value, "title": incomes[keys].title, "currency": incomes[keys].currency ,"period": incomes[keys].period}).children("div").addClass(incomes[keys].icon);
+    Object.keys(incomes).forEach(function(key) {
+        var value = incomes[key].value.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 </span><span class="lightdigit20">');
+        $("#incomeslider").append('<div onclick="itemClick(this)" class="incomeitem" id="income-' + incomes[key].income_id + '"><span class="title11museo300">' + incomes[key].title + '</span><p class="title9museo300"><span class="bolddigit20">' + value + ' </span>' + checkCurrency(incomes[key].currency) + checkPeriod(incomes[key].period) + '</span></p><div class="itembackground"></div></div>');
+        $("#income-" + incomes[key].income_id).data({"id": incomes[key].income_id, "icon": incomes[key].icon, "value": incomes[key].value, "title": incomes[key].title, "currency": incomes[key].currency ,"period": incomes[key].period}).children("div").addClass(incomes[key].icon);
     });
-    Object.keys(expenses).forEach(function(keys) {
-        var value = expenses[keys].value.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 </span><span class="lightdigit20">');
-        $("#expenseslider").append('<div onclick="itemClick(this)" class="expenseitem" id="expense-' + expenses[keys].expense_id + '"><span class="title11museo300">' + expenses[keys].title + '</span><p class="title9museo300"><span class="bolddigit20">' + value + ' </span>' + checkCurrency(expenses[keys].currency) + checkPeriod(expenses[keys].period) + '</span></p><div class="itembackground"></div></div>');
-        $("#expense-" + expenses[keys].expense_id).data({"id": expenses[keys].expense_id, "icon": expenses[keys].icon, "value": expenses[keys].value, "title": expenses[keys].title, "currency": expenses[keys].currency ,"period": expenses[keys].period}).children("div").addClass(expenses[keys].icon);
+    Object.keys(expenses).forEach(function(key) {
+        var value = expenses[key].value.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 </span><span class="lightdigit20">');
+        $("#expenseslider").append('<div onclick="itemClick(this)" class="expenseitem" id="expense-' + expenses[key].expense_id + '"><span class="title11museo300">' + expenses[key].title + '</span><p class="title9museo300"><span class="bolddigit20">' + value + ' </span>' + checkCurrency(expenses[key].currency) + checkPeriod(expenses[key].period) + '</span></p><div class="itembackground"></div></div>');
+        $("#expense-" + expenses[key].expense_id).data({"id": expenses[key].expense_id, "icon": expenses[key].icon, "value": expenses[key].value, "title": expenses[key].title, "currency": expenses[key].currency ,"period": expenses[key].period}).children("div").addClass(expenses[key].icon);
     });
 
     // Show big ADD ITEM button when column is empty
@@ -276,19 +262,19 @@ function checkSlidersLength() {
 function checkPeriod(period) {
     var periodText;
     switch (period) {
-        case "year":
+        case "YEAR":
             periodText = " / per year";
             break;
-        case "quarter":
+        case "QUARTER":
             periodText = " / per quater";
             break;
-        case "month":
+        case "MONTH":
             periodText = " / per month";
             break;
-        case "day":
+        case "DAY":
             periodText = " / per day";
             break;
-        case "hour":
+        case "HOUR":
             periodText = " / per hour";
             break;
     }
@@ -298,11 +284,11 @@ function checkPeriod(period) {
 function checkCurrency(currency) {
     var currencyText;
     switch (currency) {
-        case "rub": currencyText="rub.";
+        case "RUB": currencyText="rub.";
             break;
-        case "doll": currencyText="$";
+        case "USD": currencyText="$";
             break;
-        case "euro": currencyText="&euro;";
+        case "EUR": currencyText="&euro;";
             break;
     }
     return currencyText
@@ -735,11 +721,11 @@ function moveRuble() {
 //SAVINGS: change currency on sign click
 $("#rublesign").on("click", function() {
     switch (user.checkedCurr) {
-        case "rub": user.checkedCurr = "eur"; $("#rublesign").css({"background-position": "-386px 0"});
+        case "RUB": user.checkedCurr = "EUR"; $("#rublesign").css({"background-position": "-386px 0"});
             break;
-        case "eur": user.checkedCurr = "usd"; $("#rublesign").css({"background-position": "-354px 0"});
+        case "EUR": user.checkedCurr = "USD"; $("#rublesign").css({"background-position": "-354px 0"});
             break;
-        case "usd": user.checkedCurr = "rub"; $("#rublesign").css({"background-position": "-150px 0"});
+        case "USD": user.checkedCurr = "RUB"; $("#rublesign").css({"background-position": "-150px 0"});
             break;
     }
     changeCurrency();
@@ -889,7 +875,16 @@ function jsonDataSave() {
             contentType: "application/json",
             headers: {'Authorization': 'Bearer ' + getOauthTokenFromStorage()},
             data: JSON.stringify({
-                note: user.notes
+                note: user.notes,
+                incomes: $.map(incomes, function(value) {return [value]}),
+                expenses: $.map(expenses, function(value) {return [value]}),
+                saving: {
+                    amount: Math.ceil(savings.freeMoney),
+                    capitalization: savings.capitalization,
+                    deposit: savings.deposit,
+                    currency: user.checkedCurr,
+                    interest: savings.percent
+                }
             }),
             success: function () {
                 $("#leftborder, #rightborder, #centerborder").addClass("saveaction");
@@ -907,11 +902,11 @@ function jsonDataSave() {
 function fadeStatistic() {
 
     switch (user.checkedCurr) {
-        case "rub": $("#rublesign").css({"background-position": "-150px 0"});
+        case "RUB": $("#rublesign").css({"background-position": "-150px 0"});
             break;
-        case "eur": $("#rublesign").css({"background-position": "-386px 0"});
+        case "EUR": $("#rublesign").css({"background-position": "-386px 0"});
             break;
-        case "usd": $("#rublesign").css({"background-position": "-354px 0"});
+        case "USD": $("#rublesign").css({"background-position": "-354px 0"});
             break;
     }
     $("#savingsvalue").autoNumeric('set', savings.freeMoney);

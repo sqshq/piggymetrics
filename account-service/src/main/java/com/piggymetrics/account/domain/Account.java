@@ -1,7 +1,7 @@
 package com.piggymetrics.account.domain;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Document(collection = "accounts")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Account {
 
 	@Id
@@ -19,11 +20,9 @@ public class Account {
 	private Date lastSeen;
 
 	@Valid
-	@NotEmpty
 	private List<Item> incomes;
 
 	@Valid
-	@NotEmpty
 	private List<Item> expenses;
 
 	@Valid

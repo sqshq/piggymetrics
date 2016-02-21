@@ -14,7 +14,7 @@ db.accounts.update(
       {
          "amount": 10,
          "currency": "USD",
-         "icon": "meal",
+         "icon": "smoking",
          "period": "DAY",
          "title": "Grocery"
       }
