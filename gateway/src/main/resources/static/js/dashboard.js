@@ -71,11 +71,11 @@ function getConverted(column) {
 	var firstitem, seconditem;
 	for (var key in column) {
 		switch (column[key].currency) {
-			case "RUB": column[key].converted = column[key].value;
+			case "RUB": column[key].converted = column[key].amount;
 				break;
-			case "EUR": column[key].converted = (column[key].value * global.eur).toFixed(3);
+			case "EUR": column[key].converted = (column[key].amount * global.eur).toFixed(3);
 				break;
-			case "USD": column[key].converted = (column[key].value * global.usd).toFixed(3);
+			case "USD": column[key].converted = (column[key].amount * global.usd).toFixed(3);
 				break;
 		}
 		switch (column[key].period) {

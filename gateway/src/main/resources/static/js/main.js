@@ -14,8 +14,8 @@ function initAccount(account) {
     }
 
     if (account.expenses) {
-        for (i = 0; i < account.incomes.length; i++) {
-            AddIncome(i + 1, account.incomes[i].title, account.incomes[i].icon, account.incomes[i].currency, account.incomes[i].period, account.incomes[i].amount);
+        for (j = 0; j < account.expenses.length; j++) {
+            AddExpense(j + 1, account.expenses[j].title, account.expenses[j].icon, account.expenses[j].currency, account.expenses[j].period, account.expenses[j].amount);
         }
     }
 }
@@ -39,25 +39,25 @@ function Savings(money, deposit, capitalization, interest) {
     this.percent = interest;
 }
 
-function AddIncome(income_id, title, icon, currency, period, value){
+function AddIncome(income_id, title, icon, currency, period, amount){
     incomes[income_id] = {
         income_id: income_id,
         title: title,
         icon: icon,
         currency: currency,
         period: period,
-        value: value.toString()
+        amount: amount.toString()
     }
 }
 
-function AddExpense(expense_id, title, icon, currency, period, value){
+function AddExpense(expense_id, title, icon, currency, period, amount){
     expenses[expense_id] = {
         expense_id: expense_id,
         title: title,
         icon: icon,
         currency: currency,
         period: period,
-        value: value.toString()
+        amount: amount.toString()
     }
 }
 
@@ -208,14 +208,14 @@ function addSavings() {
 // Filling Incomes and Expenses columns
 function addItems() {
     Object.keys(incomes).forEach(function(key) {
-        var value = incomes[key].value.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 </span><span class="lightdigit20">');
+        var value = incomes[key].amount.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 </span><span class="lightdigit20">');
         $("#incomeslider").append('<div onclick="itemClick(this)" class="incomeitem" id="income-' + incomes[key].income_id + '"><span class="title11museo300">' + incomes[key].title + '</span><p class="title9museo300"><span class="bolddigit20">' + value + ' </span>' + checkCurrency(incomes[key].currency) + checkPeriod(incomes[key].period) + '</span></p><div class="itembackground"></div></div>');
-        $("#income-" + incomes[key].income_id).data({"id": incomes[key].income_id, "icon": incomes[key].icon, "value": incomes[key].value, "title": incomes[key].title, "currency": incomes[key].currency ,"period": incomes[key].period}).children("div").addClass(incomes[key].icon);
+        $("#income-" + incomes[key].income_id).data({"id": incomes[key].income_id, "icon": incomes[key].icon, "value": incomes[key].amount, "title": incomes[key].title, "currency": incomes[key].currency ,"period": incomes[key].period}).children("div").addClass(incomes[key].icon);
     });
     Object.keys(expenses).forEach(function(key) {
-        var value = expenses[key].value.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 </span><span class="lightdigit20">');
+        var value = expenses[key].amount.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 </span><span class="lightdigit20">');
         $("#expenseslider").append('<div onclick="itemClick(this)" class="expenseitem" id="expense-' + expenses[key].expense_id + '"><span class="title11museo300">' + expenses[key].title + '</span><p class="title9museo300"><span class="bolddigit20">' + value + ' </span>' + checkCurrency(expenses[key].currency) + checkPeriod(expenses[key].period) + '</span></p><div class="itembackground"></div></div>');
-        $("#expense-" + expenses[key].expense_id).data({"id": expenses[key].expense_id, "icon": expenses[key].icon, "value": expenses[key].value, "title": expenses[key].title, "currency": expenses[key].currency ,"period": expenses[key].period}).children("div").addClass(expenses[key].icon);
+        $("#expense-" + expenses[key].expense_id).data({"id": expenses[key].expense_id, "icon": expenses[key].icon, "value": expenses[key].amount, "title": expenses[key].title, "currency": expenses[key].currency ,"period": expenses[key].period}).children("div").addClass(expenses[key].icon);
     });
 
     // Show big ADD ITEM button when column is empty
