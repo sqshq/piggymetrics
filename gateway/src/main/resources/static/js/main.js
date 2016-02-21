@@ -3,31 +3,43 @@ var user = {},
     incomes = {},
     expenses = {};
 
-function testFillObjects() {
-    user = new User ("sqshq", "01/02/2014", "rub", "Зарплата приходит на карточку 11 числа\n\n\nСтипуха - 15-го\n\n\n\n===\n\nСпрятал заначку в гараже 22к");
-    savings = new Savings ("120000", true, true, "10");
-    AddIncome("1", "Зарплата", "wallet", "rub", "month", "96000");
-    AddIncome("2", "Стипендия", "edu", "rub", "month", "10000");
-    AddExpense("1", "Обслуживание авто", "auto", "rub", "month", "36000");
-    AddExpense("2", "Бензин", "gas", "rub", "month", "4000");
-    AddExpense("3", "Продукты", "meal", "rub", "month", "5200");
-    AddExpense("4", "Аренда квартиры", "home", "rub", "month", "15000");
-    AddExpense("5", "Коммуналка", "utilities", "rub", "month", "1500");
-    AddExpense("6", "Шмотки", "clothes", "rub", "quarter", "2300");
-    AddExpense("7", "Отпуск", "island", "euro", "year", "1800");
-    AddExpense("8", "Сигареты", "smoking", "rub", "day", "100");
-}
+//function testFillObjects() {
+//    user = new User ("sqshq", "01/02/2014", "rub", "Зарплата приходит на карточку 11 числа\n\n\nСтипуха - 15-го\n\n\n\n===\n\nСпрятал заначку в гараже 22к");
+//    savings = new Savings ("120000", true, true, "10");
+//    AddIncome("1", "Зарплата", "wallet", "rub", "month", "96000");
+//    AddIncome("2", "Стипендия", "edu", "rub", "month", "10000");
+//    AddExpense("1", "Обслуживание авто", "auto", "rub", "month", "36000");
+//    AddExpense("2", "Бензин", "gas", "rub", "month", "4000");
+//    AddExpense("3", "Продукты", "meal", "rub", "month", "5200");
+//    AddExpense("4", "Аренда квартиры", "home", "rub", "month", "15000");
+//    AddExpense("5", "Коммуналка", "utilities", "rub", "month", "1500");
+//    AddExpense("6", "Шмотки", "clothes", "rub", "quarter", "2300");
+//    AddExpense("7", "Отпуск", "island", "euro", "year", "1800");
+//    AddExpense("8", "Сигареты", "smoking", "rub", "day", "100");
+//}
 
 function initAccount(account) {
     user = new User(account.name, account.lastSeen, account.saving.currency, account.note);
     savings = new Savings (account.saving.amount, account.saving.deposit, account.saving.capitalization, account.saving.interest);
 
-    // foreach
+    AddIncome("1", "Стипендия", "edu", "rub", "month", "10000");
+    AddExpense("1", "Сигареты", "smoking", "rub", "day", "100");
+    //if (account.incomes) {
+    //    for (i = 0; i < account.incomes.length; i++) {
+    //        AddIncome(i + 1, account.incomes[i].title, account.incomes[i].icon, account.incomes[i].currency, account.incomes[i].period, account.incomes[i].amount);
+    //    }
+    //}
+    //
+    //if (account.expenses) {
+    //    for (i = 0; i < account.incomes.length; i++) {
+    //        AddIncome(i + 1, account.incomes[i].title, account.incomes[i].icon, account.incomes[i].currency, account.incomes[i].period, account.incomes[i].amount);
+    //    }
+    //}
 }
 
 function User(username, lastSeen, currency, note) {
     this.login = username;
-    this.lastSeen = lastSeen;
+    this.lastSeen = new Date(lastSeen).toLocaleDateString();
     this.checkedCurr = currency.toLowerCase();
     this.lastCurr = currency.toLowerCase();
     this.checkedPercent = 1;
@@ -869,31 +881,26 @@ function launchStatistic() {
 }
 
 function jsonDataSave() {
-    if (user.login !== undefined && global.savePermit) {
-
-        var saveOptions = {
-            datatype: 	"json",
-            data: {
-                checkedCurrency: user.checkedCurr,
-                lastCurrency: user.lastCurr,
-                sliderValue: $("#savings-slider").data("checkedPercent"),
-                note: user.notes,
-                money: Math.ceil(savings.freeMoney),
-                deposit: +savings.deposit,
-                capitalization: +savings.capitalization,
-                interest: savings.percent,
-                usd: global.usd,
-                eur: global.eur,
-                data: JSON.stringify({incomes: incomes, expenses: expenses})
+    if (global.savePermit) {
+        $.ajax({
+            url: 'accounts/current',
+            datatype: 'json',
+            type: "put",
+            contentType: "application/json",
+            headers: {'Authorization': 'Bearer ' + getOauthTokenFromStorage()},
+            data: JSON.stringify({
+                note: user.notes
+            }),
+            success: function () {
+                $("#leftborder, #rightborder, #centerborder").addClass("saveaction");
+                setTimeout(function() {
+                    $("#leftborder, #rightborder, #centerborder").removeClass("saveaction");
+                }, 400);
+            },
+            error: function () {
+                alert("An error during data saving. Please, try again later");
             }
-        };
-
-        $("#saveoptions").ajaxSubmit(saveOptions);
-        $("#leftborder, #rightborder, #centerborder").addClass("saveaction");
-
-        setTimeout(function() {
-            $("#leftborder, #rightborder, #centerborder").removeClass("saveaction");
-        }, 400);
+        });
     }
 }
 

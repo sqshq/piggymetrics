@@ -29,8 +29,8 @@ function requestOauthToken(username, password) {
 			localStorage.setItem('token', data.access_token);
 			success = true;
 		},
-		error: function (data) {
-			localStorage.setItem('token', '');
+		error: function () {
+			removeOauthTokenFromStorage();
 		}
 	});
 
@@ -63,6 +63,9 @@ function getCurrentAccount() {
 			async: false,
 			success: function (data) {
 				account = data;
+			},
+			error: function () {
+				removeOauthTokenFromStorage();
 			}
 		});
 	}

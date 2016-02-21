@@ -7,6 +7,10 @@ hystrix:
             timeoutInMilliseconds: 10000
 
 zuul:
+  host:
+    connect-timeout-millis: 10000
+    socket-timeout-millis: 10000
+
   routes:
     auth-service:
         path: /uaa/**
