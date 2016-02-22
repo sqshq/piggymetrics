@@ -1,5 +1,6 @@
 package com.piggymetrics.auth;
 
+import com.piggymetrics.auth.service.security.MongoClientDetailsService;
 import com.piggymetrics.auth.service.security.MongoUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,7 +16,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -54,13 +54,8 @@ public class AuthApplication {
 
 		@Override
 		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-			auth.userDetailsService(userDetailsService);
-			// .passwordEncoder(passwordEncoder()); TODO
-		}
-
-		@Bean
-		public PasswordEncoder passwordEncoder() {
-			return new BCryptPasswordEncoder();
+			auth.userDetailsService(userDetailsService)
+					.passwordEncoder(new BCryptPasswordEncoder());
 		}
 
 		@Override
@@ -83,31 +78,12 @@ public class AuthApplication {
 		@Autowired
 		private MongoUserDetailsService userDetailsService;
 
+		@Autowired
+		private MongoClientDetailsService clientDetailsService;
+
 		@Override
 		public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-			// TODO
-			// @formatter:off
-			clients.inMemory()
-					.withClient("browser")
-					.secret("password")
-					.authorizedGrantTypes("refresh_token", "password")
-					.scopes("ui")
-			.and()
-					.withClient("account-service")
-					.secret("password")
-					.authorizedGrantTypes("client_credentials", "refresh_token")
-					.scopes("server")
-			.and()
-					.withClient("statistics-service")
-					.secret("password")
-					.authorizedGrantTypes("client_credentials", "refresh_token")
-					.scopes("server")
-			.and()
-					.withClient("notification-service")
-					.secret("password")
-					.authorizedGrantTypes("client_credentials", "refresh_token")
-					.scopes("server");
-			// @formatter:on
+			clients.withClientDetails(clientDetailsService);
 		}
 
 		@Override
@@ -122,7 +98,8 @@ public class AuthApplication {
 		public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
 			oauthServer
 					.tokenKeyAccess("permitAll()")
-					.checkTokenAccess("isAuthenticated()");
+					.checkTokenAccess("isAuthenticated()")
+					.passwordEncoder(new BCryptPasswordEncoder());
 		}
 	}
 }

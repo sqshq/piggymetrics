@@ -41,7 +41,7 @@ public class UserServiceTest {
 		user.setUsername("name");
 		user.setPassword("password");
 
-		when(repository.findByUsername(user.getUsername())).thenReturn(new User());
+		when(repository.findOne(user.getUsername())).thenReturn(new User());
 		userService.create(user);
 	}
 }

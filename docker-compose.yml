@@ -33,6 +33,7 @@ services:
     image: sqshq/piggymetrics-auth-mongodb
     restart: always
     environment:
+      INIT_DUMP: auth-service-dump.js
       MONGODB_PASSWORD:
     logging:
       options:
@@ -54,7 +55,7 @@ services:
     image: sqshq/piggymetrics-account-mongodb
     restart: always
     environment:
-      INIT_DUMP: account_dump.js
+      INIT_DUMP: account-service-dump.js
       MONGODB_PASSWORD:
     logging:
       options:

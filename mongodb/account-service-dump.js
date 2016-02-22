@@ -1,5 +1,5 @@
 /**
- * Creates demo user and account collection index
+ * Creates pre-filled demo account
  */
 
 print('dump start');

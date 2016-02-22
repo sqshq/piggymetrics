@@ -92,7 +92,6 @@ function sanitize(obj) {
     return obj;
 }
 
-
 function initGreetingPage() {
 
     $("#preloader, #lastlogo").show();

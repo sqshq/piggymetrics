@@ -22,12 +22,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void create(User user) {
 
-		User existing = repository.findByUsername(user.getUsername());
+		User existing = repository.findOne(user.getUsername());
 		Assert.isNull(existing, "user already exists: " + user.getUsername());
 
-		// TODO
-		// String hash = encoder.encode(user.getPassword());
-		// user.setPassword(hash);
+		String hash = encoder.encode(user.getPassword());
+		user.setPassword(hash);
 
 		repository.save(user);
 

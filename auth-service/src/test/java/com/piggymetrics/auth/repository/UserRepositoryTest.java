@@ -25,7 +25,7 @@ public class UserRepositoryTest {
 		user.setPassword("password");
 		repository.save(user);
 
-		User found = repository.findByUsername(user.getUsername());
+		User found = repository.findOne(user.getUsername());
 		assertEquals(user.getUsername(), found.getUsername());
 		assertEquals(user.getPassword(), found.getPassword());
 	}
