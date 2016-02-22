@@ -10,6 +10,9 @@ services:
 
   auth-service:
     environment:
+      NOTIFICATION_SERVICE_PASSWORD: dev-password
+      STATISTICS_SERVICE_PASSWORD: dev-password
+      ACCOUNT_SERVICE_PASSWORD: dev-password
       MONGODB_PASSWORD: dev-password
     build: auth-service
     ports:
@@ -24,6 +27,7 @@ services:
   account-service:
     environment:
       MONGODB_PASSWORD: dev-password
+      ACCOUNT_SERVICE_PASSWORD: dev-password
     build: account-service
     ports:
       - 7000:7000
