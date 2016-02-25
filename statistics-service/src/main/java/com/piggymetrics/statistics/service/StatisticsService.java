@@ -1,11 +1,13 @@
 package com.piggymetrics.statistics.service;
 
 import com.piggymetrics.statistics.domain.Account;
-import com.piggymetrics.statistics.domain.Statistics;
+import com.piggymetrics.statistics.domain.timeseries.DataPoint;
+
+import java.util.List;
 
 public interface StatisticsService {
 
-	Statistics findByAccountName(String accountName);
+	List<DataPoint> findByAccountName(String accountName);
 
 	void save(String accountName, Account account);
 

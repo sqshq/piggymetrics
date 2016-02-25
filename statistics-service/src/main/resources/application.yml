@@ -24,3 +24,6 @@ logging:
 server:
   context-path: /statistics
   port: 8000
+
+rates:
+  url: http://api.fixer.io

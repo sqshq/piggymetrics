@@ -1,5 +1,16 @@
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
 spring:
   data:
     mongodb:
       database: piggymetrics
       port: 0
+
+rates:
+  url: http://api.fixer.io
