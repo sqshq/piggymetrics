@@ -8,6 +8,11 @@ public class StatisticMetric {
 
 	private BigDecimal value;
 
+	public StatisticMetric(StatisticType type, BigDecimal value) {
+		this.type = type;
+		this.value = value;
+	}
+
 	public StatisticType getType() {
 		return type;
 	}

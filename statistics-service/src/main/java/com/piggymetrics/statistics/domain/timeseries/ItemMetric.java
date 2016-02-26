@@ -8,6 +8,11 @@ public class ItemMetric {
 
 	private BigDecimal amount;
 
+	public ItemMetric(String title, BigDecimal amount) {
+		this.title = title;
+		this.amount = amount;
+	}
+
 	public String getTitle() {
 		return title;
 	}

@@ -43,8 +43,8 @@ public class ExchangeRatesServiceImpl implements ExchangeRatesService {
 	public BigDecimal convert(Currency from, Currency to, BigDecimal amount) {
 
 		Map<Currency, BigDecimal> rates = getCurrentRates();
-		BigDecimal ratio = rates.get(to).divide(rates.get(from), 4, RoundingMode.HALF_UP);
+		BigDecimal baseRatio = rates.get(to).divide(rates.get(from), 4, RoundingMode.HALF_UP);
 
-		return amount.multiply(ratio);
+		return amount.multiply(baseRatio);
 	}
 }

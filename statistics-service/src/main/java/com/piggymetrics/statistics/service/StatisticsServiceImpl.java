@@ -1,25 +1,21 @@
 package com.piggymetrics.statistics.service;
 
-import com.piggymetrics.statistics.domain.Account;
-import com.piggymetrics.statistics.domain.Currency;
-import com.piggymetrics.statistics.domain.Item;
-import com.piggymetrics.statistics.domain.timeseries.DataPoint;
-import com.piggymetrics.statistics.domain.timeseries.DataPointId;
-import com.piggymetrics.statistics.domain.timeseries.ItemMetric;
-import com.piggymetrics.statistics.domain.timeseries.StatisticMetric;
+import com.piggymetrics.statistics.domain.*;
+import com.piggymetrics.statistics.domain.timeseries.*;
 import com.piggymetrics.statistics.repository.DataPointRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
@@ -28,7 +24,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	private DataPointRepository repository;
 
 	@Autowired
-	private ExchangeRatesService rateService;
+	private ExchangeRatesService ratesService;
 
 	@Override
 	public List<DataPoint> findByAccountName(String accountName) {
@@ -36,7 +32,11 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 
 	/**
-	 * From {@link Account} to {@link DataPoint}
+	 * Converts given {@link Account} object to {@link DataPoint} with
+	 * a set of significant statistic metrics.
+	 *
+	 * Compound {@link DataPoint#id} forces to rewrite the object
+	 * for each account within a day.
 	 *
 	 * @param accountName
 	 * @param account
@@ -57,34 +57,46 @@ public class StatisticsServiceImpl implements StatisticsService {
 				.map(this::createItemMetric)
 				.collect(Collectors.toSet());
 
-		Set<StatisticMetric> statistics = createStatisticMetrics(account);
+		Set<StatisticMetric> statistics = createStatisticMetrics(incomes, expenses, account.getSaving());
 
 		DataPoint dataPoint = new DataPoint();
 		dataPoint.setId(pointId);
 		dataPoint.setIncomes(incomes);
 		dataPoint.setExpenses(expenses);
 		dataPoint.setStatistics(statistics);
-		dataPoint.setRates(rateService.getCurrentRates());
+		dataPoint.setRates(ratesService.getCurrentRates());
 
 		repository.save(dataPoint);
 	}
 
-	private ItemMetric createItemMetric(Item item) {
+	private Set<StatisticMetric> createStatisticMetrics(Set<ItemMetric> incomes, Set<ItemMetric> expenses, Saving saving) {
 
-		BigDecimal amount = rateService.convert(item.getCurrency(), Currency.USD, item.getAmount());
+		BigDecimal savingAmount = ratesService.convert(saving.getCurrency(), Currency.getBase(), saving.getAmount());
 
-		ItemMetric metric = new ItemMetric();
-		metric.setTitle(item.getTitle());
-		metric.setAmount(amount);
+		BigDecimal expensesAmount = expenses.stream()
+				.map(ItemMetric::getAmount)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
 
-		return metric;
+		BigDecimal incomesAmount = incomes.stream()
+				.map(ItemMetric::getAmount)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+
+		return new HashSet<StatisticMetric>() {{
+			add(new StatisticMetric(StatisticType.EXPENSES_AMOUNT, expensesAmount));
+			add(new StatisticMetric(StatisticType.INCOMES_AMOUNT, incomesAmount));
+			add(new StatisticMetric(StatisticType.SAVING_AMOUNT, savingAmount));
+		}};
 	}
 
-	private Set<StatisticMetric> createStatisticMetrics(Account account) {
+	/**
+	 * Converts given item to base {@link Currency} with base {@link TimePeriod}
+	 */
+	private ItemMetric createItemMetric(Item item) {
 
-		StatisticMetric metric = new StatisticMetric();
+		BigDecimal amount = ratesService
+				.convert(item.getCurrency(), Currency.getBase(), item.getAmount())
+				.divide(item.getPeriod().getBaseRatio(), 4, RoundingMode.HALF_UP);
 
-		return Stream.of(metric)
-				.collect(Collectors.toSet());
+		return new ItemMetric(item.getTitle(), amount);
 	}
 }
