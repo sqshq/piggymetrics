@@ -2,6 +2,8 @@
 [![codecov.io](https://codecov.io/github/sqshq/PiggyMetrics/coverage.svg?branch=master)](https://codecov.io/github/sqshq/PiggyMetrics?branch=master)
 
 # Piggy Metrics
+
+[![Join the chat at https://gitter.im/sqshq/PiggyMetrics](https://badges.gitter.im/sqshq/PiggyMetrics.svg)](https://gitter.im/sqshq/PiggyMetrics?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 **A Simple way to deal with personal finances**
 
 This is [a small web application](http://my-piggymetrics.rhcloud.com) which could help you to estimate regular expenses and analyze your own financial statistics.
