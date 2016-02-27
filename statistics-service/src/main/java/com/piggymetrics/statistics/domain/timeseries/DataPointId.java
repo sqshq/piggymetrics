@@ -20,15 +20,15 @@ public class DataPointId implements Serializable {
 		return account;
 	}
 
-	public void setAccount(String account) {
-		this.account = account;
-	}
-
 	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	@Override
+	public String toString() {
+		return "DataPointId{" +
+				"account='" + account + '\'' +
+				", date=" + date +
+				'}';
 	}
 }

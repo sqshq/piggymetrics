@@ -17,16 +17,8 @@ public class ItemMetric {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public BigDecimal getAmount() {
 		return amount;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
 	}
 
 	@Override

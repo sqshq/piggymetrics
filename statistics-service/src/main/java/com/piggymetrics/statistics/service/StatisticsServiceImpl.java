@@ -1,8 +1,11 @@
 package com.piggymetrics.statistics.service;
 
+import com.google.common.collect.ImmutableSet;
 import com.piggymetrics.statistics.domain.*;
 import com.piggymetrics.statistics.domain.timeseries.*;
 import com.piggymetrics.statistics.repository.DataPointRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +15,14 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
+
+	private static final Logger log = LoggerFactory.getLogger(StatisticsServiceImpl.class);
 
 	@Autowired
 	private DataPointRepository repository;
@@ -67,6 +71,8 @@ public class StatisticsServiceImpl implements StatisticsService {
 		dataPoint.setRates(ratesService.getCurrentRates());
 
 		repository.save(dataPoint);
+
+		log.debug("datapoint {} has been saved", pointId);
 	}
 
 	private Set<StatisticMetric> createStatisticMetrics(Set<ItemMetric> incomes, Set<ItemMetric> expenses, Saving saving) {
@@ -81,11 +87,11 @@ public class StatisticsServiceImpl implements StatisticsService {
 				.map(ItemMetric::getAmount)
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 
-		return new HashSet<StatisticMetric>() {{
-			add(new StatisticMetric(StatisticType.EXPENSES_AMOUNT, expensesAmount));
-			add(new StatisticMetric(StatisticType.INCOMES_AMOUNT, incomesAmount));
-			add(new StatisticMetric(StatisticType.SAVING_AMOUNT, savingAmount));
-		}};
+		return ImmutableSet.of(
+				new StatisticMetric(StatisticType.EXPENSES_AMOUNT, expensesAmount),
+				new StatisticMetric(StatisticType.INCOMES_AMOUNT, incomesAmount),
+				new StatisticMetric(StatisticType.SAVING_AMOUNT, savingAmount)
+		);
 	}
 
 	/**
