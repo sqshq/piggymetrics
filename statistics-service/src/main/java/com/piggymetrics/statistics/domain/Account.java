@@ -1,40 +1,27 @@
 package com.piggymetrics.statistics.domain;
 
-import org.bson.types.ObjectId;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Document(collection = "accounts")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Account {
 
-	private ObjectId accountId;
-
-	private String name;
-
+	@Valid
+	@NotNull
 	private List<Item> incomes;
 
+	@Valid
+	@NotNull
 	private List<Item> expenses;
 
+	@Valid
+	@NotNull
 	private Saving saving;
-
-	public ObjectId getAccountId() {
-		return accountId;
-	}
-
-	public void setAccountId(ObjectId accountId) {
-		this.accountId = accountId;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public List<Item> getIncomes() {
 		return incomes;

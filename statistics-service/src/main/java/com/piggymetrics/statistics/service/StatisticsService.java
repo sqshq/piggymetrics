@@ -9,6 +9,6 @@ public interface StatisticsService {
 
 	List<DataPoint> findByAccountName(String accountName);
 
-	void save(String accountName, Account account);
+	DataPoint save(String accountName, Account account);
 
 }

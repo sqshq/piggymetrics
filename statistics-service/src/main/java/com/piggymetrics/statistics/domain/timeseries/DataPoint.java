@@ -9,24 +9,20 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Represents daily time series data point
- *
- * все приводтся к usd и к периоду в 1 день
- * чтобы можно было любой айтем посмотреть как менялся
- *
+ * Represents daily time series data point containing
+ * current account state
  */
-
 @Document(collection = "datapoints")
 public class DataPoint {
 
 	@Id
 	private DataPointId id;
 
-	private Set<StatisticMetric> statistics;
-
 	private Set<ItemMetric> incomes;
 
 	private Set<ItemMetric> expenses;
+
+	private Map<StatisticMetric, BigDecimal> statistics;
 
 	private Map<Currency, BigDecimal> rates;
 
@@ -36,14 +32,6 @@ public class DataPoint {
 
 	public void setId(DataPointId id) {
 		this.id = id;
-	}
-
-	public Set<StatisticMetric> getStatistics() {
-		return statistics;
-	}
-
-	public void setStatistics(Set<StatisticMetric> statistics) {
-		this.statistics = statistics;
 	}
 
 	public Set<ItemMetric> getIncomes() {
@@ -60,6 +48,14 @@ public class DataPoint {
 
 	public void setExpenses(Set<ItemMetric> expenses) {
 		this.expenses = expenses;
+	}
+
+	public Map<StatisticMetric, BigDecimal> getStatistics() {
+		return statistics;
+	}
+
+	public void setStatistics(Map<StatisticMetric, BigDecimal> statistics) {
+		this.statistics = statistics;
 	}
 
 	public Map<Currency, BigDecimal> getRates() {

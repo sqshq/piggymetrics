@@ -1,7 +1,14 @@
 package com.piggymetrics.statistics.domain.timeseries;
 
+import com.piggymetrics.statistics.domain.Currency;
+import com.piggymetrics.statistics.domain.TimePeriod;
+
 import java.math.BigDecimal;
 
+/**
+ * Represents normalized {@link com.piggymetrics.statistics.domain.Item} object
+ * with {@link Currency#getBase()} currency and {@link TimePeriod#getBase()} time period
+ */
 public class ItemMetric {
 
 	private String title;
