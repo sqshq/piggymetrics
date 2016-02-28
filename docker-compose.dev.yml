@@ -37,3 +37,17 @@ services:
       MONGODB_PASSWORD: dev-password
     ports:
       - 27001:27017
+
+  statistics-service:
+    environment:
+      MONGODB_PASSWORD: dev-password
+      STATISTICS_SERVICE_PASSWORD: dev-password
+    build: statistics-service
+    ports:
+      - 8000:8000
+
+  statistics-mongodb:
+    environment:
+      MONGODB_PASSWORD: dev-password
+    ports:
+      - 27002:27017

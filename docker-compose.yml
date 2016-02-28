@@ -5,7 +5,7 @@ services:
     restart: always
     logging:
       options:
-        max-size: "30m"
+        max-size: "10m"
         max-file: "10"
 
   gateway:
@@ -15,7 +15,7 @@ services:
       - 80:4000
     logging:
       options:
-        max-size: "30m"
+        max-size: "10m"
         max-file: "10"
 
   auth-service:
@@ -28,7 +28,7 @@ services:
       MONGODB_PASSWORD:
     logging:
       options:
-        max-size: "30m"
+        max-size: "10m"
         max-file: "10"
 
   auth-mongodb:
@@ -39,7 +39,7 @@ services:
       MONGODB_PASSWORD:
     logging:
       options:
-        max-size: "30m"
+        max-size: "10m"
         max-file: "10"
 
   account-service:
@@ -50,7 +50,7 @@ services:
       MONGODB_PASSWORD:
     logging:
       options:
-        max-size: "30m"
+        max-size: "10m"
         max-file: "10"
 
   account-mongodb:
@@ -62,5 +62,27 @@ services:
       MONGODB_PASSWORD:
     logging:
       options:
-        max-size: "30m"
+        max-size: "10m"
+        max-file: "10"
+
+  statistics-service:
+    image: sqshq/piggymetrics-statistics-service
+    restart: always
+    environment:
+      STATISTICS_SERVICE_PASSWORD:
+      MONGODB_PASSWORD:
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  statistics-mongodb:
+    build: mongodb
+    image: sqshq/piggymetrics-statistics-mongodb
+    restart: always
+    environment:
+      MONGODB_PASSWORD:
+    logging:
+      options:
+        max-size: "10m"
         max-file: "10"

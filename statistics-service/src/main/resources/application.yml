@@ -1,3 +1,11 @@
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+
 security:
   oauth2:
     client:
@@ -12,8 +20,8 @@ security:
 spring:
   data:
     mongodb:
-      host: account-mongodb
-      username: service
+      host: statistics-mongodb
+      username: user
       password: ${MONGODB_PASSWORD}
       database: piggymetrics
 
