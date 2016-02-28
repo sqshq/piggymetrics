@@ -101,7 +101,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 
 	/**
-	 * Normalizes given item to {@link Currency#getBase()} currency with
+	 * Normalizes given item amount to {@link Currency#getBase()} currency with
 	 * {@link TimePeriod#getBase()} time period
 	 */
 	private ItemMetric createItemMetric(Item item) {

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -123,18 +124,18 @@ public class StatisticsServiceImplTest {
 
 		final BigDecimal expectedExpensesAmount = new BigDecimal("17.8861");
 		final BigDecimal expectedIncomesAmount = new BigDecimal("298.9802");
-		final BigDecimal expectedSavingAmount = new BigDecimal("1250.0000");
+		final BigDecimal expectedSavingAmount = new BigDecimal("1250");
 
 		final BigDecimal expectedNormalizedSalaryAmount = new BigDecimal("298.9802");
 		final BigDecimal expectedNormalizedVacationAmount = new BigDecimal("11.6361");
-		final BigDecimal expectedNormalizedGroceryAmount = new BigDecimal("6.2500");
+		final BigDecimal expectedNormalizedGroceryAmount = new BigDecimal("6.25");
 
 		assertEquals(dataPoint.getId().getAccount(), "test");
 		assertEquals(dataPoint.getId().getDate(), Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()));
 
-		assertEquals(expectedExpensesAmount, dataPoint.getStatistics().get(StatisticMetric.EXPENSES_AMOUNT));
-		assertEquals(expectedIncomesAmount, dataPoint.getStatistics().get(StatisticMetric.INCOMES_AMOUNT));
-		assertEquals(expectedSavingAmount, dataPoint.getStatistics().get(StatisticMetric.SAVING_AMOUNT));
+		assertTrue(expectedExpensesAmount.compareTo(dataPoint.getStatistics().get(StatisticMetric.EXPENSES_AMOUNT)) == 0);
+		assertTrue(expectedIncomesAmount.compareTo(dataPoint.getStatistics().get(StatisticMetric.INCOMES_AMOUNT)) == 0);
+		assertTrue(expectedSavingAmount.compareTo(dataPoint.getStatistics().get(StatisticMetric.SAVING_AMOUNT)) == 0);
 
 		ItemMetric salaryItemMetric = dataPoint.getIncomes().stream()
 				.filter(i -> i.getTitle().equals(salary.getTitle()))
@@ -148,9 +149,9 @@ public class StatisticsServiceImplTest {
 				.filter(i -> i.getTitle().equals(grocery.getTitle()))
 				.findFirst().get();
 
-		assertEquals(expectedNormalizedSalaryAmount, salaryItemMetric.getAmount());
-		assertEquals(expectedNormalizedVacationAmount, vacationItemMetric.getAmount());
-		assertEquals(expectedNormalizedGroceryAmount, groceryItemMetric.getAmount());
+		assertTrue(expectedNormalizedSalaryAmount.compareTo(salaryItemMetric.getAmount()) == 0);
+		assertTrue(expectedNormalizedVacationAmount.compareTo(vacationItemMetric.getAmount()) == 0);
+		assertTrue(expectedNormalizedGroceryAmount.compareTo(groceryItemMetric.getAmount()) == 0);
 
 		assertEquals(rates, dataPoint.getRates());
 

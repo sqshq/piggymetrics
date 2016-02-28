@@ -1,6 +1,7 @@
 package com.piggymetrics.account.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.collect.ImmutableList;
 import com.piggymetrics.account.AccountApplication;
 import com.piggymetrics.account.domain.*;
 import com.piggymetrics.account.service.AccountService;
@@ -18,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Date;
 
 import static org.mockito.Mockito.when;
@@ -103,8 +103,8 @@ public class AccountControllerTest {
 		account.setNote("test note");
 		account.setLastSeen(new Date());
 		account.setSaving(saving);
-		account.setExpenses(Arrays.asList(grocery));
-		account.setIncomes(Arrays.asList(salary));
+		account.setExpenses(ImmutableList.of(grocery));
+		account.setIncomes(ImmutableList.of(salary));
 
 		String json = mapper.writeValueAsString(account);
 

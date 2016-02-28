@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -80,13 +81,11 @@ public class ExchangeRatesServiceImplTest {
 		when(client.getRates(Currency.getBase())).thenReturn(container);
 
 		final BigDecimal amount = new BigDecimal(100);
+		final BigDecimal expectedConvertionResult = new BigDecimal("1.25");
 
 		BigDecimal result = ratesService.convert(Currency.RUB, Currency.USD, amount);
 
-		BigDecimal ratio = container.getRates().get(Currency.RUB.name())
-				.divide(container.getRates().get(Currency.EUR.name()), 4, BigDecimal.ROUND_HALF_UP);
-
-		assertEquals(amount.multiply(ratio), result);
+		assertTrue(expectedConvertionResult.compareTo(result) == 0);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
