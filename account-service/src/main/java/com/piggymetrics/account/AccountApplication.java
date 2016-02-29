@@ -24,8 +24,8 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 @EnableDiscoveryClient
 @EnableOAuth2Client
 @EnableFeignClients
-@EnableConfigurationProperties
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableConfigurationProperties
 @Configuration
 public class AccountApplication extends ResourceServerConfigurerAdapter {
 

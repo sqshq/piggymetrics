@@ -29,7 +29,6 @@ import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,20 +54,6 @@ public class StatisticsControllerTest {
 	}
 
 	@Test
-	public void shouldGetCurrentAccountStatistics() throws Exception {
-
-		final DataPoint dataPoint = new DataPoint();
-		dataPoint.setId(new DataPointId("test", new Date()));
-
-		when(statisticsService.findByAccountName(dataPoint.getId().getAccount()))
-				.thenReturn(ImmutableList.of(dataPoint));
-
-		mockMvc.perform(get("/current").principal(new UserPrincipal(dataPoint.getId().getAccount())))
-				.andExpect(jsonPath("$[0].id.account").value(dataPoint.getId().getAccount()))
-				.andExpect(status().isOk());
-	}
-
-	@Test
 	public void shouldGetStatisticsByAccountName() throws Exception {
 
 		final DataPoint dataPoint = new DataPoint();
@@ -83,7 +68,21 @@ public class StatisticsControllerTest {
 	}
 
 	@Test
-	public void shouldSaveCurrentAccountStatistics() throws Exception {
+	public void shouldGetCurrentAccountStatistics() throws Exception {
+
+		final DataPoint dataPoint = new DataPoint();
+		dataPoint.setId(new DataPointId("test", new Date()));
+
+		when(statisticsService.findByAccountName(dataPoint.getId().getAccount()))
+				.thenReturn(ImmutableList.of(dataPoint));
+
+		mockMvc.perform(get("/current").principal(new UserPrincipal(dataPoint.getId().getAccount())))
+				.andExpect(jsonPath("$[0].id.account").value(dataPoint.getId().getAccount()))
+				.andExpect(status().isOk());
+	}
+
+	@Test
+	public void shouldSaveAccountStatistics() throws Exception {
 
 		Saving saving = new Saving();
 		saving.setAmount(new BigDecimal(1500));
@@ -111,8 +110,7 @@ public class StatisticsControllerTest {
 
 		String json = mapper.writeValueAsString(account);
 
-		mockMvc.perform(put("/current").principal(new UserPrincipal("test")).contentType(MediaType.APPLICATION_JSON).content(json))
-				.andDo(print())
+		mockMvc.perform(put("/test").contentType(MediaType.APPLICATION_JSON).content(json))
 				.andExpect(status().isOk());
 
 		verify(statisticsService, times(1)).save(anyString(), any(Account.class));
