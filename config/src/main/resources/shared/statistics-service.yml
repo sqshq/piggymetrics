@@ -1,11 +1,3 @@
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 10000
-
 security:
   oauth2:
     client:
@@ -14,8 +6,6 @@ security:
       accessTokenUri: http://auth-service:5000/uaa/oauth/token
       grant-type: client_credentials
       scope: server
-    resource:
-      user-info-uri: http://auth-service:5000/uaa/users/current
 
 spring:
   data:
@@ -25,10 +15,6 @@ spring:
       password: ${MONGODB_PASSWORD}
       database: piggymetrics
       port: 27017
-
-logging:
-  level:
-    org.springframework.security: INFO
 
 server:
   context-path: /statistics

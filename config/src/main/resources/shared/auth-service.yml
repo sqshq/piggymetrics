@@ -1,0 +1,12 @@
+spring:
+  data:
+    mongodb:
+      host: auth-mongodb
+      username: user
+      password: ${MONGODB_PASSWORD}
+      database: piggymetrics
+      port: 27017
+
+server:
+  context-path: /uaa
+  port: 5000

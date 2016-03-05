@@ -1,43 +1,43 @@
-hystrix:
-  command:
-    default:
-      execution:
-        isolation:
-          thread:
-            timeoutInMilliseconds: 20000
-
-ribbon:
-  ReadTimeout: 20000
-  ConnectTimeout: 20000
-
-zuul:
-  host:
-    connect-timeout-millis: 20000
-    socket-timeout-millis: 20000
-
-  routes:
-    auth-service:
-        path: /uaa/**
-        url: http://auth-service:5000
-        stripPrefix: false
-
-    account-service:
-        path: /accounts/**
-        serviceId: account-service
-        stripPrefix: false
-
-    statistics-service:
-        path: /statistics/**
-        serviceId: statistics-service
-        stripPrefix: false
-
-    notification-service:
-        path: /notifications/**
-        serviceId: notification-service
-        stripPrefix: false
-
-logging:
-  level.: INFO
-
-server:
-  port: 4000
+#hystrix:
+#  command:
+#    default:
+#      execution:
+#        isolation:
+#          thread:
+#            timeoutInMilliseconds: 20000
+#
+#ribbon:
+#  ReadTimeout: 20000
+#  ConnectTimeout: 20000
+#
+#zuul:
+#  host:
+#    connect-timeout-millis: 20000
+#    socket-timeout-millis: 20000
+#
+#  routes:
+#    auth-service:
+#        path: /uaa/**
+#        url: http://auth-service:5000
+#        stripPrefix: false
+#
+#    account-service:
+#        path: /accounts/**
+#        serviceId: account-service
+#        stripPrefix: false
+#
+#    statistics-service:
+#        path: /statistics/**
+#        serviceId: statistics-service
+#        stripPrefix: false
+#
+#    notification-service:
+#        path: /notifications/**
+#        serviceId: notification-service
+#        stripPrefix: false
+#
+#logging:
+#  level.: INFO
+#
+#server:
+#  port: 4000
