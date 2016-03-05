@@ -25,6 +25,9 @@ public class ExchangeRatesServiceImpl implements ExchangeRatesService {
 	@Autowired
 	private ExchangeRatesClient client;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Map<Currency, BigDecimal> getCurrentRates() {
 
@@ -40,6 +43,9 @@ public class ExchangeRatesServiceImpl implements ExchangeRatesService {
 		);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public BigDecimal convert(Currency from, Currency to, BigDecimal amount) {
 

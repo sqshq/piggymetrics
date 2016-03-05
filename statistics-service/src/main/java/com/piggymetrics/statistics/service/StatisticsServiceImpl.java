@@ -35,6 +35,9 @@ public class StatisticsServiceImpl implements StatisticsService {
 	@Autowired
 	private ExchangeRatesService ratesService;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<DataPoint> findByAccountName(String accountName) {
 		Assert.hasLength(accountName);
@@ -42,14 +45,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	}
 
 	/**
-	 * Converts given {@link Account} object to {@link DataPoint} with
-	 * a set of significant statistic metrics.
-	 *
-	 * Compound {@link DataPoint#id} forces to rewrite the object
-	 * for each account within a day.
-	 *
-	 * @param accountName
-	 * @param account
+	 * {@inheritDoc}
 	 */
 	@Override
 	public DataPoint save(String accountName, Account account) {

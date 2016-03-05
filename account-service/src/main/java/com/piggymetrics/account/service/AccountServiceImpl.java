@@ -30,20 +30,17 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	private AccountRepository repository;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
-	public Account findByName(String name) {
-		Assert.hasLength(name);
-		log.info("access {} account info", name);
-		return repository.findByName(name);
+	public Account findByName(String accountName) {
+		Assert.hasLength(accountName);
+		return repository.findByName(accountName);
 	}
 
 	/**
-	 * Checks if account with the same name already exists
-	 * Invokes Auth Service user creation
-	 * Creates new account with default parameters
-	 *
-	 * @param user
-	 * @return created account
+	 * {@inheritDoc}
 	 */
 	@Override
 	public Account create(User user) {
@@ -73,11 +70,7 @@ public class AccountServiceImpl implements AccountService {
 	}
 
 	/**
-	 * Validates and applies incoming account updates
-	 * Invokes Statistics Service update
-	 *
-	 * @param name
-	 * @param update
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void saveChanges(String name, Account update) {
@@ -92,6 +85,8 @@ public class AccountServiceImpl implements AccountService {
 		account.setLastSeen(new Date());
 
 		repository.save(account);
+
+		log.debug("account {} changes has been saved", name);
 
 		try {
 			statisticsClient.updateStatistics(name, account);
