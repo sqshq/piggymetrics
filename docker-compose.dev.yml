@@ -1,16 +1,22 @@
 version: '2'
 services:
   config:
+    environment:
+      CONFIG_SERVICE_PASSWORD: dev-password
     build: config
     ports:
       - 8888:8888
 
   registry:
+    environment:
+      CONFIG_SERVICE_PASSWORD: dev-password
     build: registry
     ports:
       - 8761:8761
 
   gateway:
+    environment:
+      CONFIG_SERVICE_PASSWORD: dev-password
     build: gateway
 
 
@@ -34,6 +40,7 @@ services:
 
   account-service:
     environment:
+      CONFIG_SERVICE_PASSWORD: dev-password
       MONGODB_PASSWORD: dev-password
       ACCOUNT_SERVICE_PASSWORD: dev-password
     build: account-service
@@ -49,6 +56,7 @@ services:
 
   statistics-service:
     environment:
+      CONFIG_SERVICE_PASSWORD: dev-password
       MONGODB_PASSWORD: dev-password
       STATISTICS_SERVICE_PASSWORD: dev-password
     build: statistics-service
@@ -64,6 +72,7 @@ services:
 
   notification-service:
     environment:
+      CONFIG_SERVICE_PASSWORD: dev-password
       MONGODB_PASSWORD: dev-password
       NOTIFICATION_SERVICE_PASSWORD: dev-password
     build: notification-service
