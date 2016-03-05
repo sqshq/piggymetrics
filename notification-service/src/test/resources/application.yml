@@ -1,0 +1,8 @@
+#spring:
+#  data:
+#    mongodb:
+#      database: piggymetrics
+#      port: 0
+
+delay:
+  value: 5000
