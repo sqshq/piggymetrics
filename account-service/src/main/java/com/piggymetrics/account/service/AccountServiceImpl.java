@@ -33,6 +33,7 @@ public class AccountServiceImpl implements AccountService {
 	@Override
 	public Account findByName(String name) {
 		Assert.hasLength(name);
+		log.info("access {} account info", name);
 		return repository.findByName(name);
 	}
 

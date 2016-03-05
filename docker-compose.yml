@@ -1,5 +1,13 @@
 version: '2'
 services:
+  config:
+    image: sqshq/piggymetrics-config
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
   registry:
     image: sqshq/piggymetrics-registry
     restart: always
@@ -17,6 +25,7 @@ services:
       options:
         max-size: "10m"
         max-file: "10"
+
 
   auth-service:
     image: sqshq/piggymetrics-auth-service
@@ -42,6 +51,7 @@ services:
         max-size: "10m"
         max-file: "10"
 
+
   account-service:
     image: sqshq/piggymetrics-account-service
     restart: always
@@ -65,6 +75,7 @@ services:
         max-size: "10m"
         max-file: "10"
 
+
   statistics-service:
     image: sqshq/piggymetrics-statistics-service
     restart: always
@@ -86,3 +97,26 @@ services:
       options:
         max-size: "10m"
         max-file: "10"
+
+
+  notification-service:
+    image: sqshq/piggymetrics-notification-service
+    restart: always
+    environment:
+      STATISTICS_SERVICE_PASSWORD:
+      MONGODB_PASSWORD:
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+#  notification-mongodb:
+#    build: mongodb
+#    image: sqshq/piggymetrics-statistics-mongodb
+#    restart: always
+#    environment:
+#      MONGODB_PASSWORD:
+#    logging:
+#      options:
+#        max-size: "10m"
+#        max-file: "10"

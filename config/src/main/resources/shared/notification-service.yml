@@ -1,0 +1,24 @@
+security:
+  oauth2:
+    client:
+      clientId: notification-service
+      clientSecret: ${NOTIFICATION_SERVICE_PASSWORD}
+      accessTokenUri: http://auth-service:5000/uaa/oauth/token
+      grant-type: client_credentials
+      scope: server
+
+spring:
+  data:
+    mongodb:
+      host: notification-mongodb
+      username: user
+      password: ${MONGODB_PASSWORD}
+      database: piggymetrics
+      port: 27017
+
+server:
+  context-path: /notifications
+  port: 9000
+
+delay:
+  value: 5000

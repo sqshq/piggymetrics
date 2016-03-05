@@ -1,5 +1,10 @@
 version: '2'
 services:
+  config:
+    build: config
+    ports:
+      - 8888:8888
+
   registry:
     build: registry
     ports:
@@ -8,8 +13,10 @@ services:
   gateway:
     build: gateway
 
+
   auth-service:
     environment:
+      CONFIG_SERVICE_PASSWORD: dev-password
       NOTIFICATION_SERVICE_PASSWORD: dev-password
       STATISTICS_SERVICE_PASSWORD: dev-password
       ACCOUNT_SERVICE_PASSWORD: dev-password
@@ -23,6 +30,7 @@ services:
       MONGODB_PASSWORD: dev-password
     ports:
       - 27000:27017
+
 
   account-service:
     environment:
@@ -38,6 +46,7 @@ services:
     ports:
       - 27001:27017
 
+
   statistics-service:
     environment:
       MONGODB_PASSWORD: dev-password
@@ -51,3 +60,18 @@ services:
       MONGODB_PASSWORD: dev-password
     ports:
       - 27002:27017
+
+
+  notification-service:
+    environment:
+      MONGODB_PASSWORD: dev-password
+      NOTIFICATION_SERVICE_PASSWORD: dev-password
+    build: notification-service
+    ports:
+      - 9000:9000
+
+#  notification-mongodb:
+#    environment:
+#      MONGODB_PASSWORD: dev-password
+#    ports:
+#      - 27002:27017

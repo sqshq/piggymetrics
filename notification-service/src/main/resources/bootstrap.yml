@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: notification-service
+  cloud:
+    config:
+      uri: http://config:8888
