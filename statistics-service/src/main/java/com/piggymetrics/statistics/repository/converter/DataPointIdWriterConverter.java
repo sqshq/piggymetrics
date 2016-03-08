@@ -1,4 +1,4 @@
-package com.piggymetrics.statistics.converter;
+package com.piggymetrics.statistics.repository.converter;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;

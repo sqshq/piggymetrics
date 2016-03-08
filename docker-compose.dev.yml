@@ -19,7 +19,6 @@ services:
       CONFIG_SERVICE_PASSWORD: dev-password
     build: gateway
 
-
   auth-service:
     environment:
       CONFIG_SERVICE_PASSWORD: dev-password
@@ -37,7 +36,6 @@ services:
     ports:
       - 27000:27017
 
-
   account-service:
     environment:
       CONFIG_SERVICE_PASSWORD: dev-password
@@ -52,7 +50,6 @@ services:
       MONGODB_PASSWORD: dev-password
     ports:
       - 27001:27017
-
 
   statistics-service:
     environment:
@@ -69,7 +66,6 @@ services:
     ports:
       - 27002:27017
 
-
   notification-service:
     environment:
       CONFIG_SERVICE_PASSWORD: dev-password
@@ -79,8 +75,8 @@ services:
     ports:
       - 9000:9000
 
-#  notification-mongodb:
-#    environment:
-#      MONGODB_PASSWORD: dev-password
-#    ports:
-#      - 27002:27017
+  notification-mongodb:
+    environment:
+      MONGODB_PASSWORD: dev-password
+    ports:
+      - 27003:27017

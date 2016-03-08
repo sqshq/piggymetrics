@@ -1,7 +1,7 @@
 package com.piggymetrics.statistics;
 
-import com.piggymetrics.statistics.converter.DataPointIdReaderConverter;
-import com.piggymetrics.statistics.converter.DataPointIdWriterConverter;
+import com.piggymetrics.statistics.repository.converter.DataPointIdReaderConverter;
+import com.piggymetrics.statistics.repository.converter.DataPointIdWriterConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;

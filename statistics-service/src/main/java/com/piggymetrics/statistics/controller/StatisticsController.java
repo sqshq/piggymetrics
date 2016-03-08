@@ -23,13 +23,13 @@ public class StatisticsController {
 	}
 
 	@RequestMapping(value = "/current", method = RequestMethod.GET)
-	public List<DataPoint> getCurrentAccountStatistics(Principal principal) {
+	public List<DataPoint> getAccountStatistics(Principal principal) {
 		return statisticsService.findByAccountName(principal.getName());
 	}
 
 	//@PreAuthorize("#oauth2.hasScope('server')")
 	@RequestMapping(value = "/{accountName}", method = RequestMethod.PUT)
-	public void saveStatisticsByAccountName(@PathVariable String accountName, @Valid @RequestBody Account account) {
+	public void saveAccountStatistics(@PathVariable String accountName, @Valid @RequestBody Account account) {
 		statisticsService.save(accountName, account);
 	}
 }

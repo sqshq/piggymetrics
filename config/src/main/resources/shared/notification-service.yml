@@ -7,6 +7,23 @@ security:
       grant-type: client_credentials
       scope: server
 
+server:
+  context-path: /notifications
+  port: 9000
+
+remind:
+  cron: 0 0 0 * * *
+  email:
+    text: "Hey, {0}! We''ve missed you here on PiggyMetrics. It''s time to check your budget statistics.\r\n\r\nCheers,\r\nPiggyMetrics team"
+    subject: PiggyMetrics reminder
+
+backup:
+  cron: 0 0 12 * * *
+  email:
+    text: "Howdy, {0}. Your account backup is ready.\r\n\r\nCheers,\r\nPiggyMetrics team"
+    subject: PiggyMetrics account backup
+    attachment: backup.json
+
 spring:
   data:
     mongodb:
@@ -15,10 +32,18 @@ spring:
       password: ${MONGODB_PASSWORD}
       database: piggymetrics
       port: 27017
-
-server:
-  context-path: /notifications
-  port: 9000
-
-delay:
-  value: 5000
+  mail:
+    host: smtp.gmail.com
+    port: 465
+    username: dev-user
+    password: dev-password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+          ssl:
+            enable: true

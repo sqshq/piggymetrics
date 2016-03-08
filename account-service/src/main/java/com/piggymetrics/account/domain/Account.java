@@ -15,6 +15,8 @@ import java.util.List;
 public class Account {
 
 	@Id
+	@NotNull
+	@Length(min = 3, max = 20)
 	private String name;
 
 	private Date lastSeen;
