@@ -12,15 +12,15 @@ import javax.validation.Valid;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/recipient")
-public class NotificationController {
+@RequestMapping("/recipients")
+public class RecipientController {
 
 	@Autowired
 	private RecipientService recipientService;
 
 	@RequestMapping(path = "/current", method = RequestMethod.GET)
 	public Object getCurrentNotificationsSettings(Principal principal) {
-		return recipientService.getByAccountName(principal.getName());
+		return recipientService.findByAccountName(principal.getName());
 	}
 
 	@RequestMapping(path = "/current", method = RequestMethod.PUT)

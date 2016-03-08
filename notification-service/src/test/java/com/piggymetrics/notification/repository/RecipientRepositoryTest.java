@@ -129,4 +129,25 @@ public class RecipientRepositoryTest {
 		List<Recipient> found = repository.findReadyForRemind();
 		assertTrue(found.isEmpty());
 	}
+
+	@Test
+	public void shouldNotFindReadyForBackupWhenFrequencyIsQuaterly() {
+
+		NotificationSettings remind = new NotificationSettings();
+		remind.setActive(true);
+		remind.setFrequency(Frequency.QUARTERLY);
+		remind.setLastNotified(DateUtils.addDays(new Date(), -91));
+
+		Recipient recipient = new Recipient();
+		recipient.setAccountName("test");
+		recipient.setEmail("test@test.com");
+		recipient.setScheduledNotifications(ImmutableMap.of(
+				NotificationType.BACKUP, remind
+		));
+
+		repository.save(recipient);
+
+		List<Recipient> found = repository.findReadyForBackup();
+		assertFalse(found.isEmpty());
+	}
 }

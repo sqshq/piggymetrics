@@ -10,7 +10,7 @@ public class NotificationSettings {
 
 	private Frequency frequency;
 
-	private Date lastNotified = new Date();
+	private Date lastNotified;
 
 	public Boolean getActive() {
 		return active;
