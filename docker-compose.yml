@@ -86,7 +86,7 @@ services:
       CONFIG_SERVICE_PASSWORD:
       STATISTICS_SERVICE_PASSWORD:
       MONGODB_PASSWORD:
-    image: sqshq/piggymetrics-statistics-mongodb
+    image: sqshq/piggymetrics-statistics-service
     restart: always
     logging:
       options:
@@ -94,9 +94,9 @@ services:
         max-file: "10"
 
   statistics-mongodb:
-    build: mongodb
     environment:
       MONGODB_PASSWORD:
+    build: mongodb
     image: sqshq/piggymetrics-statistics-mongodb
     restart: always
     logging:
