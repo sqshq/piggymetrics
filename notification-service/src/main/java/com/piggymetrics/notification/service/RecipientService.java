@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RecipientService {
 
-	Object findByAccountName(String accountName);
+	Recipient findByAccountName(String accountName);
 
 	List<Recipient> findReadyToNotify(NotificationType type);
 

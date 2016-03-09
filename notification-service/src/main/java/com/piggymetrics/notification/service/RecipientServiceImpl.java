@@ -21,7 +21,7 @@ public class RecipientServiceImpl implements RecipientService {
 	private RecipientRepository repository;
 
 	@Override
-	public Object findByAccountName(String accountName) {
+	public Recipient findByAccountName(String accountName) {
 		Assert.hasLength(accountName);
 		return repository.findByAccountName(accountName);
 	}
@@ -38,8 +38,10 @@ public class RecipientServiceImpl implements RecipientService {
 					}
 				});
 
-		log.debug("recipient {} settings has been updated", recipient);
-		return repository.save(recipient);
+		repository.save(recipient);
+		log.info("recipient {} settings has been updated", recipient);
+
+		return recipient;
 	}
 
 	@Override
