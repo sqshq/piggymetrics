@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class NotificationServiceImpl implements NotificationService {
 
-	public static final Logger log = LoggerFactory.getLogger(NotificationServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(NotificationServiceImpl.class);
 
 	@Autowired
 	private AccountServiceClient client;

@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class RecipientServiceImpl implements RecipientService {
 
-	public static final Logger log = LoggerFactory.getLogger(RecipientServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(RecipientServiceImpl.class);
 
 	@Autowired
 	private RecipientRepository repository;
@@ -39,6 +39,7 @@ public class RecipientServiceImpl implements RecipientService {
 				});
 
 		repository.save(recipient);
+
 		log.info("recipient {} settings has been updated", recipient);
 
 		return recipient;

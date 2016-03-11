@@ -20,7 +20,7 @@ import java.text.MessageFormat;
 @Service
 public class EmailServiceImpl implements EmailService {
 
-	public static final Logger log = LoggerFactory.getLogger(NotificationServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(NotificationServiceImpl.class);
 
 	@Autowired
 	private JavaMailSender mailSender;
