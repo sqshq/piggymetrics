@@ -8,6 +8,7 @@ public class NotificationSettings {
 	@NotNull
 	private Boolean active;
 
+	@NotNull
 	private Frequency frequency;
 
 	private Date lastNotified;

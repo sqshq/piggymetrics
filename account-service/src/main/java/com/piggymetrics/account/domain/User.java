@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 public class User {
 
 	@NotNull
-	@Length(min = 2, max = 20)
+	@Length(min = 3, max = 20)
 	private String username;
 
 	@NotNull

@@ -34,7 +34,7 @@ services:
     environment:
       MONGODB_PASSWORD: dev-password
     ports:
-      - 27000:27017
+      - 25000:27017
 
   account-service:
     environment:
@@ -43,13 +43,13 @@ services:
       ACCOUNT_SERVICE_PASSWORD: dev-password
     build: account-service
     ports:
-      - 7000:7000
+      - 6000:6000
 
   account-mongodb:
     environment:
       MONGODB_PASSWORD: dev-password
     ports:
-      - 27001:27017
+      - 26000:27017
 
   statistics-service:
     environment:
@@ -58,13 +58,13 @@ services:
       STATISTICS_SERVICE_PASSWORD: dev-password
     build: statistics-service
     ports:
-      - 8000:8000
+      - 7000:7000
 
   statistics-mongodb:
     environment:
       MONGODB_PASSWORD: dev-password
     ports:
-      - 27002:27017
+      - 27000:27017
 
   notification-service:
     environment:
@@ -73,10 +73,10 @@ services:
       NOTIFICATION_SERVICE_PASSWORD: dev-password
     build: notification-service
     ports:
-      - 9000:9000
+      - 8000:8000
 
   notification-mongodb:
     environment:
       MONGODB_PASSWORD: dev-password
     ports:
-      - 27003:27017
+      - 28000:27017

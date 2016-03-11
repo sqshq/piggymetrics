@@ -18,7 +18,7 @@ spring:
 
 server:
   context-path: /statistics
-  port: 8000
+  port: 7000
 
 rates:
   url: http://api.fixer.io

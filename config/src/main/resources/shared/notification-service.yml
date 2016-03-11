@@ -9,7 +9,7 @@ security:
 
 server:
   context-path: /notifications
-  port: 9000
+  port: 8000
 
 remind:
   cron: 0 0 0 * * *

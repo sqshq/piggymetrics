@@ -18,4 +18,4 @@ spring:
 
 server:
   context-path: /accounts
-  port: 7000
+  port: 6000

@@ -29,8 +29,7 @@ public class RecipientServiceImpl implements RecipientService {
 	@Override
 	public Recipient save(String accountName, Recipient recipient) {
 
-		Assert.isTrue(accountName.equals(recipient.getAccountName()));
-
+		recipient.setAccountName(accountName);
 		recipient.getScheduledNotifications().values()
 				.forEach(settings -> {
 					if (settings.getLastNotified() == null) {

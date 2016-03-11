@@ -64,24 +64,17 @@ public class RecipientServiceImplTest {
 		backup.setLastNotified(new Date());
 
 		Recipient recipient = new Recipient();
-		recipient.setAccountName("test");
 		recipient.setEmail("test@test.com");
 		recipient.setScheduledNotifications(ImmutableMap.of(
 				NotificationType.BACKUP, backup,
 				NotificationType.REMIND, remind
 		));
 
-		Recipient saved = recipientService.save(recipient.getAccountName(), recipient);
+		Recipient saved = recipientService.save("test", recipient);
+
 		verify(repository).save(recipient);
-
 		assertNotNull(saved.getScheduledNotifications().get(NotificationType.REMIND).getLastNotified());
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void shouldFailToSaveRecipientWhenGivenAccountNameAndRecepientNameNotMatch() {
-		Recipient recipient = new Recipient();
-		recipient.setAccountName("test2");
-		recipientService.save("test1", recipient);
+		assertEquals("test", saved.getAccountName());
 	}
 
 	@Test
