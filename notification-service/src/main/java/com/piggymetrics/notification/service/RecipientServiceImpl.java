@@ -36,7 +36,7 @@ public class RecipientServiceImpl implements RecipientService {
 		recipient.getScheduledNotifications().values()
 				.forEach(settings -> {
 					if (settings.getLastNotified() == null) {
-						settings.setLastNotified(new Date(0));
+						settings.setLastNotified(new Date());
 					}
 				});
 
@@ -67,7 +67,7 @@ public class RecipientServiceImpl implements RecipientService {
 	 */
 	@Override
 	public void markNotified(NotificationType type, Recipient recipient) {
-		recipient.getScheduledNotifications().get(type).setLastNotified(new Date(0));
+		recipient.getScheduledNotifications().get(type).setLastNotified(new Date());
 		repository.save(recipient);
 	}
 }
