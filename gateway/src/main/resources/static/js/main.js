@@ -209,12 +209,12 @@ function addItems() {
     Object.keys(incomes).forEach(function(key) {
         var value = incomes[key].amount.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 </span><span class="lightdigit20">');
         $("#incomeslider").append('<div onclick="itemClick(this)" class="incomeitem" id="income-' + incomes[key].income_id + '"><span class="title11museo300">' + incomes[key].title + '</span><p class="title9museo300"><span class="bolddigit20">' + value + ' </span>' + checkCurrency(incomes[key].currency) + checkPeriod(incomes[key].period) + '</span></p><div class="itembackground"></div></div>');
-        $("#income-" + incomes[key].income_id).data({"id": incomes[key].income_id, "icon": incomes[key].icon, "value": incomes[key].amount, "title": incomes[key].title, "currency": incomes[key].currency ,"period": incomes[key].period}).children("div").addClass(incomes[key].icon);
+        $("#income-" + incomes[key].income_id).data({"id": incomes[key].income_id, "icon": incomes[key].icon, "amount": incomes[key].amount, "title": incomes[key].title, "currency": incomes[key].currency ,"period": incomes[key].period}).children("div").addClass(incomes[key].icon);
     });
     Object.keys(expenses).forEach(function(key) {
         var value = expenses[key].amount.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 </span><span class="lightdigit20">');
         $("#expenseslider").append('<div onclick="itemClick(this)" class="expenseitem" id="expense-' + expenses[key].expense_id + '"><span class="title11museo300">' + expenses[key].title + '</span><p class="title9museo300"><span class="bolddigit20">' + value + ' </span>' + checkCurrency(expenses[key].currency) + checkPeriod(expenses[key].period) + '</span></p><div class="itembackground"></div></div>');
-        $("#expense-" + expenses[key].expense_id).data({"id": expenses[key].expense_id, "icon": expenses[key].icon, "value": expenses[key].amount, "title": expenses[key].title, "currency": expenses[key].currency ,"period": expenses[key].period}).children("div").addClass(expenses[key].icon);
+        $("#expense-" + expenses[key].expense_id).data({"id": expenses[key].expense_id, "icon": expenses[key].icon, "amount": expenses[key].amount, "title": expenses[key].title, "currency": expenses[key].currency ,"period": expenses[key].period}).children("div").addClass(expenses[key].icon);
     });
 
     // Show big ADD ITEM button when column is empty
@@ -420,7 +420,7 @@ function addNewItem() {
 function addNewDiv(whichColumn, itemId, itemTitle, itemIcon, itemCurrency, itemPeriod, itemValue) {
     var value = itemValue.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 </span><span class="lightdigit20">');
     $("#" + whichColumn + "slider").append('<div onclick="itemClick(this)" class="' + whichColumn + 'item" id="' + whichColumn +'-' + itemId + '"><span class="title11museo300">' + itemTitle + '</span><p class="title9museo300"><span class="bolddigit20">' + value + ' </span>' + checkCurrency(itemCurrency) + checkPeriod(itemPeriod) + '</span></p><div class="itembackground"></div></div>');
-    $("#" + whichColumn + "-" + itemId).addClass("newitemadded").data({"id": itemId, "icon": itemIcon, "value": itemValue, "title": itemTitle, "currency": itemCurrency ,"period": itemPeriod}).children("div").addClass(itemIcon);
+    $("#" + whichColumn + "-" + itemId).addClass("newitemadded").data({"id": itemId, "icon": itemIcon, "amount": itemValue, "title": itemTitle, "currency": itemCurrency ,"period": itemPeriod}).children("div").addClass(itemIcon);
     setTimeout(function() { $("#" + whichColumn + "-" + itemId).removeClass("newitemadded") }, 4100);
 }
 // EDIT ITEMS
@@ -431,7 +431,7 @@ function itemClick(item) {
         itemIcon = itemDiv.data("icon"),
         itemCurrency = itemDiv.data("currency"),
         itemPeriod = itemDiv.data("period"),
-        itemValue = itemDiv.data("value"),
+        itemValue = itemDiv.data("amount"),
         itemTitle = itemDiv.data("title"),
         itemId = itemDiv.data("id"),
         incomesExpenses = "expense",
@@ -457,7 +457,7 @@ function itemClick(item) {
     saveOldItem = function() {
         if (checkModalFields($(".modalvalue").val(), $(".modaltitle").val())) { // If inputs are proper filled, save changes
             whichColumn[itemId].title = $(".modaltitle").val();
-            whichColumn[itemId].value = $(".modalvalue").autoNumeric("get");
+            whichColumn[itemId].amount = $(".modalvalue").autoNumeric("get");
             whichColumn[itemId].icon = $(".initicons").data("iconselected");
             whichColumn[itemId].currency = $(".modalcurrency").val();
             whichColumn[itemId].period = $(".modalperiod").val();
@@ -491,7 +491,7 @@ function itemClick(item) {
 function editOldDiv(whichColumn, itemId, itemTitle, itemIcon, itemCurrency, itemPeriod, itemValue) {
     var value = itemValue.replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 </span><span class="lightdigit20">');
     $("#" + whichColumn + "-" + itemId).replaceWith('<div onclick="itemClick(this)" class="' + whichColumn + 'item" id="' + whichColumn +'-' + itemId + '"><span class="title11museo300">' + itemTitle + '</span><p class="title9museo300"><span class="bolddigit20">' + value + ' </span>' + checkCurrency(itemCurrency) + checkPeriod(itemPeriod) + '</span></p><div class="itembackground"></div></div>');
-    $("#" + whichColumn + "-" + itemId).addClass("newitemadded").data({"id": itemId, "icon": itemIcon, "value": itemValue, "title": itemTitle, "currency": itemCurrency ,"period": itemPeriod}).children("div").addClass(itemIcon);
+    $("#" + whichColumn + "-" + itemId).addClass("newitemadded").data({"id": itemId, "icon": itemIcon, "amount": itemValue, "title": itemTitle, "currency": itemCurrency ,"period": itemPeriod}).children("div").addClass(itemIcon);
     setTimeout(function() { $("#" + whichColumn + "-" + itemId).removeClass("newitemadded") }, 4100);
 }
 // prepare calculations for 4 page
