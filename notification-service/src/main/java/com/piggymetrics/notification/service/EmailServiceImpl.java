@@ -1,6 +1,5 @@
 package com.piggymetrics.notification.service;
 
-import com.google.common.base.Strings;
 import com.piggymetrics.notification.domain.NotificationType;
 import com.piggymetrics.notification.domain.Recipient;
 import org.slf4j.Logger;
@@ -11,6 +10,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -41,7 +41,7 @@ public class EmailServiceImpl implements EmailService {
 		helper.setSubject(subject);
 		helper.setText(text);
 
-		if (!Strings.isNullOrEmpty(attachment)) {
+		if (StringUtils.hasLength(attachment)) {
 			helper.addAttachment(env.getProperty(type.getAttachment()), new ByteArrayResource(attachment.getBytes()));
 		}
 
