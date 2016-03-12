@@ -26,6 +26,9 @@ public class RecipientServiceImpl implements RecipientService {
 		return repository.findByAccountName(accountName);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Recipient save(String accountName, Recipient recipient) {
 
@@ -33,7 +36,7 @@ public class RecipientServiceImpl implements RecipientService {
 		recipient.getScheduledNotifications().values()
 				.forEach(settings -> {
 					if (settings.getLastNotified() == null) {
-						settings.setLastNotified(new Date());
+						settings.setLastNotified(new Date(0));
 					}
 				});
 
@@ -44,6 +47,9 @@ public class RecipientServiceImpl implements RecipientService {
 		return recipient;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<Recipient> findReadyToNotify(NotificationType type) {
 		switch (type) {
@@ -56,9 +62,12 @@ public class RecipientServiceImpl implements RecipientService {
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void markNotified(NotificationType type, Recipient recipient) {
-		recipient.getScheduledNotifications().get(type).setLastNotified(new Date());
+		recipient.getScheduledNotifications().get(type).setLastNotified(new Date(0));
 		repository.save(recipient);
 	}
 }

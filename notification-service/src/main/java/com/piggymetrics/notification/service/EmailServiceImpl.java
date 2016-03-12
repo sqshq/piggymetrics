@@ -5,6 +5,7 @@ import com.piggymetrics.notification.domain.Recipient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 
 @Service
+@RefreshScope
 public class EmailServiceImpl implements EmailService {
 
 	private static final Logger log = LoggerFactory.getLogger(NotificationServiceImpl.class);
@@ -47,6 +49,6 @@ public class EmailServiceImpl implements EmailService {
 
 		mailSender.send(message);
 
-		log.info("An email {} notification has been send to {}", type, recipient.getEmail());
+		log.info("{} email notification has been send to {}", type, recipient.getEmail());
 	}
 }
