@@ -22,7 +22,7 @@ after_success:
 
   # NOTIFICATION_SERVICE
   - export NOTIFICATION_SERVICE=sqshq/piggymetrics-notification-service
-  - docker build notification-service -t $NOTIFICATION_SERVICE:$COMMIT .
+  - docker build -t $NOTIFICATION_SERVICE:$COMMIT -f notification-service
   - docker tag $NOTIFICATION_SERVICE:$COMMIT $NOTIFICATION_SERVICE:$TAG
   - docker tag $NOTIFICATION_SERVICE:$COMMIT $NOTIFICATION_SERVICE:travis-$TRAVIS_BUILD_NUMBER
   - docker push $NOTIFICATION_SERVICE
