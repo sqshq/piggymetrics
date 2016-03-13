@@ -16,15 +16,15 @@ public class StatisticsController {
 	@Autowired
 	private StatisticsService statisticsService;
 
+	@RequestMapping(value = "/current", method = RequestMethod.GET)
+	public List<DataPoint> getCurrentAccountStatistics(Principal principal) {
+		return statisticsService.findByAccountName(principal.getName());
+	}
+
 	//@PreAuthorize("#oauth2.hasScope('server') or #accountName.equals('demo')")
 	@RequestMapping(value = "/{accountName}", method = RequestMethod.GET)
 	public List<DataPoint> getStatisticsByAccountName(@PathVariable String accountName) {
 		return statisticsService.findByAccountName(accountName);
-	}
-
-	@RequestMapping(value = "/current", method = RequestMethod.GET)
-	public List<DataPoint> getAccountStatistics(Principal principal) {
-		return statisticsService.findByAccountName(principal.getName());
 	}
 
 	//@PreAuthorize("#oauth2.hasScope('server')")
