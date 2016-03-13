@@ -20,7 +20,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
-		<mongodb-driver.version>3.2.2</mongodb-driver.version>
 	</properties>
 
 	<dependencies>
@@ -47,11 +46,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-eureka</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mongodb</groupId>
-			<artifactId>mongo-java-driver</artifactId>
-			<version>${mongodb-driver.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
