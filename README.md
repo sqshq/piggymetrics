@@ -8,7 +8,7 @@
 
 This is [a small web application](http://my-piggymetrics.rhcloud.com) which could help you to estimate regular expenses and analyze your own financial statistics.
 
-![Piggy Metrics](http://hsto.org/files/bc9/d77/26d/bc9d7726d68548ba96f6a680cdabdbd7.gif)
+![Piggy Metrics](https://cloud.githubusercontent.com/assets/6069066/13830155/572e7552-ebe4-11e5-918f-637a49dff9a2.gif)
 
 ## Structure
 
