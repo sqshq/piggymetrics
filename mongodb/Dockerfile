@@ -1,7 +1,7 @@
 FROM mongo:3
 
 ADD init.sh /init.sh
-ADD *.js /
+ADD ./dump /
 
 RUN \
  chmod +x /init.sh && \
