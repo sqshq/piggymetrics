@@ -23,19 +23,39 @@ PiggyMetrics was decomposed into three core microservices. All of them are indep
 Contains general user input logic and validation: incomes/expenses items, savings and account settings.
 
 #### Statistics service
-Performs calculations on major statistics parameters and captures time series for each account. Datapoint contains values, normalized to base currency and time period. This data is used to track incomes/expenses dynamics in account lifetime (charts not yet implemented in UI)
+Performs calculations on major statistics parameters and captures time series for each account. Datapoint contains values, normalized to base currency and time period. This data is used to track cash flow dynamics in account lifetime (fancy charts not yet implemented in UI).
 
 #### Notification service
 Stores users contact information and notification settings (like remind and backup frequency). Scheduled worker collects required information from other services and sends e-mail messages to subscribed customers.
 
 #### N.B.
 - Each microservice has it's own database, so there is no way to bypass API and access persistance data directly.
-- In this project, I use Mongodb as a primary database for each service. It might also make sense to have a polyglot persistence architecture (сhoose the type of db, that is best suited to service requirements).
-- Another simplification in this project is service-to-service communication: services talking only by synchronous rest API. It's a good practice to use combination of interaction styles in a real-world systems. For example, perform synchronous GET request to retrieve data and use asynchronous approach via some Message broker for create/update operations.
+- In this project, I use Mongodb as a primary database for each service. It might also make sense to have a polyglot persistence architecture (сhoose the type of db that is best suited to service requirements).
+- Another simplification in this project is service-to-service communication: they are talking using only synchronous rest API. It's a good practice to use combination of interaction styles in a real-world systems. For example, perform synchronous GET request to retrieve data and use asynchronous approach via Message broker for create/update operations.
 
 ## Infrastructure services
+There's a bunch of common patterns in distributed systems, which could help us to make described core services work. Fortunately, [Spring cloud](http://projects.spring.io/spring-cloud/) provides powerful tools that enhance Spring Boot applications behaviour to implement those patterns. I'll cover them briefly.
+
 <img width="880" alt="Infrastructure services" src="https://cloud.githubusercontent.com/assets/6069066/13905633/dcbcd838-eede-11e5-9502-38a378a38d54.png">
 
-## Support
+#### Config service
+
+#### Auth service
+
+#### API Gateway
+
+#### Service discovery
+
+#### Http client, Load balancer and Circuit breaker
+
+#### Monitor dashboard
+
+#### Log analysis
+
+## Infrastructure automation
+
+## How to run all the things?
+
+## Feedback welcome
 
 PiggyMetrics is open source, and would greatly appreciate your help. Feel free to contact me with any questions.
