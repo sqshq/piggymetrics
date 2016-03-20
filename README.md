@@ -22,16 +22,6 @@ PiggyMetrics was decomposed into three core microservices. All of them are indep
 #### Account service
 Contains general user input logic and validation: incomes/expenses items, savings and account settings.
 
-#### Statistics service
-Performs calculations on major statistics parameters and captures time series for each account. Datapoint contains values, normalized to base currency and time period. This data is used to track cash flow dynamics in account lifetime (fancy charts not yet implemented in UI).
-
-#### Notification service
-Stores users contact information and notification settings (like remind and backup frequency). Scheduled worker collects required information from other services and sends e-mail messages to subscribed customers.
-
-#### REST API
-
-##### Account service
-
 Method	| Path	| Description	| Authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
 GET	| /accounts/{account}	| Get specified account data	|  | 	
@@ -40,7 +30,9 @@ GET	| /accounts/demo	| Get demo account data (pre-filled incomes/expenses items,
 PUT	| /accounts/current	| Save current account data	| × | ×
 POST	| /accounts/	| Register new account	|   | ×
 
-##### Statistics service
+
+#### Statistics service
+Performs calculations on major statistics parameters and captures time series for each account. Datapoint contains values, normalized to base currency and time period. This data is used to track cash flow dynamics in account lifetime (fancy charts not yet implemented in UI).
 
 Method	| Path	| Description	| Authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
@@ -49,7 +41,9 @@ GET	| /statistics/current	| Get current account statistics	| × | ×
 GET	| /statistics/demo	| Get demo account statistics	|   | × 
 PUT	| /accounts/{account}	| Create or update time series datapoint for specified account	|   | 
 
-##### Notification service
+
+#### Notification service
+Stores users contact information and notification settings (like remind and backup frequency). Scheduled worker collects required information from other services and sends e-mail messages to subscribed customers.
 
 Method	| Path	| Description	| Authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
@@ -59,10 +53,10 @@ PUT	| /notifications/settings/current	| Save current account notification settin
 #### N.B.
 - Each microservice has it's own database, so there is no way to bypass API and access persistance data directly.
 - In this project, I use Mongodb as a primary database for each service. It might also make sense to have a polyglot persistence architecture (сhoose the type of db that is best suited to service requirements).
-- Another simplification in this project is service-to-service communication: they are talking using only synchronous rest API. It's a good practice to use combination of interaction styles in a real-world systems. For example, perform synchronous GET request to retrieve data and use asynchronous approach via Message broker for create/update operations.
+- Service-to-service communication is quite simplified: microservices talking using only synchronous REST API. Common practice in a real-world systems is to use combination of interaction styles. For example, perform synchronous GET request to retrieve data and use asynchronous approach via Message broker for create/update operations in order to decouple services and buffer messages. However, this brings us in [eventual consistency](http://martinfowler.com/articles/microservice-trade-offs.html#consistency) world.
 
 ## Infrastructure services
-There's a bunch of common patterns in distributed systems, which could help us to make described core services work. Fortunately, [Spring cloud](http://projects.spring.io/spring-cloud/) provides powerful tools that enhance Spring Boot applications behaviour to implement those patterns. I'll cover them briefly.
+There's a bunch of common patterns in distributed systems, which could help us to make described core services work. [Spring cloud](http://projects.spring.io/spring-cloud/) provides powerful tools that enhance Spring Boot applications behaviour to implement those patterns. I'll cover them briefly.
 <img width="880" alt="Infrastructure services" src="https://cloud.githubusercontent.com/assets/6069066/13906840/365c0d94-eefa-11e5-90ad-9d74804ca412.png">
 ### Config service
 [Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) provides horizontally scalable centralized configuration service in a distributed system. It uses a pluggable repository layer that currently supports local storage, Git, and Subversion. 
