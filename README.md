@@ -30,6 +30,32 @@ Stores users contact information and notification settings (like remind and back
 
 #### REST API
 
+##### Account service
+
+Method	| Path	| Description	| Authenticated	| Available from UI
+------------- | ------------------------- | ------------- |:-------------:|:----------------:|
+GET	| /accounts/{account}	| Get specified account data	|  | 	
+GET	| /accounts/current	| Get current account data	| × | ×
+GET	| /accounts/demo	| Get demo account data (pre-filled incomes/expenses items, etc)	|   | 	×
+PUT	| /accounts/current	| Save current account data	| × | ×
+POST	| /accounts/	| Register new account	|   | ×
+
+##### Statistics service
+
+Method	| Path	| Description	| Authenticated	| Available from UI
+------------- | ------------------------- | ------------- |:-------------:|:----------------:|
+GET	| /statistics/{account}	        | Get specified account statistics	          |  | 	
+GET	| /statistics/current	| Get current account statistics	| × | × 
+GET	| /statistics/demo	| Get demo account statistics	|   | × 
+PUT	| /accounts/{account}	| Create or update time series datapoint for specified account	|   | 
+
+##### Notification service
+
+Method	| Path	| Description	| Authenticated	| Available from UI
+------------- | ------------------------- | ------------- |:-------------:|:----------------:|
+GET	| /notifications/settings/current	| Get current account notification settings	| × | ×	
+PUT	| /notifications/settings/current	| Save current account notification settings	| × | ×
+
 #### N.B.
 - Each microservice has it's own database, so there is no way to bypass API and access persistance data directly.
 - In this project, I use Mongodb as a primary database for each service. It might also make sense to have a polyglot persistence architecture (сhoose the type of db that is best suited to service requirements).
@@ -66,9 +92,9 @@ First, change required properties in Config server. Then, perform refresh reques
 Also, you could use Repository [webhooks to automate this process](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_push_notifications_and_spring_cloud_bus)
 
 ##### Notes
-- There are some limitations for dynamic refresh though. `@RefreshScope` doesn't work with `@Configuration` classes and it doesn't affect @Scheduled methods
+- There are some limitations for dynamic refresh though. `@RefreshScope` doesn't work with `@Configuration` classes and doesn't affect `@Scheduled` methods
 - `fail-fast` property means that Spring Boot application will fail startup immediately, if it cannot connect to the Config Service. That's very useful when we start [all applications together](https://github.com/sqshq/PiggyMetrics#how-to-run-all-the-things)
-- There are some significant [security notes](https://github.com/sqshq/PiggyMetrics#security) below
+- There are significant [security notes](https://github.com/sqshq/PiggyMetrics#security) below
 
 ### Auth service
 
@@ -81,6 +107,8 @@ Also, you could use Repository [webhooks to automate this process](http://cloud.
 ### Monitor dashboard
 
 ### Log analysis
+Centralized logging can be very useful when attempting to identify problems in a distributed environment. Elasticsearch, Logstash and Kibana stack lets you search and analyze your logs, utilization and network activity data with ease.
+Ready-to-go Docker configuration described [in my other project](http://github.com/sqshq/ELK-docker).
 
 ## Security
 
