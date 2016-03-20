@@ -28,6 +28,8 @@ Performs calculations on major statistics parameters and captures time series fo
 #### Notification service
 Stores users contact information and notification settings (like remind and backup frequency). Scheduled worker collects required information from other services and sends e-mail messages to subscribed customers.
 
+#### REST API
+
 #### N.B.
 - Each microservice has it's own database, so there is no way to bypass API and access persistance data directly.
 - In this project, I use Mongodb as a primary database for each service. It might also make sense to have a polyglot persistence architecture (сhoose the type of db that is best suited to service requirements).
@@ -35,22 +37,52 @@ Stores users contact information and notification settings (like remind and back
 
 ## Infrastructure services
 There's a bunch of common patterns in distributed systems, which could help us to make described core services work. Fortunately, [Spring cloud](http://projects.spring.io/spring-cloud/) provides powerful tools that enhance Spring Boot applications behaviour to implement those patterns. I'll cover them briefly.
+<img width="880" alt="Infrastructure services" src="https://cloud.githubusercontent.com/assets/6069066/13906840/365c0d94-eefa-11e5-90ad-9d74804ca412.png">
+### Config service
+[Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) provides horizontally scalable centralized configuration service in a distributed system. It uses a pluggable repository layer that currently supports local storage, Git, and Subversion. 
 
-<img width="880" alt="Infrastructure services" src="https://cloud.githubusercontent.com/assets/6069066/13905633/dcbcd838-eede-11e5-9502-38a378a38d54.png">
+In this project, I use `native profile`, which simply loads config files from the local classpath. You can see `shared` directory in [Config service resources](https://github.com/sqshq/PiggyMetrics/tree/master/config/src/main/resources). Those config files are shared with all applications in cluster. For example, when Statistics-service requests it's configuration, Config service will response with `shared/statistics-service.yml` and `shared/application.yml` (which is shared between all client applications).
 
-#### Config service
+##### Client side usage
+Just build Spring Boot application with `spring-cloud-starter-config`. That's it.
 
-#### Auth service
+You now don't need any embedded properties in your application. Just provide `bootstrap.yml` with application name and Config service url:
+```yml
+spring:
+  application:
+    name: notification-service
+  cloud:
+    config:
+      uri: http://config:8888
+      fail-fast: true
+```
 
-#### API Gateway
+##### With Spring Cloud Config, you can change app configuration dynamically. 
+For example, [EmailService bean](https://github.com/sqshq/PiggyMetrics/blob/master/notification-service/src/main/java/com/piggymetrics/notification/service/EmailServiceImpl.java) was annotated with `@RefreshScope`. That means, you can change e-mail text and subject without rebuild and restart Notification service application.
 
-#### Service discovery
+First, change required properties in Config server. Then, perform refresh request to Notification service:
+`curl -H "Authorization: Bearer #token#" -XPOST http://127.0.0.1:8000/notifications/refresh`
 
-#### Http client, Load balancer and Circuit breaker
+Also, you could use Repository [webhooks to automate this process](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_push_notifications_and_spring_cloud_bus)
 
-#### Monitor dashboard
+##### Notes
+- There are some limitations for dynamic refresh though. `@RefreshScope` doesn't work with `@Configuration` classes and it doesn't affect @Scheduled methods
+- `fail-fast` property means that Spring Boot application will fail startup immediately, if it cannot connect to the Config Service. That's very useful when we start [all applications together](https://github.com/sqshq/PiggyMetrics#how-to-run-all-the-things)
+- There are some significant [security notes](https://github.com/sqshq/PiggyMetrics#security) below
 
-#### Log analysis
+### Auth service
+
+### API Gateway
+
+### Service discovery
+
+### Http client, Load balancer and Circuit breaker
+
+### Monitor dashboard
+
+### Log analysis
+
+## Security
 
 ## Infrastructure automation
 
