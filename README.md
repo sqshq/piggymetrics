@@ -22,7 +22,7 @@ PiggyMetrics was decomposed into three core microservices. All of them are indep
 #### Account service
 Contains general user input logic and validation: incomes/expenses items, savings and account settings.
 
-Method	| Path	| Description	| Authenticated	| Available from UI
+Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
 GET	| /accounts/{account}	| Get specified account data	|  | 	
 GET	| /accounts/current	| Get current account data	| × | ×
@@ -34,7 +34,7 @@ POST	| /accounts/	| Register new account	|   | ×
 #### Statistics service
 Performs calculations on major statistics parameters and captures time series for each account. Datapoint contains values, normalized to base currency and time period. This data is used to track cash flow dynamics in account lifetime (fancy charts not yet implemented in UI).
 
-Method	| Path	| Description	| Authenticated	| Available from UI
+Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
 GET	| /statistics/{account}	        | Get specified account statistics	          |  | 	
 GET	| /statistics/current	| Get current account statistics	| × | × 
@@ -45,7 +45,7 @@ PUT	| /accounts/{account}	| Create or update time series datapoint for specified
 #### Notification service
 Stores users contact information and notification settings (like remind and backup frequency). Scheduled worker collects required information from other services and sends e-mail messages to subscribed customers.
 
-Method	| Path	| Description	| Authenticated	| Available from UI
+Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
 GET	| /notifications/settings/current	| Get current account notification settings	| × | ×	
 PUT	| /notifications/settings/current	| Save current account notification settings	| × | ×
@@ -59,7 +59,7 @@ PUT	| /notifications/settings/current	| Save current account notification settin
 There's a bunch of common patterns in distributed systems, which could help us to make described core services work. [Spring cloud](http://projects.spring.io/spring-cloud/) provides powerful tools that enhance Spring Boot applications behaviour to implement those patterns. I'll cover them briefly.
 <img width="880" alt="Infrastructure services" src="https://cloud.githubusercontent.com/assets/6069066/13906840/365c0d94-eefa-11e5-90ad-9d74804ca412.png">
 ### Config service
-[Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) is horizontally scalable centralized configuration service for distributed system. It uses a pluggable repository layer that currently supports local storage, Git, and Subversion. 
+[Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) is horizontally scalable centralized configuration service for distributed systems. It uses a pluggable repository layer that currently supports local storage, Git, and Subversion. 
 
 In this project, I use `native profile`, which simply loads config files from the local classpath. You can see `shared` directory in [Config service resources](https://github.com/sqshq/PiggyMetrics/tree/master/config/src/main/resources). Those config files are shared with all applications in cluster. For example, when Statistics-service requests it's configuration, Config service will response with `shared/statistics-service.yml` and `shared/application.yml` (which is shared between all client applications).
 
@@ -91,8 +91,44 @@ Also, you could use Repository [webhooks to automate this process](http://cloud.
 - There are significant [security notes](https://github.com/sqshq/PiggyMetrics#security) below
 
 ### Auth service
+Authorization responsibilities are completely extracted to separate server, which grants [OAuth2 tokens](https://tools.ietf.org/html/rfc6749) for the backend resource services. Auth Server is used for user authorization as well as for secure machine-to-machine communication inside a perimeter.
+
+In this project, I use [`Password credentials`](https://tools.ietf.org/html/rfc6749#section-4.3) grant type for users authorization (since it's used only by native PiggyMetrics UI) and [`Client Credentials`](https://tools.ietf.org/html/rfc6749#section-4.4) grant for microservices authorization.
+
+Spring Cloud Security provides convenient annotations to make this really easy to implement from both server and client side. You can learn more about it in [documentation](http://cloud.spring.io/spring-cloud-security/spring-cloud-security.html) and check configuration details in [Auth Server code](https://github.com/sqshq/PiggyMetrics/tree/master/auth-service/src/main/java/com/piggymetrics/auth)
+
+From the client side, everything works exactly the same as with traditional session-based authorization. You can retrieve `Principal` object from request, check user's roles and other stuff with expression-based access control and `@PreAuthorize` annotation.
+
+Each client in PiggyMetrics (account-service, statistics-service, notification-service and browser) has a scope: `server` for backend services, and `ui` - for browser. So we can also protect controllers from external access, for example:
+
+``` java
+@PreAuthorize("#oauth2.hasScope('server')")
+@RequestMapping(value = "accounts/{name}", method = RequestMethod.GET)
+public List<DataPoint> getStatisticsByAccountName(@PathVariable String name) {
+	return statisticsService.findByAccountName(name);
+}
+```
 
 ### API Gateway
+As you can see, there are three core services, which expose external API to client. In a real-world systems, this number can grow very quickly as well as whole system complexity. Actualy, hundreds of services might be involved in rendering one complex webpage.
+
+In theory, a client could make requests to each of the microservices directly. But obviously, there are challenges and limitations with this option, like necessity to know all endpoints addresses, perform http request for each peace of information separately, merge the result on a client side. Another problem is non web-friendly protocols, which might be used on the backend.
+
+Usually a much better approach is to use API Gateway. It is a single entry point into the system, used to handle requests by routing them to the appropriate backend service or by invoking multiple backend services and [aggregating the results](http://techblog.netflix.com/2013/01/optimizing-netflix-api.html). Also, it can be used for authentication, insights, stress and canary testing, service migration, static response handling, active traffic management.
+
+Netflix opensourced [such an edge service](http://techblog.netflix.com/2013/06/announcing-zuul-edge-service-in-cloud.html), and now with Spring Cloud we can enable it with one `@EnableZuulProxy` annotation. In this project, I use Zuul to store static content (ui application) and to route requests to appropriate microservices. Here's routing configuration for Notification service, for example:
+
+```yml
+zuul:
+  routes:
+    notification-service:
+        path: /notifications/**
+        serviceId: notification-service
+        stripPrefix: false
+
+```
+
+That means all requests starting with `/notifications` will be routed to Notification service. There is no hardcoded address, as you can see. Zuul uses Service discovery mechanism to locate Notification service instances and load balanced between them.
 
 ### Service discovery
 
