@@ -147,7 +147,7 @@ spring:
 
 Now, on application startup, it will register with Eureka Server and provide meta-data, such as host and port, health indicator URL, home page etc. Eureka receives heartbeat messages from each instance belonging to a service. If the heartbeat fails over a configurable timetable, the instance will be removed from the registry.
 
-Also, Eureka provides simple interface, where you can track running services and number of avalable instances: `http://localhost:8761`
+Also, Eureka provides simple interface, where you can track running services and number of available instances: `http://localhost:8761`
 
 ### Http client, Load balancer and Circuit breaker
 
