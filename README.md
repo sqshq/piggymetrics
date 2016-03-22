@@ -132,6 +132,23 @@ That means all requests starting with `/notifications` will be routed to Notific
 
 ### Service discovery
 
+Another commonly known architecture pattern is Service discovery. It allows automatic detection of network locations for service instances, which could have dynamically assigned addresses because of auto-scaling, failures and upgrades.
+
+The key part of Service discovery is Registry. I use Netflix Eureka in this project. Eureka is a good example of the client-side discovery pattern, when client is responsible for determining locations of available service instances (using Registry server) and load balancing requests across them.
+
+With Spring Boot, you can easily build Eureka Registry with `spring-cloud-starter-eureka-server` dependency, `@EnableEurekaServer` annotation and simple configuration properties.
+
+Client support enabled with `@EnableDiscoveryClient` annotation an `bootstrap.yml` with application name:
+``` yml
+spring:
+  application:
+    name: notification-service
+```
+
+Now, on application startup, it will register with Eureka Server and provide meta-data, such as host and port, health indicator URL, home page etc. Eureka receives heartbeat messages from each instance belonging to a service. If the heartbeat fails over a configurable timetable, the instance will be removed from the registry.
+
+Also, Eureka provides simple interface, where you can track running services and number of avalable instances: `http://localhost:8761`
+
 ### Http client, Load balancer and Circuit breaker
 
 ### Monitor dashboard
