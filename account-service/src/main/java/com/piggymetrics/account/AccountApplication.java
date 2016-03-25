@@ -1,8 +1,11 @@
 package com.piggymetrics.account;
 
+import com.piggymetrics.account.service.config.CustomUserInfoTokenServices;
 import feign.RequestInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -18,6 +21,7 @@ import org.springframework.security.oauth2.client.token.grant.client.ClientCrede
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 
 @SpringBootApplication
 @EnableResourceServer
@@ -28,6 +32,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 @EnableConfigurationProperties
 @Configuration
 public class AccountApplication extends ResourceServerConfigurerAdapter {
+
+	@Autowired
+	private ResourceServerProperties sso;
 
 	public static void main(String[] args) {
 		SpringApplication.run(AccountApplication.class, args);
@@ -47,6 +54,11 @@ public class AccountApplication extends ResourceServerConfigurerAdapter {
 	@Bean
 	public OAuth2RestTemplate clientCredentialsRestTemplate() {
 		return new OAuth2RestTemplate(clientCredentialsResourceDetails());
+	}
+
+	@Bean
+	public ResourceServerTokenServices tokenServices() {
+		return new CustomUserInfoTokenServices(sso.getUserInfoUri(), sso.getClientId());
 	}
 
 	@Override

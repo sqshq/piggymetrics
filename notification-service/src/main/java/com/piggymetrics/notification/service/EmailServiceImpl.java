@@ -22,7 +22,7 @@ import java.text.MessageFormat;
 @RefreshScope
 public class EmailServiceImpl implements EmailService {
 
-	private static final Logger log = LoggerFactory.getLogger(NotificationServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private JavaMailSender mailSender;
