@@ -22,6 +22,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Extended implementation of {@link org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices}
+ *
+ * By default, it designed to return only user details. This class provides {@link #getRequest(Map)} method, which
+ * returns clientId and scope of calling service. This information used in controller's security checks.
+ */
+
 public class CustomUserInfoTokenServices implements ResourceServerTokenServices {
 
 	protected final Log logger = LogFactory.getLog(getClass());
