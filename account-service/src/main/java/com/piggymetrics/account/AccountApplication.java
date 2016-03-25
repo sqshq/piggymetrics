@@ -1,6 +1,6 @@
 package com.piggymetrics.account;
 
-import com.piggymetrics.account.service.config.CustomUserInfoTokenServices;
+import com.piggymetrics.account.service.security.CustomUserInfoTokenServices;
 import feign.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;

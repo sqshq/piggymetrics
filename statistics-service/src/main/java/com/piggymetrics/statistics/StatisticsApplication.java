@@ -2,7 +2,7 @@ package com.piggymetrics.statistics;
 
 import com.piggymetrics.statistics.repository.converter.DataPointIdReaderConverter;
 import com.piggymetrics.statistics.repository.converter.DataPointIdWriterConverter;
-import com.piggymetrics.statistics.service.config.CustomUserInfoTokenServices;
+import com.piggymetrics.statistics.service.security.CustomUserInfoTokenServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
