@@ -1,5 +1,6 @@
 package com.piggymetrics.account.service;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.piggymetrics.account.client.AuthServiceClient;
 import com.piggymetrics.account.client.StatisticsServiceClient;
 import com.piggymetrics.account.domain.Account;
@@ -88,10 +89,11 @@ public class AccountServiceImpl implements AccountService {
 
 		log.debug("account {} changes has been saved", name);
 
-		try {
-			statisticsClient.updateStatistics(name, account);
-		} catch (Exception e) {
-			log.error("error during statistics update", e);
-		}
+		updateStatistics(name, account);
+	}
+
+	@HystrixCommand
+	private void updateStatistics(String name, Account account) {
+		statisticsClient.updateStatistics(name, account);
 	}
 }

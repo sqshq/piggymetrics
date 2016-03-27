@@ -17,10 +17,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Extended implementation of {@link org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices}
@@ -99,10 +96,10 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
 		Map<String, Object> request = (Map<String, Object>) map.get("oauth2Request");
 
 		String clientId = (String) request.get("clientId");
-		Set<String> scope = request.containsKey("scope") ?
-				(Set<String>) map.get("scope") : Collections.<String>emptySet();
+		Set<String> scope = new LinkedHashSet<>(request.containsKey("scope") ?
+				(Collection<String>) request.get("scope") : Collections.<String>emptySet());
 
-		return new OAuth2Request(null, clientId, null, true, scope,
+		return new OAuth2Request(null, clientId, null, true, new HashSet<>(scope),
 				null, null, null, null);
 	}
 

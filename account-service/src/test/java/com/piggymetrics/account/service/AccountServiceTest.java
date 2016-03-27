@@ -146,16 +146,4 @@ public class AccountServiceTest {
 		when(accountService.findByName("test")).thenReturn(null);
 		accountService.saveChanges("test", update);
 	}
-
-	@Test
-	public void shouldNotFailOnStatisticsClientException() {
-		final Account update = new Account();
-		update.setIncomes(Arrays.asList(new Item()));
-		update.setExpenses(Arrays.asList(new Item()));
-
-		when(accountService.findByName("test")).thenReturn(new Account());
-		doThrow(RuntimeException.class).when(statisticsClient).updateStatistics(any(), any());
-
-		accountService.saveChanges("test", update);
-	}
 }
