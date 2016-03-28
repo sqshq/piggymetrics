@@ -1,6 +1,5 @@
 package com.piggymetrics.account.service;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.piggymetrics.account.client.AuthServiceClient;
 import com.piggymetrics.account.client.StatisticsServiceClient;
 import com.piggymetrics.account.domain.Account;
@@ -20,7 +19,7 @@ import java.util.Date;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-	private static final Logger log = LoggerFactory.getLogger(AccountServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private StatisticsServiceClient statisticsClient;
@@ -84,16 +83,10 @@ public class AccountServiceImpl implements AccountService {
 		account.setSaving(update.getSaving());
 		account.setNote(update.getNote());
 		account.setLastSeen(new Date());
-
 		repository.save(account);
 
 		log.debug("account {} changes has been saved", name);
 
-		updateStatistics(name, account);
-	}
-
-	@HystrixCommand
-	private void updateStatistics(String name, Account account) {
 		statisticsClient.updateStatistics(name, account);
 	}
 }

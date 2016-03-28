@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class RecipientServiceImpl implements RecipientService {
 
-	private static final Logger log = LoggerFactory.getLogger(RecipientServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private RecipientRepository repository;

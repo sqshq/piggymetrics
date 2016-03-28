@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
 
-	private static final Logger log = LoggerFactory.getLogger(StatisticsServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	private DataPointRepository repository;
