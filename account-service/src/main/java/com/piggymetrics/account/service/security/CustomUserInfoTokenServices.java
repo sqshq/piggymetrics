@@ -110,7 +110,7 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
 
 	@SuppressWarnings({ "unchecked" })
 	private Map<String, Object> getMap(String path, String accessToken) {
-		this.logger.info("Getting user info from: " + path);
+		this.logger.debug("Getting user info from: " + path);
 		try {
 			OAuth2RestOperations restTemplate = this.restTemplate;
 			if (restTemplate == null) {
