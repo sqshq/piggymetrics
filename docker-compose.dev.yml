@@ -1,5 +1,10 @@
 version: '2'
 services:
+  rabbitmq:
+    ports:
+      - 5672:5672
+      - 15672:15672
+
   config:
     build: config
     ports:
@@ -50,3 +55,6 @@ services:
     build: mongodb
     ports:
       - 28000:27017
+
+  monitoring:
+    build: monitoring

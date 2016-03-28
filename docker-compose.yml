@@ -1,5 +1,13 @@
 version: '2'
 services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
   config:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
@@ -120,6 +128,19 @@ services:
     restart: always
     environment:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  monitoring:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+    image: sqshq/piggymetrics-monitoring
+    restart: always
+    ports:
+      - 8989:8989
+      - 9000:8080
     logging:
       options:
         max-size: "10m"
