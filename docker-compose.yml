@@ -3,6 +3,8 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     restart: always
+    ports:
+      - 15672:15672
     logging:
       options:
         max-size: "10m"
@@ -139,8 +141,8 @@ services:
     image: sqshq/piggymetrics-monitoring
     restart: always
     ports:
-      - 8989:8989
       - 9000:8080
+      - 8989:8989
     logging:
       options:
         max-size: "10m"

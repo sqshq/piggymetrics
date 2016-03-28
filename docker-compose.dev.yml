@@ -3,7 +3,6 @@ services:
   rabbitmq:
     ports:
       - 5672:5672
-      - 15672:15672
 
   config:
     build: config
