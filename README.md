@@ -165,7 +165,17 @@ Ready-to-go Docker configuration described [in my other project](http://github.c
 
 ## Infrastructure automation
 
+Deploying microservices, with their interdependence, is much more complex process than deploying monolithic application. It is important to have fully automated infrastructure. With Continious Delivery approach we can achieve following major benefits:
+
+- The ability to release software anytime
+- Any build could end up being a release
+- Build artifacts once - deploy as needed
+
+Here is a simple Continious Delivery workflow, implemented in this project:
+
 <img width="880" src="https://cloud.githubusercontent.com/assets/6069066/14159789/0dd7a7ce-f6e9-11e5-9fbb-a7fe0f4431e3.png">
+
+In this [configuration](https://github.com/sqshq/PiggyMetrics/blob/master/.travis.yml), Travis CI builds tagged images for each succesful git push. So, there are always `latest` image for each microservice on [Docker Hub](https://hub.docker.com/r/sqshq/) and older images, tagged with git commit hash. It's easy to deploy any of them and quickly rollback, if needed.
 
 ## How to run all the things?
 
