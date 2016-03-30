@@ -165,6 +165,8 @@ Ready-to-go Docker configuration described [in my other project](http://github.c
 
 ## Infrastructure automation
 
+<img width="880" src="https://cloud.githubusercontent.com/assets/6069066/14159789/0dd7a7ce-f6e9-11e5-9fbb-a7fe0f4431e3.png">
+
 ## How to run all the things?
 
 ## Feedback welcome
