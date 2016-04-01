@@ -165,7 +165,7 @@ In this project configuration, each microservice with Hystrix on board pushes me
 
 See below [how to get it up and running](https://github.com/sqshq/PiggyMetrics#how-to-run-all-the-things).
 
-Let's see our system behavior under load: Account service calls Statistics service and it responses with a vary imitation delay.
+Let's see our system behavior under load: Account service calls Statistics service and it responses with a vary imitation delay. Response timeout threshold is set to 1 second.
 
 <img width="880" src="https://cloud.githubusercontent.com/assets/6069066/14194375/d9a2dd80-f7be-11e5-8bcc-9a2fce753cfe.png">
 
