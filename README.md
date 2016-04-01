@@ -149,9 +149,30 @@ Now, on application startup, it will register with Eureka Server and provide met
 
 Also, Eureka provides simple interface, where you can track running services and number of available instances: `http://localhost:8761`
 
-### Http client, Load balancer and Circuit breaker
+### Load balancer, Circuit breaker and Http client
+
+Moreover, Netflix OSS provides another great set of tools.
+
+#### Ribbon
+
+#### Hystrix
+
+#### Feign
 
 ### Monitor dashboard
+
+In this project configuration, each microservice with Hystrix on board pushes metrics to Turbine via Spring Cloud Bus (with AMQP broker). The Monitoring project is just a small Spring boot application with [Turbine](https://github.com/Netflix/Turbine) and [Hystrix Dashboard](https://github.com/Netflix/Hystrix/tree/master/hystrix-dashboard).
+
+See below [how to get it up and running](https://github.com/sqshq/PiggyMetrics#how-to-run-all-the-things).
+
+Let's see our system behavior under load: Account service calls Statistics service and it responses with a vary imitation delay. Response timeout threshold is set to 1 second.
+
+<img width="880" src="https://cloud.githubusercontent.com/assets/6069066/14194375/d9a2dd80-f7be-11e5-8bcc-9a2fce753cfe.png">
+
+<img width="212" src="https://cloud.githubusercontent.com/assets/6069066/14127349/21e90026-f628-11e5-83f1-60108cb33490.gif">	| <img width="212" src="https://cloud.githubusercontent.com/assets/6069066/14127348/21e6ed40-f628-11e5-9fa4-ed527bf35129.gif"> | <img width="212" src="https://cloud.githubusercontent.com/assets/6069066/14127346/21b9aaa6-f628-11e5-9bba-aaccab60fd69.gif"> | <img width="212" src="https://cloud.githubusercontent.com/assets/6069066/14127350/21eafe1c-f628-11e5-8ccd-a6b6873c046a.gif">
+--- |--- |--- |--- |
+| `0 ms delay` | `500 ms delay` | `800 ms delay` | `1100 ms delay`
+| Well behaving system. The throughput is about 22 requests/second. Small number of active threads in Statistics service. The median service time is about 50 ms. | The number of active threads is growing. We can see purple number of thread-pool rejections and therefore about 30-40% of errors, but circuit is still closed. | Half-open state: the ratio of failed commands is more than 50%, the circuit breaker kicks in. After sleep window amount of time, the next request is let through. | 100 percent of the requests fail. The circuit is now permanently open. Retry after sleep time won't close circuit again, because the single request is too slow.
 
 ### Log analysis
 Centralized logging can be very useful when attempting to identify problems in a distributed environment. Elasticsearch, Logstash and Kibana stack lets you search and analyze your logs, utilization and network activity data with ease.
@@ -160,6 +181,18 @@ Ready-to-go Docker configuration described [in my other project](http://github.c
 ## Security
 
 ## Infrastructure automation
+
+Deploying microservices, with their interdependence, is much more complex process than deploying monolithic application. It is important to have fully automated infrastructure. We can achieve following benefits With Continuous Delivery approach:
+
+- The ability to release software anytime
+- Any build could end up being a release
+- Build artifacts once - deploy as needed
+
+Here is a simple Continuous Delivery workflow, implemented in this project:
+
+<img width="880" src="https://cloud.githubusercontent.com/assets/6069066/14159789/0dd7a7ce-f6e9-11e5-9fbb-a7fe0f4431e3.png">
+
+In this [configuration](https://github.com/sqshq/PiggyMetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push. So, there are always `latest` image for each microservice on [Docker Hub](https://hub.docker.com/r/sqshq/) and older images, tagged with git commit hash. It's easy to deploy any of them and quickly rollback, if needed.
 
 ## How to run all the things?
 
