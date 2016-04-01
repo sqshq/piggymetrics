@@ -149,13 +149,21 @@ Now, on application startup, it will register with Eureka Server and provide met
 
 Also, Eureka provides simple interface, where you can track running services and number of available instances: `http://localhost:8761`
 
-### Http client, Load balancer and Circuit breaker
+### Load balancer, Circuit breaker and Http client
+
+Moreover, Netflix OSS provides another great set of tools.
+
+#### Ribbon
+
+#### Hystrix
+
+#### Feign
 
 ### Monitor dashboard
 
 In this project configuration, each microservice with Hystrix on board pushes metrics to Turbine via Spring Cloud Bus (with AMQP broker). The Monitoring project is just a small Spring boot application with [Turbine](https://github.com/Netflix/Turbine) and [Hystrix Dashboard](https://github.com/Netflix/Hystrix/tree/master/hystrix-dashboard).
 
-See below [how get it up and running](https://github.com/sqshq/PiggyMetrics#how-to-run-all-the-things).
+See below [how to get it up and running](https://github.com/sqshq/PiggyMetrics#how-to-run-all-the-things).
 
 Let's see our system behavior under load: Account service calls Statistics service and it responses with a vary imitation delay.
 
