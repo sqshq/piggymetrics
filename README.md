@@ -50,7 +50,7 @@ Method	| Path	| Description	| User authenticated	| Available from UI
 GET	| /notifications/settings/current	| Get current account notification settings	| × | ×	
 PUT	| /notifications/settings/current	| Save current account notification settings	| × | ×
 
-#### N.B.
+#### Notes
 - Each microservice has it's own database, so there is no way to bypass API and access persistance data directly.
 - In this project, I use Mongodb as a primary database for each service. It might also make sense to have a polyglot persistence architecture (сhoose the type of db that is best suited to service requirements).
 - Service-to-service communication is quite simplified: microservices talking using only synchronous REST API. Common practice in a real-world systems is to use combination of interaction styles. For example, perform synchronous GET request to retrieve data and use asynchronous approach via Message broker for create/update operations in order to decouple services and buffer messages. However, this brings us in [eventual consistency](http://martinfowler.com/articles/microservice-trade-offs.html#consistency) world.
@@ -66,7 +66,7 @@ In this project, I use `native profile`, which simply loads config files from th
 ##### Client side usage
 Just build Spring Boot application with `spring-cloud-starter-config`. That's it.
 
-You now don't need any embedded properties in your application. Just provide `bootstrap.yml` with application name and Config service url:
+Now you don't need any embedded properties in your application. Just provide `bootstrap.yml` with application name and Config service url:
 ```yml
 spring:
   application:
@@ -87,7 +87,7 @@ Also, you could use Repository [webhooks to automate this process](http://cloud.
 
 ##### Notes
 - There are some limitations for dynamic refresh though. `@RefreshScope` doesn't work with `@Configuration` classes and doesn't affect `@Scheduled` methods
-- `fail-fast` property means that Spring Boot application will fail startup immediately, if it cannot connect to the Config Service. That's very useful when we start [all applications together](https://github.com/sqshq/PiggyMetrics#how-to-run-all-the-things)
+- `fail-fast` property means that Spring Boot application will fail startup immediately, if it cannot connect to the Config Service. That's very useful when start [all applications together](https://github.com/sqshq/PiggyMetrics#how-to-run-all-the-things)
 - There are significant [security notes](https://github.com/sqshq/PiggyMetrics#security) below
 
 ### Auth service
@@ -200,10 +200,13 @@ Let's see our system behavior under load: Account service calls Statistics servi
 | Well behaving system. The throughput is about 22 requests/second. Small number of active threads in Statistics service. The median service time is about 50 ms. | The number of active threads is growing. We can see purple number of thread-pool rejections and therefore about 30-40% of errors, but circuit is still closed. | Half-open state: the ratio of failed commands is more than 50%, the circuit breaker kicks in. After sleep window amount of time, the next request is let through. | 100 percent of the requests fail. The circuit is now permanently open. Retry after sleep time won't close circuit again, because the single request is too slow.
 
 ### Log analysis
+
 Centralized logging can be very useful when attempting to identify problems in a distributed environment. Elasticsearch, Logstash and Kibana stack lets you search and analyze your logs, utilization and network activity data with ease.
 Ready-to-go Docker configuration described [in my other project](http://github.com/sqshq/ELK-docker).
 
 ## Security
+
+An advanced security configuration is beyond the scope of this proof-of-concept project. For a more realistic simulation of a real system, consider to use https, JCE keystore to encrypt Microservices passwords and Config server properties content (see [documentation](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_security) for details).
 
 ## Infrastructure automation
 
@@ -221,15 +224,31 @@ In this [configuration](https://github.com/sqshq/PiggyMetrics/blob/master/.travi
 
 ## How to run all the things?
 
-Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDb instances and RabbitMq. Make sure you have `8 Gb` RAM available on your machine. You can always run just vital services though: `Gateway`, `Registry`, `Config`, `Auth Service` and `Account Service`.
+Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDb instances and RabbitMq. Make sure you have `8 Gb` RAM available on your machine. You can always run just vital services though: Gateway, Registry, Config, Auth Service and Account Service.
 
 #### Before you start
 - Install Docker and Docker Compose.
 - Export environment variables: `CONFIG_SERVICE_PASSWORD`, `NOTIFICATION_SERVICE_PASSWORD`, `STATISTICS_SERVICE_PASSWORD`, `ACCOUNT_SERVICE_PASSWORD`, `MONGODB_PASSWORD`
 
 #### Production mode
+In this mode, all latest images will be pulled from Docker Hub. Just copy `docker-compose.yml` and hit `docker-compose up -d`.
 
 #### Development mode
+If you'd like to build images yourself (with some changes in the code, for example), you have to clone all repository and build artifacts with maven. Then, run `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d`
+
+`docker-compose.dev.yml` inherits `docker-compose.yml` with additional possibility to build images locally and expose all containers ports for convenient development.
+
+#### Important endpoints
+- localhost:80 - Gateway
+- localhost:8761 - Eureka Dashboard
+- localhost:9000 - Hystrix Dashboard
+- localhost:8989 - Turbine stream (source for Hystrix Dashboard)
+- localhost:15672 - RabbitMq management
+
+#### Notes
+All Spring Boot applications require already running [Config Server](https://github.com/sqshq/PiggyMetrics#config-service) for startup. But we can start all containers simultaneously because of `fail-fast` Spring Boot property and `restart: always` docker-compose option. That means all dependent containers will try to restart until Config Server will be up and running.
+
+Also, Service Discovery mechanism needs some time after all applications startup. Any service is not available for discovery by clients until the instance, the Eureka server and the client all have the same metadata in their local cache, so it could take 3 hearbeats. Default hearbeat period is 30 seconds.
 
 ## Feedback welcome
 
