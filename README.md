@@ -52,7 +52,7 @@ PUT	| /notifications/settings/current	| Save current account notification settin
 
 #### Notes
 - Each microservice has it's own database, so there is no way to bypass API and access persistance data directly.
-- In this project, I use Mongodb as a primary database for each service. It might also make sense to have a polyglot persistence architecture (сhoose the type of db that is best suited to service requirements).
+- In this project, I use MongoDB as a primary database for each service. It might also make sense to have a polyglot persistence architecture (сhoose the type of db that is best suited to service requirements).
 - Service-to-service communication is quite simplified: microservices talking using only synchronous REST API. Common practice in a real-world systems is to use combination of interaction styles. For example, perform synchronous GET request to retrieve data and use asynchronous approach via Message broker for create/update operations in order to decouple services and buffer messages. However, this brings us in [eventual consistency](http://martinfowler.com/articles/microservice-trade-offs.html#consistency) world.
 
 ## Infrastructure services
@@ -224,7 +224,7 @@ In this [configuration](https://github.com/sqshq/PiggyMetrics/blob/master/.travi
 
 ## How to run all the things?
 
-Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDb instances and RabbitMq. Make sure you have `8 Gb` RAM available on your machine. You can always run just vital services though: Gateway, Registry, Config, Auth Service and Account Service.
+Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDB instances and RabbitMq. Make sure you have `8 Gb` RAM available on your machine. You can always run just vital services though: Gateway, Registry, Config, Auth Service and Account Service.
 
 #### Before you start
 - Install Docker and Docker Compose.
