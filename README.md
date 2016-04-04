@@ -61,10 +61,10 @@ There's a bunch of common patterns in distributed systems, which could help us t
 ### Config service
 [Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) is horizontally scalable centralized configuration service for distributed systems. It uses a pluggable repository layer that currently supports local storage, Git, and Subversion. 
 
-In this project, I use `native profile`, which simply loads config files from the local classpath. You can see `shared` directory in [Config service resources](https://github.com/sqshq/PiggyMetrics/tree/master/config/src/main/resources). Those config files are shared with all applications in cluster. For example, when Statistics-service requests it's configuration, Config service will response with `shared/statistics-service.yml` and `shared/application.yml` (which is shared between all client applications).
+In this project, I use `native profile`, which simply loads config files from the local classpath. You can see `shared` directory in [Config service resources](https://github.com/sqshq/PiggyMetrics/tree/master/config/src/main/resources). Those config files are shared with all applications in cluster. For example, when Notification-service requests it's configuration, Config service responses with `shared/notification-service.yml` and `shared/application.yml` (which is shared between all client applications).
 
 ##### Client side usage
-Just build Spring Boot application with `spring-cloud-starter-config` dependency. That's it.
+Just build Spring Boot application with `spring-cloud-starter-config` dependency, autoconfiguration will do the rest.
 
 Now you don't need any embedded properties in your application. Just provide `bootstrap.yml` with application name and Config service url:
 ```yml
@@ -95,7 +95,7 @@ Authorization responsibilities are completely extracted to separate server, whic
 
 In this project, I use [`Password credentials`](https://tools.ietf.org/html/rfc6749#section-4.3) grant type for users authorization (since it's used only by native PiggyMetrics UI) and [`Client Credentials`](https://tools.ietf.org/html/rfc6749#section-4.4) grant for microservices authorization.
 
-Spring Cloud Security provides convenient annotations to make this really easy to implement from both server and client side. You can learn more about it in [documentation](http://cloud.spring.io/spring-cloud-security/spring-cloud-security.html) and check configuration details in [Auth Server code](https://github.com/sqshq/PiggyMetrics/tree/master/auth-service/src/main/java/com/piggymetrics/auth).
+Spring Cloud Security provides convenient annotations and autoconfiguration to make this really easy to implement from both server and client side. You can learn more about it in [documentation](http://cloud.spring.io/spring-cloud-security/spring-cloud-security.html) and check configuration details in [Auth Server code](https://github.com/sqshq/PiggyMetrics/tree/master/auth-service/src/main/java/com/piggymetrics/auth).
 
 From the client side, everything works exactly the same as with traditional session-based authorization. You can retrieve `Principal` object from request, check user's roles and other stuff with expression-based access control and `@PreAuthorize` annotation.
 
