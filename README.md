@@ -36,10 +36,10 @@ Performs calculations on major statistics parameters and captures time series fo
 
 Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
-GET	| /statistics/{account}	        | Get specified account statistics	          |  | 	
+GET	| /statistics/{account}	| Get specified account statistics	          |  | 	
 GET	| /statistics/current	| Get current account statistics	| × | × 
 GET	| /statistics/demo	| Get demo account statistics	|   | × 
-PUT	| /accounts/{account}	| Create or update time series datapoint for specified account	|   | 
+PUT	| /statistics/{account}	| Create or update time series datapoint for specified account	|   | 
 
 
 #### Notification service
