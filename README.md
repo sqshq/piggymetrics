@@ -61,7 +61,7 @@ There's a bunch of common patterns in distributed systems, which could help us t
 ### Config service
 [Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) is horizontally scalable centralized configuration service for distributed systems. It uses a pluggable repository layer that currently supports local storage, Git, and Subversion. 
 
-In this project, I use `native profile`, which simply loads config files from the local classpath. You can see `shared` directory in [Config service resources](https://github.com/sqshq/PiggyMetrics/tree/master/config/src/main/resources). Those config files are shared with all applications in cluster. For example, when Notification-service requests it's configuration, Config service responses with `shared/notification-service.yml` and `shared/application.yml` (which is shared between all client applications).
+In this project, I use `native profile`, which simply loads config files from the local classpath. You can see `shared` directory in [Config service resources](https://github.com/sqshq/PiggyMetrics/tree/master/config/src/main/resources). Now, when Notification-service requests it's configuration, Config service responses with `shared/notification-service.yml` and `shared/application.yml` (which is shared between all client applications).
 
 ##### Client side usage
 Just build Spring Boot application with `spring-cloud-starter-config` dependency, autoconfiguration will do the rest.
@@ -99,7 +99,7 @@ Spring Cloud Security provides convenient annotations and autoconfiguration to m
 
 From the client side, everything works exactly the same as with traditional session-based authorization. You can retrieve `Principal` object from request, check user's roles and other stuff with expression-based access control and `@PreAuthorize` annotation.
 
-Each client in PiggyMetrics (account-service, statistics-service, notification-service and browser) has a scope: `server` for backend services, and `ui` - for browser. So we can also protect controllers from external access, for example:
+Each client in PiggyMetrics (account-service, statistics-service, notification-service and browser) has a scope: `server` for backend services, and `ui` - for the browser. So we can also protect controllers from external access, for example:
 
 ``` java
 @PreAuthorize("#oauth2.hasScope('server')")
@@ -147,7 +147,7 @@ spring:
 
 Now, on application startup, it will register with Eureka Server and provide meta-data, such as host and port, health indicator URL, home page etc. Eureka receives heartbeat messages from each instance belonging to a service. If the heartbeat fails over a configurable timetable, the instance will be removed from the registry.
 
-Also, Eureka provides simple interface, where you can track running services and number of available instances: `http://localhost:8761`
+Also, Eureka provides a simple interface, where you can track running services and number of available instances: `http://localhost:8761`
 
 ### Load balancer, Circuit breaker and Http client
 
