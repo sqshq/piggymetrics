@@ -239,11 +239,11 @@ If you'd like to build images yourself (with some changes in the code, for examp
 `docker-compose.dev.yml` inherits `docker-compose.yml` with additional possibility to build images locally and expose all containers ports for convenient development.
 
 #### Important endpoints
-- localhost:80 - Gateway
-- localhost:8761 - Eureka Dashboard
-- localhost:9000 - Hystrix Dashboard
-- localhost:8989 - Turbine stream (source for Hystrix Dashboard)
-- localhost:15672 - RabbitMq management
+- http://DOCKER-HOST:80 - Gateway
+- http://DOCKER-HOST:8761 - Eureka Dashboard
+- http://DOCKER-HOST:9000/hystrix - Hystrix Dashboard
+- http://DOCKER-HOST:8989 - Turbine stream (source for the Hystrix Dashboard)
+- http://DOCKER-HOST:15672 - RabbitMq management (default login/password: guest/guest)
 
 #### Notes
 All Spring Boot applications require already running [Config Server](https://github.com/sqshq/PiggyMetrics#config-service) for startup. But we can start all containers simultaneously because of `fail-fast` Spring Boot property and `restart: always` docker-compose option. That means all dependent containers will try to restart until Config Server will be up and running.
