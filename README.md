@@ -87,7 +87,7 @@ Also, you could use Repository [webhooks to automate this process](http://cloud.
 
 ##### Notes
 - There are some limitations for dynamic refresh though. `@RefreshScope` doesn't work with `@Configuration` classes and doesn't affect `@Scheduled` methods
-- `fail-fast` property means that Spring Boot application will fail startup immediately, if it cannot connect to the Config Service. That's very useful when start [all applications together](https://github.com/sqshq/PiggyMetrics#how-to-run-all-the-things)
+- `fail-fast` property means that Spring Boot application will fail startup immediately, if it cannot connect to the Config Service.
 - There are significant [security notes](https://github.com/sqshq/PiggyMetrics#security) below
 
 ### Auth service
@@ -228,10 +228,11 @@ Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDB 
 
 #### Before you start
 - Install Docker and Docker Compose.
-- Export environment variables: `CONFIG_SERVICE_PASSWORD`, `NOTIFICATION_SERVICE_PASSWORD`, `STATISTICS_SERVICE_PASSWORD`, `ACCOUNT_SERVICE_PASSWORD`, `MONGODB_PASSWORD`
+- Export environment variables: `CONFIG_SERVICE_PASSWORD`, `NOTIFICATION_SERVICE_PASSWORD`, `STATISTICS_SERVICE_PASSWORD`, `ACCOUNT_SERVICE_PASSWORD`, `MONGODB_PASSWORD` (make sure they were exported: `printenv`)
 
 #### Production mode
-In this mode, all latest images will be pulled from Docker Hub. Just copy `docker-compose.yml` and hit `docker-compose up`
+In this mode, all latest images will be pulled from Docker Hub.
+Just copy `docker-compose.yml` and hit `docker-compose up`
 
 #### Development mode
 If you'd like to build images yourself (with some changes in the code, for example), you have to clone all repository and build artifacts with maven. Then, run `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
@@ -239,11 +240,11 @@ If you'd like to build images yourself (with some changes in the code, for examp
 `docker-compose.dev.yml` inherits `docker-compose.yml` with additional possibility to build images locally and expose all containers ports for convenient development.
 
 #### Important endpoints
-- http://DOCKER-HOST:80 - Gateway
-- http://DOCKER-HOST:8761 - Eureka Dashboard
-- http://DOCKER-HOST:9000/hystrix - Hystrix Dashboard
-- http://DOCKER-HOST:8989 - Turbine stream (source for the Hystrix Dashboard)
-- http://DOCKER-HOST:15672 - RabbitMq management (default login/password: guest/guest)
+- http://localhost:80 - Gateway
+- http://localhost:8761 - Eureka Dashboard
+- http://localhost:9000/hystrix - Hystrix Dashboard (paste Turbine stream link on the form)
+- http://localhost:8989 - Turbine stream (source for the Hystrix Dashboard)
+- http://localhost:15672 - RabbitMq management (default login/password: guest/guest)
 
 #### Notes
 All Spring Boot applications require already running [Config Server](https://github.com/sqshq/PiggyMetrics#config-service) for startup. But we can start all containers simultaneously because of `depends_on` docker-compose option.
