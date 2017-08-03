@@ -229,6 +229,7 @@ Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDB 
 #### Before you start
 - Install Docker and Docker Compose.
 - Export environment variables: `CONFIG_SERVICE_PASSWORD`, `NOTIFICATION_SERVICE_PASSWORD`, `STATISTICS_SERVICE_PASSWORD`, `ACCOUNT_SERVICE_PASSWORD`, `MONGODB_PASSWORD` (make sure they were exported: `printenv`)
+- Make sure to build the project: `mvn package [-DskipTests]`
 
 #### Production mode
 In this mode, all latest images will be pulled from Docker Hub.
