@@ -16,3 +16,6 @@ target/
 
 # sts
 *.sts4-cache/
+
+# vsc
+*.vscode/
