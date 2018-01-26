@@ -13,3 +13,6 @@ target/
 .project
 .settings/
 .classpath
+
+# sts
+*.sts4-cache/
