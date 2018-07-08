@@ -29,8 +29,7 @@ public class ExchangeRatesClientTest {
 		assertEquals(container.getDate(), LocalDate.now());
 		assertEquals(container.getBase(), Currency.getBase());
 
-		assertNotNull(container.getRates().get(Currency.EUR.name()));
-		assertNotNull(container.getRates().get(Currency.RUB.name()));
+		assertNotNull(container.getRates());
 	}
 
 }
