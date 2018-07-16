@@ -8,5 +8,6 @@ spring:
       port: 27017
 
 server:
-  context-path: /uaa
+  servlet:
+    context-path: /uaa
   port: 5000
