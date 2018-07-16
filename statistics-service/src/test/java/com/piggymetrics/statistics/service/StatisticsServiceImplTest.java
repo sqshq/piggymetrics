@@ -2,7 +2,11 @@ package com.piggymetrics.statistics.service;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.piggymetrics.statistics.domain.*;
+import com.piggymetrics.statistics.domain.Account;
+import com.piggymetrics.statistics.domain.Currency;
+import com.piggymetrics.statistics.domain.Item;
+import com.piggymetrics.statistics.domain.Saving;
+import com.piggymetrics.statistics.domain.TimePeriod;
 import com.piggymetrics.statistics.domain.timeseries.DataPoint;
 import com.piggymetrics.statistics.domain.timeseries.ItemMetric;
 import com.piggymetrics.statistics.domain.timeseries.StatisticMetric;
@@ -23,7 +27,10 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class StatisticsServiceImplTest {
@@ -109,8 +116,8 @@ public class StatisticsServiceImplTest {
 		 */
 
 		when(ratesService.convert(any(Currency.class),any(Currency.class),any(BigDecimal.class)))
-				.then(i -> i.getArgumentAt(2, BigDecimal.class)
-						.divide(rates.get(i.getArgumentAt(0, Currency.class)), 4, RoundingMode.HALF_UP));
+				.then(i -> ((BigDecimal)i.getArgument(2))
+						.divide(rates.get(i.getArgument(0)), 4, RoundingMode.HALF_UP));
 
 		when(ratesService.getCurrentRates()).thenReturn(rates);
 

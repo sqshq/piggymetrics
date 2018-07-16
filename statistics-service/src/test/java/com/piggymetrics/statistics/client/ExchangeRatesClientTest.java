@@ -1,12 +1,11 @@
 package com.piggymetrics.statistics.client;
 
-import com.piggymetrics.statistics.StatisticsApplication;
 import com.piggymetrics.statistics.domain.Currency;
 import com.piggymetrics.statistics.domain.ExchangeRatesContainer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.time.LocalDate;
@@ -16,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = StatisticsApplication.class)
+@SpringBootTest
 public class ExchangeRatesClientTest {
 
 	@Autowired
