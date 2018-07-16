@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -32,7 +34,7 @@ public class MongoUserDetailsServiceTest {
 
 		final User user = new User();
 
-		when(repository.findOne(any())).thenReturn(user);
+		when(repository.findById(any())).thenReturn(Optional.of(user));
 		UserDetails loaded = service.loadUserByUsername("name");
 
 		assertEquals(user, loaded);

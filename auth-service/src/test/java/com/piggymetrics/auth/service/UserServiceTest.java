@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.util.Optional;
+
 import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -41,7 +43,7 @@ public class UserServiceTest {
 		user.setUsername("name");
 		user.setPassword("password");
 
-		when(repository.findOne(user.getUsername())).thenReturn(new User());
+		when(repository.findById(user.getUsername())).thenReturn(Optional.of(new User()));
 		userService.create(user);
 	}
 }
