@@ -43,7 +43,6 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
         // @formatter:off
         clients.inMemory()
                 .withClient("browser")
-                .secret(NOOP_PASSWORD_ENCODE)
                 .authorizedGrantTypes("refresh_token", "password")
                 .scopes("ui")
                 .and()
