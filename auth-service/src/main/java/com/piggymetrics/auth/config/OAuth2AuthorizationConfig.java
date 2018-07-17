@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.util.StringUtils;
 
 /**
  * @author cdov
@@ -22,6 +23,7 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
     private TokenStore tokenStore = new InMemoryTokenStore();
+    private final String NOOP_PASSWORD_ENCODE = "{noop}";
 
     @Autowired
     @Qualifier("authenticationManagerBean")
@@ -41,21 +43,22 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
         // @formatter:off
         clients.inMemory()
                 .withClient("browser")
+                .secret(NOOP_PASSWORD_ENCODE)
                 .authorizedGrantTypes("refresh_token", "password")
                 .scopes("ui")
                 .and()
                 .withClient("account-service")
-                .secret(env.getProperty("ACCOUNT_SERVICE_PASSWORD"))
+                .secret(noOpPasswordEncoder(env.getProperty("ACCOUNT_SERVICE_PASSWORD")))
                 .authorizedGrantTypes("client_credentials", "refresh_token")
                 .scopes("server")
                 .and()
                 .withClient("statistics-service")
-                .secret(env.getProperty("STATISTICS_SERVICE_PASSWORD"))
+                .secret(noOpPasswordEncoder(env.getProperty("STATISTICS_SERVICE_PASSWORD")))
                 .authorizedGrantTypes("client_credentials", "refresh_token")
                 .scopes("server")
                 .and()
                 .withClient("notification-service")
-                .secret(env.getProperty("NOTIFICATION_SERVICE_PASSWORD"))
+                .secret(noOpPasswordEncoder(env.getProperty("NOTIFICATION_SERVICE_PASSWORD")))
                 .authorizedGrantTypes("client_credentials", "refresh_token")
                 .scopes("server");
         // @formatter:on
@@ -74,5 +77,9 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
         oauthServer
                 .tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()");
+    }
+
+    private String noOpPasswordEncoder(String password) {
+        return StringUtils.isEmpty(password) ? NOOP_PASSWORD_ENCODE : NOOP_PASSWORD_ENCODE.concat(password);
     }
 }
