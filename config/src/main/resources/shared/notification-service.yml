@@ -8,7 +8,8 @@ security:
       scope: server
 
 server:
-  context-path: /notifications
+  servlet:
+    context-path: /notifications
   port: 8000
 
 remind:
