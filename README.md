@@ -147,7 +147,7 @@ spring:
 
 Now, on application startup, it will register with Eureka Server and provide meta-data, such as host and port, health indicator URL, home page etc. Eureka receives heartbeat messages from each instance belonging to a service. If the heartbeat fails over a configurable timetable, the instance will be removed from the registry.
 
-Also, Eureka provides a simple interface, where you can track running services and number of available instances: `http://localhost:8761`
+Also, Eureka provides a simple interface, where you can track running services and a number of available instances: `http://localhost:8761`
 
 ### Load balancer, Circuit breaker and Http client
 
@@ -252,6 +252,6 @@ All Spring Boot applications require already running [Config Server](https://git
 
 Also, Service Discovery mechanism needs some time after all applications startup. Any service is not available for discovery by clients until the instance, the Eureka server and the client all have the same metadata in their local cache, so it could take 3 heartbeats. Default heartbeat period is 30 seconds.
 
-## Feedback welcome
+## Contributions welcome!
 
-PiggyMetrics is open source, and would greatly appreciate your help. Feel free to contact me with any questions.
+PiggyMetrics is open source, and would greatly appreciate your help. Feel free to suggest and implement improvements.
