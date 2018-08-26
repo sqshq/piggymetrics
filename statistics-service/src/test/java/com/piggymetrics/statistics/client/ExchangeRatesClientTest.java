@@ -6,15 +6,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
-import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest
 public class ExchangeRatesClientTest {
 
@@ -30,8 +30,7 @@ public class ExchangeRatesClientTest {
 		assertEquals(container.getBase(), Currency.getBase());
 
 		assertNotNull(container.getRates());
-		assertEquals(Currency.values().length, container.getRates().size());
-		assertNotNull(container.getRates().get(Currency.USD.name()));
+		assertNull(container.getRates().get(Currency.USD.name()));
 		assertNotNull(container.getRates().get(Currency.EUR.name()));
 		assertNotNull(container.getRates().get(Currency.RUB.name()));
 	}
@@ -40,14 +39,12 @@ public class ExchangeRatesClientTest {
 	public void shouldRetrieveExchangeRatesForSpecifiedCurrency() {
 
 		Currency requestedCurrency = Currency.EUR;
-		ExchangeRatesContainer container = client.getRates(Currency.getBase(), Collections.singleton(requestedCurrency));
+		ExchangeRatesContainer container = client.getRates(Currency.getBase());
 
 		assertEquals(container.getDate(), LocalDate.now());
 		assertEquals(container.getBase(), Currency.getBase());
 
 		assertNotNull(container.getRates());
-		assertEquals(1, container.getRates().size());
 		assertNotNull(container.getRates().get(requestedCurrency.name()));
 	}
-
 }
