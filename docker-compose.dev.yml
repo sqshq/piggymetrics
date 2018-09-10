@@ -57,3 +57,6 @@ services:
 
   monitoring:
     build: monitoring
+
+  turbine-stream-service:
+    build: turbine-stream-service
