@@ -163,7 +163,21 @@ services:
         condition: service_healthy
     ports:
       - 9000:8080
-      - 8989:8989
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  turbine-stream-service:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+    image: sqshq/piggymetrics-turbine-stream-service
+    restart: always
+    depends_on:
+      config:
+        condition: service_healthy
+    ports:
+    - 8989:8989
     logging:
       options:
         max-size: "10m"

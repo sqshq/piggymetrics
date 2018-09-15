@@ -68,6 +68,12 @@ after_success:
   - docker tag $MONITORING:$COMMIT $MONITORING:$TAG
   - docker push $MONITORING
 
+  # TURBINE STREAM SERVICE
+  - export TURBINE=sqshq/piggymetrics-turbine-stream-service
+  - docker build -t $TURBINE:$COMMIT ./turbine-stream-service
+  - docker tag $TURBINE:$COMMIT $TURBINE:$TAG
+  - docker push $TURBINE
+
   # MONGO DB
   - export MONGO_DB=sqshq/piggymetrics-mongodb
   - docker build -t $MONGO_DB:$COMMIT ./mongodb
