@@ -24,7 +24,7 @@ Contains general user input logic and validation: incomes/expenses items, saving
 
 Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
-GET	| /accounts/{account}	| Get specified account data	|  | 	
+GET	| /accounts/{account}	| Get specified account data	|  |
 GET	| /accounts/current	| Get current account data	| × | ×
 GET	| /accounts/demo	| Get demo account data (pre-filled incomes/expenses items, etc)	|   | 	×
 PUT	| /accounts/current	| Save current account data	| × | ×
@@ -36,10 +36,10 @@ Performs calculations on major statistics parameters and captures time series fo
 
 Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
-GET	| /statistics/{account}	| Get specified account statistics	          |  | 	
-GET	| /statistics/current	| Get current account statistics	| × | × 
-GET	| /statistics/demo	| Get demo account statistics	|   | × 
-PUT	| /statistics/{account}	| Create or update time series datapoint for specified account	|   | 
+GET	| /statistics/{account}	| Get specified account statistics	          |  |
+GET	| /statistics/current	| Get current account statistics	| × | ×
+GET	| /statistics/demo	| Get demo account statistics	|   | ×
+PUT	| /statistics/{account}	| Create or update time series datapoint for specified account	|   |
 
 
 #### Notification service
@@ -47,7 +47,7 @@ Stores users contact information and notification settings (like remind and back
 
 Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
-GET	| /notifications/settings/current	| Get current account notification settings	| × | ×	
+GET	| /notifications/settings/current	| Get current account notification settings	| × | ×
 PUT	| /notifications/settings/current	| Save current account notification settings	| × | ×
 
 #### Notes
@@ -59,7 +59,7 @@ PUT	| /notifications/settings/current	| Save current account notification settin
 There's a bunch of common patterns in distributed systems, which could help us to make described core services work. [Spring cloud](http://projects.spring.io/spring-cloud/) provides powerful tools that enhance Spring Boot applications behaviour to implement those patterns. I'll cover them briefly.
 <img width="880" alt="Infrastructure services" src="https://cloud.githubusercontent.com/assets/6069066/13906840/365c0d94-eefa-11e5-90ad-9d74804ca412.png">
 ### Config service
-[Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) is horizontally scalable centralized configuration service for distributed systems. It uses a pluggable repository layer that currently supports local storage, Git, and Subversion. 
+[Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) is horizontally scalable centralized configuration service for distributed systems. It uses a pluggable repository layer that currently supports local storage, Git, and Subversion.
 
 In this project, I use `native profile`, which simply loads config files from the local classpath. You can see `shared` directory in [Config service resources](https://github.com/sqshq/PiggyMetrics/tree/master/config/src/main/resources). Now, when Notification-service requests it's configuration, Config service responses with `shared/notification-service.yml` and `shared/application.yml` (which is shared between all client applications).
 
@@ -77,7 +77,7 @@ spring:
       fail-fast: true
 ```
 
-##### With Spring Cloud Config, you can change app configuration dynamically. 
+##### With Spring Cloud Config, you can change app configuration dynamically.
 For example, [EmailService bean](https://github.com/sqshq/PiggyMetrics/blob/master/notification-service/src/main/java/com/piggymetrics/notification/service/EmailServiceImpl.java) was annotated with `@RefreshScope`. That means, you can change e-mail text and subject without rebuild and restart Notification service application.
 
 First, change required properties in Config server. Then, perform refresh request to Notification service:
@@ -151,7 +151,7 @@ Also, Eureka provides a simple interface, where you can track running services a
 
 ### Load balancer, Circuit breaker and Http client
 
-Netflix OSS provides another great set of tools. 
+Netflix OSS provides another great set of tools.
 
 #### Ribbon
 Ribbon is a client side load balancer which gives you a lot of control over the behaviour of HTTP and TCP clients. Compared to a traditional load balancer, there is no need in additional hop for every over-the-wire invocation - you can contact desired service directly.
@@ -208,7 +208,7 @@ Ready-to-go Docker configuration described [in my other project](http://github.c
 
 Analyzing problems in distributed systems can be difficult, for example, tracing requests that propagate from one microservice to another. It can be quite a challenge to try to find out how a request travels through the system, especially if you don't have any insight into the implementation of a microservice. Even when there is logging, it is hard to tell which action correlates to a single request.
 
-[Spring Cloud Sleuth](https://cloud.spring.io/spring-cloud-sleuth/) solves this problem by providing support for distributed tracing. It adds two types of IDs to the logging: traceId and spanId. The spanId represents a basic unit of work, for example sending an HTTP request. The traceId contains a set of spans forming a tree-like structure. For example, with a distributed big-data store, a trace might be formed by a PUT request. Using traceId and spanId for each operation we know when and where our application is as it processes a request, making reading our logs much easier. 
+[Spring Cloud Sleuth](https://cloud.spring.io/spring-cloud-sleuth/) solves this problem by providing support for distributed tracing. It adds two types of IDs to the logging: traceId and spanId. The spanId represents a basic unit of work, for example sending an HTTP request. The traceId contains a set of spans forming a tree-like structure. For example, with a distributed big-data store, a trace might be formed by a PUT request. Using traceId and spanId for each operation we know when and where our application is as it processes a request, making reading our logs much easier.
 
 The logs are as follows, notice the `[appname,traceId,spanId,exportable]` entries from the Slf4J MDC:
 
@@ -246,7 +246,7 @@ Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDB 
 
 #### Before you start
 - Install Docker and Docker Compose.
-- Export environment variables: `CONFIG_SERVICE_PASSWORD`, `NOTIFICATION_SERVICE_PASSWORD`, `STATISTICS_SERVICE_PASSWORD`, `ACCOUNT_SERVICE_PASSWORD`, `MONGODB_PASSWORD` (make sure they were exported: `printenv`)
+- Export environment variables: `CONFIG_SERVICE_PASSWORD`, `NOTIFICATION_SERVICE_PASSWORD`, `STATISTICS_SERVICE_PASSWORD`, `ACCOUNT_SERVICE_PASSWORD`, `MONGODB_PASSWORD` or run `source env.sh`(make sure they were exported: `printenv`)
 - Make sure to build the project: `mvn package [-DskipTests]`
 
 #### Production mode
@@ -254,7 +254,7 @@ In this mode, all latest images will be pulled from Docker Hub.
 Just copy `docker-compose.yml` and hit `docker-compose up`
 
 #### Development mode
-If you'd like to build images yourself (with some changes in the code, for example), you have to clone all repository and build artifacts with maven. Then, run `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
+If you'd like to build images yourself (with some changes in the code, for example), you have to clone all repository and build artifacts with maven (run `chomd +x ./build.sh && ./build.sh`). Then, run `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
 
 `docker-compose.dev.yml` inherits `docker-compose.yml` with additional possibility to build images locally and expose all containers ports for convenient development.
 
