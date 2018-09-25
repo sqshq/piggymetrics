@@ -12,7 +12,6 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,7 +29,7 @@ public class ExchangeRatesClientTest {
 		assertEquals(container.getBase(), Currency.getBase());
 
 		assertNotNull(container.getRates());
-		assertNull(container.getRates().get(Currency.USD.name()));
+		assertNotNull(container.getRates().get(Currency.USD.name()));
 		assertNotNull(container.getRates().get(Currency.EUR.name()));
 		assertNotNull(container.getRates().get(Currency.RUB.name()));
 	}
