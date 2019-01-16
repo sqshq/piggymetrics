@@ -1,62 +1,59 @@
-version: '2.1'
+version: '2.0'
 services:
-  rabbitmq:
-    ports:
-      - 5672:5672
-
   config:
     build: config
+    image: <Your Docker hub username>/piggymetrics-config
     ports:
-      - 8888:8888
-
+      - '8888:8888'
   registry:
     build: registry
-
+    image: <Your Docker hub username>/piggymetrics-registry
   gateway:
     build: gateway
-
+    image: <Your Docker hub username>/piggymetrics-gateway
   auth-service:
     build: auth-service
     ports:
-      - 5000:5000
-
+      - '5000:5000'
+    image: <Your Docker hub username>/piggymetrics-auth-service
   auth-mongodb:
     build: mongodb
     ports:
-      - 25000:27017
-
+      - '25000:27017'
+    image: <Your Docker hub username>/piggymetrics-mongodb
   account-service:
     build: account-service
     ports:
-      - 6000:6000
-
+      - '6000:6000'
+    image: <Your Docker hub username>/piggymetrics-account-service
   account-mongodb:
     build: mongodb
     ports:
-      - 26000:27017
-
+      - '26000:27017'
+    image: <Your Docker hub username>/piggymetrics-mongodb
   statistics-service:
     build: statistics-service
     ports:
-      - 7000:7000
-
+      - '7000:7000'
+    image: <Your Docker hub username>/piggymetrics-statistics-service
   statistics-mongodb:
     build: mongodb
     ports:
-      - 27000:27017
-
+      - '27000:27017'
+    image: <Your Docker hub username>/piggymetrics-mongodb
   notification-service:
     build: notification-service
     ports:
-      - 8000:8000
-
+      - '8000:8000'
+    image: <Your Docker hub username>/piggymetrics-notification-service
   notification-mongodb:
     build: mongodb
     ports:
-      - 28000:27017
-
+      - '28000:27017'
+    image: <Your Docker hub username>/piggymetrics-mongodb
   monitoring:
     build: monitoring
-
+    image: <Your Docker hub username>/piggymetrics-monitoring
   turbine-stream-service:
     build: turbine-stream-service
+    image: <Your Docker hub username>/piggymetrics-turbine-stream-service

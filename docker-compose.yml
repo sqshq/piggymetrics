@@ -1,55 +1,36 @@
-version: '2.1'
+version: '2'
 services:
   rabbitmq:
     image: rabbitmq:3-management
     restart: always
     ports:
+      - 5672:5672
       - 15672:15672
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
   config:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
     image: sqshq/piggymetrics-config
     restart: always
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
+    ports:
+      - 8888:8888
   registry:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
     image: sqshq/piggymetrics-registry
     restart: always
     depends_on:
-      config:
-        condition: service_healthy
+      - config
     ports:
       - 8761:8761
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
   gateway:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
     image: sqshq/piggymetrics-gateway
     restart: always
     depends_on:
-      config:
-        condition: service_healthy
+      - config
     ports:
       - 80:4000
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
   auth-service:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
@@ -60,23 +41,16 @@ services:
     image: sqshq/piggymetrics-auth-service
     restart: always
     depends_on:
-      config:
-        condition: service_healthy
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
+      - config
+    ports:
+      - 5000:5000
   auth-mongodb:
     environment:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
     image: sqshq/piggymetrics-mongodb
     restart: always
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
+    ports:
+      - 25000:27017
   account-service:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
@@ -85,24 +59,17 @@ services:
     image: sqshq/piggymetrics-account-service
     restart: always
     depends_on:
-      config:
-        condition: service_healthy
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
+      - config
+    ports:
+      - 6000:6000
   account-mongodb:
     environment:
       INIT_DUMP: account-service-dump.js
       MONGODB_PASSWORD: $MONGODB_PASSWORD
     image: sqshq/piggymetrics-mongodb
     restart: always
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
+    ports:
+      - 26000:27017
   statistics-service:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
@@ -111,23 +78,16 @@ services:
     image: sqshq/piggymetrics-statistics-service
     restart: always
     depends_on:
-      config:
-        condition: service_healthy
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
+      - config
+    ports:
+      - 7000:7000
   statistics-mongodb:
     environment:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
     image: sqshq/piggymetrics-mongodb
     restart: always
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
+    ports:
+      - 27000:27017
   notification-service:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
@@ -136,49 +96,31 @@ services:
     image: sqshq/piggymetrics-notification-service
     restart: always
     depends_on:
-      config:
-        condition: service_healthy
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
+      - config
+    ports:
+      - 8000:8000
   notification-mongodb:
     image: sqshq/piggymetrics-mongodb
     restart: always
     environment:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
+    ports:
+      - 28000:27017
   monitoring:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
     image: sqshq/piggymetrics-monitoring
     restart: always
     depends_on:
-      config:
-        condition: service_healthy
+      - config
     ports:
       - 9000:8080
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
-
   turbine-stream-service:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
     image: sqshq/piggymetrics-turbine-stream-service
     restart: always
     depends_on:
-      config:
-        condition: service_healthy
+      - config
     ports:
-    - 8989:8989
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "10"
+      - 8989:8989
