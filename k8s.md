@@ -1,13 +1,21 @@
 ## Prerequisites
 
-Jdk(8 is recommended) maven, docker, docker-compose, kompose, kubectl
-
+1. Install necessary tools: azure cli, Jdk(8 is recommended) maven, docker, docker-compose, kompose, kubectl
+2. Create a AKS using the following scripts:
+```bash
+az login
+az account set --subscription <your-subscription-guid>
+az aks create  --resource-group <your-resource-group> --name <your-kubernetes-name> --enable-addons http_application_routing
+```
+3. Install the docker on your local machine: `https://gist.github.com/rstacruz/297fc799f094f55d062b982f7dac9e41`
 
 ## Steps
+
 1.	Clone the code
 ```bash
 git clone https://github.com/sqshq/PiggyMetrics
 ```
+
 2. Build the code
 
 ```bash
@@ -16,7 +24,6 @@ mvn package -DskipTests
 ```
 
 3. Build the image
-
 Modify the `docker-compose.dev.yml` file at the root folder, remove `rabbitmq` service and add images for each service, see the modified `docker-compose.dev.yml` at this forked repo.
 Run the following command to build the docker image locally:
 
@@ -96,7 +103,19 @@ kubectl create -f ./piggymetrics/monitoring-deployment.yaml -f ./piggymetrics/mo
 kubectl create -f ./piggymetrics/turbine-stream-service-deployment.yaml -f ./piggymetrics/turbine-stream-service-service.yaml
 ```
 
-11. check the apps starts up correctly, execute 
+11. enable public access, first get the DNS zone name for the AKS cluster(in this step, you need http_application_routing to be enabled on your aks, see https://docs.microsoft.com/en-us/azure/aks/http-application-routing for details), using the following script to get the the DNS zone name.  
+ 
 ```bash
-kubectl get po
+az aks show --resource-group <your-resource-group> --name <your-kubernetes-name> --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName -o table
+
 ```
+
+12. replace `CLUSTER_SPECIFIC_DNS_ZONE` in ingress.yaml with the DNS zone name get from previous step, and then create the ingress: 
+```bash
+kubectl apply -f ingress.yaml
+```
+
+13. wait sometime for the dns to be applied, then the navigate to the url defined in `spec.rules.host` field of `ingress.yaml`.
+
+    
+
