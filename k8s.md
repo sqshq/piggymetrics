@@ -30,11 +30,8 @@ docker push <Your Docker hub username>/piggymetrics-config
 docker push <Your Docker hub username>/piggymetrics-registry
 docker push <Your Docker hub username>/piggymetrics-gateway
 docker push <Your Docker hub username>/piggymetrics-auth-service
-docker push <Your Docker hub username>/piggymetrics-mongodb
 docker push <Your Docker hub username>/piggymetrics-account-service
-docker push <Your Docker hub username>/piggymetrics-mongodb
 docker push <Your Docker hub username>/piggymetrics-statistics-service
-docker push <Your Docker hub username>/piggymetrics-mongodb
 docker push <Your Docker hub username>/piggymetrics-notification-service
 docker push <Your Docker hub username>/piggymetrics-mongodb
 docker push <Your Docker hub username>/piggymetrics-monitoring
@@ -52,6 +49,9 @@ to
       - config 
 ```
 
+Add the ports from `docker-compose.dev.yml` and change the port number the same as the the second port, eg: from `26000:27017` to `27017:27017`
+
+
 see the modified `docker-compose.yml` at this forked repo.
 
 6. Convert the `docker-compose.yml` into kubernetes manifest files using `kompose`
@@ -62,7 +62,7 @@ export NOTIFICATION_SERVICE_PASSWORD=root
 export STATISTICS_SERVICE_PASSWORD=root
 export ACCOUNT_SERVICE_PASSWORD=root
 export MONGODB_PASSWORD=root 
-kompose convert -f docker-compose.yml -o piggymetrics
+mkdir piggymetrics && kompose convert -f docker-compose.yml -o piggymetrics
 ``` 
   
 7. start mongodb, RabbitMQ 
@@ -87,7 +87,6 @@ kubectl create -f ./piggymetrics/registry-deployment.yaml -f ./piggymetrics/regi
 
 10. start other services
 ```bash
-kubectl create -f ./piggymetrics/config-deployment.yaml -f ./piggymetrics/config-service.yaml
 kubectl create -f ./piggymetrics/gateway-deployment.yaml -f ./piggymetrics/gateway-service.yaml
 kubectl create -f ./piggymetrics/auth-service-deployment.yaml -f ./piggymetrics/auth-service-service.yaml
 kubectl create -f ./piggymetrics/account-service-deployment.yaml -f ./piggymetrics/account-service-service.yaml

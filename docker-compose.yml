@@ -9,14 +9,14 @@ services:
   config:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-config
+    image: <Your Docker hub username>/piggymetrics-config
     restart: always
     ports:
       - 8888:8888
   registry:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-registry
+    image: <Your Docker hub username>/piggymetrics-registry
     restart: always
     depends_on:
       - config
@@ -25,12 +25,12 @@ services:
   gateway:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-gateway
+    image: <Your Docker hub username>/piggymetrics-gateway
     restart: always
     depends_on:
       - config
     ports:
-      - 80:4000
+      - 4000:4000
   auth-service:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
@@ -38,7 +38,7 @@ services:
       STATISTICS_SERVICE_PASSWORD: $STATISTICS_SERVICE_PASSWORD
       ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    image: sqshq/piggymetrics-auth-service
+    image: <Your Docker hub username>/piggymetrics-auth-service
     restart: always
     depends_on:
       - config
@@ -47,16 +47,16 @@ services:
   auth-mongodb:
     environment:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    image: sqshq/piggymetrics-mongodb
+    image: <Your Docker hub username>/piggymetrics-mongodb
     restart: always
     ports:
-      - 25000:27017
+      - 27017:27017
   account-service:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    image: sqshq/piggymetrics-account-service
+    image: <Your Docker hub username>/piggymetrics-account-service
     restart: always
     depends_on:
       - config
@@ -66,16 +66,16 @@ services:
     environment:
       INIT_DUMP: account-service-dump.js
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    image: sqshq/piggymetrics-mongodb
+    image: <Your Docker hub username>/piggymetrics-mongodb
     restart: always
     ports:
-      - 26000:27017
+      - 27017:27017
   statistics-service:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
       STATISTICS_SERVICE_PASSWORD: $STATISTICS_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-statistics-service
+    image: <Your Docker hub username>/piggymetrics-statistics-service
     restart: always
     depends_on:
       - config
@@ -84,41 +84,41 @@ services:
   statistics-mongodb:
     environment:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
-    image: sqshq/piggymetrics-mongodb
+    image: <Your Docker hub username>/piggymetrics-mongodb
     restart: always
     ports:
-      - 27000:27017
+      - 27017:27017
   notification-service:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
       NOTIFICATION_SERVICE_PASSWORD: $NOTIFICATION_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-notification-service
+    image: <Your Docker hub username>/piggymetrics-notification-service
     restart: always
     depends_on:
       - config
     ports:
       - 8000:8000
   notification-mongodb:
-    image: sqshq/piggymetrics-mongodb
+    image: <Your Docker hub username>/piggymetrics-mongodb
     restart: always
     environment:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
     ports:
-      - 28000:27017
+      - 27017:27017
   monitoring:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-monitoring
+    image: <Your Docker hub username>/piggymetrics-monitoring
     restart: always
     depends_on:
       - config
     ports:
-      - 9000:8080
+      - 8080:8080
   turbine-stream-service:
     environment:
       CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
-    image: sqshq/piggymetrics-turbine-stream-service
+    image: <Your Docker hub username>/piggymetrics-turbine-stream-service
     restart: always
     depends_on:
       - config
