@@ -57,6 +57,7 @@ services:
       STATISTICS_SERVICE_PASSWORD: $STATISTICS_SERVICE_PASSWORD
       ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
+      MYSQLDB_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
     image: sqshq/piggymetrics-auth-service
     restart: always
     depends_on:
@@ -72,6 +73,22 @@ services:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
     image: sqshq/piggymetrics-mongodb
     restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+        
+  auth-mysqldb:
+    image: mysql:5.7
+    command: --explicit_defaults_for_timestamp
+    volumes:
+      - ./mysqldb:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
+      MYSQL_DATABASE: tokendb
+    ports:
+      - 3600:3306
     logging:
       options:
         max-size: "10m"

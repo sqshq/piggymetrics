@@ -6,6 +6,13 @@ spring:
       password: ${MONGODB_PASSWORD}
       database: piggymetrics
       port: 27017
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://auth-mysqldb:3306/tokendb?serverTimezone=UTC
+    username: root
+    password: ${MYSQLDB_ROOT_PASSWORD}
+    jpa:
+      database-platform: org.hibernate.dialect.MySQLInnoDBDialect
 
 server:
   servlet:
