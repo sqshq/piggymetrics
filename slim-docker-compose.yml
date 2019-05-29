@@ -1,0 +1,123 @@
+version: '2.1'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    ports:
+      - 15672:15672
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  config:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+    image: sqshq/piggymetrics-config
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  registry:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+    image: sqshq/piggymetrics-registry
+    restart: always
+    depends_on:
+      config:
+        condition: service_healthy
+    ports:
+      - 8761:8761
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  gateway:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+    image: sqshq/piggymetrics-gateway
+    restart: always
+    depends_on:
+      config:
+        condition: service_healthy
+    ports:
+      - 80:4000
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  auth-service:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+      NOTIFICATION_SERVICE_PASSWORD: $NOTIFICATION_SERVICE_PASSWORD
+      STATISTICS_SERVICE_PASSWORD: $STATISTICS_SERVICE_PASSWORD
+      ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
+      MONGODB_PASSWORD: $MONGODB_PASSWORD
+      MYSQLDB_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
+    image: sqshq/piggymetrics-auth-service
+    restart: always
+    depends_on:
+      config:
+        condition: service_healthy
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  auth-mongodb:
+    environment:
+      MONGODB_PASSWORD: $MONGODB_PASSWORD
+    image: sqshq/piggymetrics-mongodb
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+        
+  auth-mysqldb:
+    image: mysql:5.7
+    container_name: auth-mysqldb
+    hostname: auth-mysqldb
+    command: --explicit_defaults_for_timestamp
+    volumes:
+      - ./mysqldb:/docker-entrypoint-initdb.d
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQLDB_ROOT_PASSWORD
+      MYSQL_DATABASE: tokendb
+    ports:
+      - 3600:3306
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  account-service:
+    environment:
+      CONFIG_SERVICE_PASSWORD: $CONFIG_SERVICE_PASSWORD
+      ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
+      MONGODB_PASSWORD: $MONGODB_PASSWORD
+    image: sqshq/piggymetrics-account-service
+    restart: always
+    depends_on:
+      config:
+        condition: service_healthy
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  account-mongodb:
+    environment:
+      INIT_DUMP: account-service-dump.js
+      MONGODB_PASSWORD: $MONGODB_PASSWORD
+    image: sqshq/piggymetrics-mongodb
+    restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
