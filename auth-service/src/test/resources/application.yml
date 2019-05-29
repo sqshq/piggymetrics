@@ -3,3 +3,6 @@ spring:
     mongodb:
       database: piggymetrics
       port: 0
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
