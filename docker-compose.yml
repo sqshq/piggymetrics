@@ -162,7 +162,7 @@ services:
       config:
         condition: service_healthy
     ports:
-      - 9000:8080
+      - 9000:9000
     logging:
       options:
         max-size: "10m"
