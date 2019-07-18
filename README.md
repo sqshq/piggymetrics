@@ -186,7 +186,7 @@ public interface StatisticsServiceClient {
 
 ### Monitor dashboard
 
-In this project configuration, each microservice with Hystrix on board pushes metrics to Turbine via Spring Cloud Bus (with AMQP broker). The Monitoring project is just a small Spring boot application with [Turbine](https://github.com/Netflix/Turbine) and [Hystrix Dashboard](https://github.com/Netflix/Hystrix/tree/master/hystrix-dashboard).
+In this project configuration, each microservice with Hystrix on board pushes metrics to Turbine via Spring Cloud Bus (with AMQP broker). The Monitoring project is just a small Spring boot application with [Turbine](https://github.com/Netflix/Turbine) and [Hystrix Dashboard](https://github.com/Netflix-Skunkworks/hystrix-dashboard).
 
 See below [how to get it up and running](https://github.com/sqshq/PiggyMetrics#how-to-run-all-the-things).
 
