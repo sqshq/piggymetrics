@@ -25,6 +25,7 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private MongoTokenStore tokenStore;
+    
     private final String NOOP_PASSWORD_ENCODE = "{noop}";
 
     @Autowired
@@ -61,7 +62,7 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
                 .scopes("server")
                 .and()
                 .withClient("notification-service")
-                .secret("123456"/*env.getProperty("NOTIFICATION_SERVICE_PASSWORD")*/)
+                .secret(env.getProperty("NOTIFICATION_SERVICE_PASSWORD"))
                 .authorizedGrantTypes("client_credentials", "refresh_token")
                 .scopes("server");
         // @formatter:on
