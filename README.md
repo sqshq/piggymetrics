@@ -246,7 +246,7 @@ Keep in mind, that you are going to start 8 Spring Boot applications, 4 MongoDB 
 
 #### Before you start
 - Install Docker and Docker Compose.
-- Export environment variables: `CONFIG_SERVICE_PASSWORD`, `NOTIFICATION_SERVICE_PASSWORD`, `STATISTICS_SERVICE_PASSWORD`, `ACCOUNT_SERVICE_PASSWORD`, `MONGODB_PASSWORD` (make sure they were exported: `printenv`)
+- Change environment variable values in `.env` file for more security or leave it as it is.
 - Make sure to build the project: `mvn package [-DskipTests]`
 
 #### Production mode
@@ -257,6 +257,8 @@ Just copy `docker-compose.yml` and hit `docker-compose up`
 If you'd like to build images yourself (with some changes in the code, for example), you have to clone all repository and build artifacts with maven. Then, run `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
 
 `docker-compose.dev.yml` inherits `docker-compose.yml` with additional possibility to build images locally and expose all containers ports for convenient development.
+
+If you'd like to start applications in Intellij Idea you need to either use [EnvFile plugin](https://plugins.jetbrains.com/plugin/7861-envfile) or manually export environment variables listed in `.env` file (make sure they were exported: `printenv`)
 
 #### Important endpoints
 - http://localhost:80 - Gateway
