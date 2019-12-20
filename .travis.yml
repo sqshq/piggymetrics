@@ -4,7 +4,7 @@ services:
   - docker
 
 language: java
-jdk: oraclejdk8
+jdk: openjdk8
 
 env:
   global:
