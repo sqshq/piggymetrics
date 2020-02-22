@@ -230,7 +230,7 @@ Deploying microservices, with their interdependence, is much more complex proces
 
 - The ability to release software anytime
 - Any build could end up being a release
-- Build artifacts once - deploy as needed
+- Build artifacts once - deploy as needed 
 
 Here is a simple Continuous Delivery workflow, implemented in this project:
 
