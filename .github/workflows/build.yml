@@ -47,7 +47,7 @@ jobs:
         name: Build and push registry
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./registry
           file: ./registry/Dockerfile
           push: true
           tags: naragon/piggymetrics-registry:latest
@@ -55,7 +55,7 @@ jobs:
         name: Build and push gateway
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./gateway
           file: ./gateway/Dockerfile
           push: true
           tags: naragon/piggymetrics-gateway:latest
@@ -63,7 +63,7 @@ jobs:
         name: Build and push auth service
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./auth-service
           file: ./auth-service/Dockerfile
           push: true
           tags: naragon/piggymetrics-auth-service:latest
@@ -71,7 +71,7 @@ jobs:
         name: Build and push account service
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./account-service
           file: ./account-service/Dockerfile
           push: true
           tags: naragon/piggymetrics-account-service:latest
@@ -79,7 +79,7 @@ jobs:
         name: Build and push statistics service
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./statistics-service
           file: ./statistics-service/Dockerfile
           push: true
           tags: naragon/piggymetrics-statistics-service:latest
@@ -87,7 +87,7 @@ jobs:
         name: Build and push notification service
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./notification-service
           file: ./notification-service/Dockerfile
           push: true
           tags: naragon/piggymetrics-notification-service:latest
@@ -95,7 +95,7 @@ jobs:
         name: Build and push monitoring
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./monitoring
           file: ./monitoring/Dockerfile
           push: true
           tags: naragon/piggymetrics-monitoring:latest
@@ -103,7 +103,7 @@ jobs:
         name: Build and push turbine stream service
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./turbine-stream-service
           file: ./turbine-stream-service/Dockerfile
           push: true
           tags: naragon/piggymetrics-turbine-stream-service:latest
@@ -111,7 +111,7 @@ jobs:
         name: Build and push mongodb
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: ./mongodb
           file: ./mongodb/Dockerfile
           push: true
           tags: naragon/piggymetrics-mongodb:latest
