@@ -26,4 +26,94 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           directory: ./target/surefire-reports # optional
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      -
+        name: Build and push config
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./config/Dockerfile
+          push: true
+          tags: naragon/piggymetrics-config:latest
+      -
+        name: Build and push registry
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./registry/Dockerfile
+          push: true
+          tags: naragon/piggymetrics-registry:latest
+      -
+        name: Build and push gateway
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./gateway/Dockerfile
+          push: true
+          tags: naragon/piggymetrics-gateway:latest
+      -
+        name: Build and push auth service
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./auth-service/Dockerfile
+          push: true
+          tags: naragon/piggymetrics-auth-service:latest
+      -
+        name: Build and push account service
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./account-service/Dockerfile
+          push: true
+          tags: naragon/piggymetrics-account-service:latest
+      -
+        name: Build and push statistics service
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./statistics-service/Dockerfile
+          push: true
+          tags: naragon/piggymetrics-statistics-service:latest
+      -
+        name: Build and push notification service
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./notification-service/Dockerfile
+          push: true
+          tags: naragon/piggymetrics-notification-service:latest
+      -
+        name: Build and push monitoring
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./monitoring/Dockerfile
+          push: true
+          tags: naragon/piggymetrics-monitoring:latest
+      -
+        name: Build and push turbine stream service
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./turbine-stream-service/Dockerfile
+          push: true
+          tags: naragon/piggymetrics-turbine-stream-service:latest
+      -
+        name: Build and push mongodb
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./mongodb/Dockerfile
+          push: true
+          tags: naragon/piggymetrics-mongodb:latest
+          
 
