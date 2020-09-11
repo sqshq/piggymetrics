@@ -21,11 +21,11 @@ jobs:
         with:
           maven-version: 3.5.4 
       - name: Build with Maven
-        run: mvn -B verify
-      - uses: codecov/codecov-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          directory: ./target/surefire-reports # optional
+        run: mvn package
+      # - uses: codecov/codecov-action@v1
+      #   with:
+      #     token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+      #     directory: ./target/surefire-reports # optional
       -
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
