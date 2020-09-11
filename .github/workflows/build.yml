@@ -39,7 +39,8 @@ jobs:
         name: Build and push config
         uses: docker/build-push-action@v2
         with:
-          file: ./config/Dockerfile
+          context: ./config
+          file: ./Dockerfile
           push: true
           tags: naragon/piggymetrics-config:latest
       -
