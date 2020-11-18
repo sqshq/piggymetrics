@@ -15,6 +15,9 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 
 import java.util.Arrays;
 
+/**
+ * 存储用户联系信息和通知设置(如提醒和备份频率)。预定工作人员从其他服务收集所需信息，并向订阅的客户发送电子邮件
+ */
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableOAuth2Client

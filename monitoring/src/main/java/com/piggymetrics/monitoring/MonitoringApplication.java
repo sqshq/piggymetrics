@@ -4,6 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 
+/**
+ * 服务监视器(熔断器监控)
+ */
 @SpringBootApplication
 @EnableHystrixDashboard
 public class MonitoringApplication {
