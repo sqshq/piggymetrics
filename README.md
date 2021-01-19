@@ -49,7 +49,7 @@ GET	| /notifications/settings/current	| Get current account notification setting
 PUT	| /notifications/settings/current	| Save current account notification settings	| × | ×
 
 #### Notes
-- Each microservice has its own database, so there is no way to bypass API and access persistance data directly.
+- Each microservice has its own database, so there is no way to bypass API and access persistence data directly.
 - In this project, I use MongoDB as a primary database for each service. It might also make sense to have a polyglot persistence architecture (сhoose the type of db that is best suited to service requirements).
 - Service-to-service communication is quite simplified: microservices talking using only synchronous REST API. Common practice in a real-world systems is to use combination of interaction styles. For example, perform synchronous GET request to retrieve data and use asynchronous approach via Message broker for create/update operations in order to decouple services and buffer messages. However, this brings us to the [eventual consistency](http://martinfowler.com/articles/microservice-trade-offs.html#consistency) world.
 
@@ -136,7 +136,7 @@ The key part of Service discovery is Registry. I use Netflix Eureka in this proj
 
 With Spring Boot, you can easily build Eureka Registry with `spring-cloud-starter-eureka-server` dependency, `@EnableEurekaServer` annotation and simple configuration properties.
 
-Client support enabled with `@EnableDiscoveryClient` annotation an `bootstrap.yml` with application name:
+Client support enabled with `@EnableDiscoveryClient` annotation a `bootstrap.yml` with application name:
 ``` yml
 spring:
   application:
@@ -236,7 +236,7 @@ Here is a simple Continuous Delivery workflow, implemented in this project:
 
 <img width="880" src="https://cloud.githubusercontent.com/assets/6069066/14159789/0dd7a7ce-f6e9-11e5-9fbb-a7fe0f4431e3.png">
 
-In this [configuration](https://github.com/sqshq/PiggyMetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push. So, there are always `latest` image for each microservice on [Docker Hub](https://hub.docker.com/r/sqshq/) and older images, tagged with git commit hash. It's easy to deploy any of them and quickly rollback, if needed.
+In this [configuration](https://github.com/sqshq/PiggyMetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push. So, there are always the `latest` images for each microservice on [Docker Hub](https://hub.docker.com/r/sqshq/) and older images, tagged with git commit hash. It's easy to deploy any of them and quickly rollback, if needed.
 
 ## How to run all the things?
 
