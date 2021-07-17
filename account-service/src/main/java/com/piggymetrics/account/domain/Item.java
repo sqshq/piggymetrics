@@ -1,11 +1,17 @@
 package com.piggymetrics.account.domain;
 
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
-public class Item {
+@Data
+@NoArgsConstructor
+public class Item implements Serializable {
 
 	@NotNull
 	@Length(min = 1, max = 20)
@@ -22,44 +28,4 @@ public class Item {
 
 	@NotNull
 	private String icon;
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public void setAmount(BigDecimal amount) {
-		this.amount = amount;
-	}
-
-	public Currency getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(Currency currency) {
-		this.currency = currency;
-	}
-
-	public TimePeriod getPeriod() {
-		return period;
-	}
-
-	public void setPeriod(TimePeriod period) {
-		this.period = period;
-	}
-
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
 }

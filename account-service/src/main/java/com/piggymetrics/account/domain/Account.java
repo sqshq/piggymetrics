@@ -1,5 +1,8 @@
 package com.piggymetrics.account.domain;
 
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
@@ -7,12 +10,15 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Document(collection = "accounts")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Account {
+@Data
+@NoArgsConstructor
+public class Account implements Serializable {
 
 	@Id
 	private String name;
@@ -31,52 +37,4 @@ public class Account {
 
 	@Length(min = 0, max = 20_000)
 	private String note;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Date getLastSeen() {
-		return lastSeen;
-	}
-
-	public void setLastSeen(Date lastSeen) {
-		this.lastSeen = lastSeen;
-	}
-
-	public List<Item> getIncomes() {
-		return incomes;
-	}
-
-	public void setIncomes(List<Item> incomes) {
-		this.incomes = incomes;
-	}
-
-	public List<Item> getExpenses() {
-		return expenses;
-	}
-
-	public void setExpenses(List<Item> expenses) {
-		this.expenses = expenses;
-	}
-
-	public Saving getSaving() {
-		return saving;
-	}
-
-	public void setSaving(Saving saving) {
-		this.saving = saving;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
-	}
 }
