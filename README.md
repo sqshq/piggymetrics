@@ -225,7 +225,7 @@ In this [configuration](https://github.com/sqshq/PiggyMetrics/blob/master/.travi
 
 ## Let's try it out
 
-Note that starting 8 Spring Boot applications, 4 MongoDB instances and a RabbitMq requires at least 4Gb RAM.
+Note that starting 8 Spring Boot applications, 4 MongoDB instances and a RabbitMq requires at least 4Gb of RAM.
 
 #### Before you start
 - Install Docker and Docker Compose.
