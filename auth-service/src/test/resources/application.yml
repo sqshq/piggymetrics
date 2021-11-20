@@ -3,3 +3,9 @@ spring:
     mongodb:
       database: piggymetrics
       port: 0
+  datasource:
+    url: jdbc:mysql://localhost:3306/auth_mysql
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+      database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+      database: mysql

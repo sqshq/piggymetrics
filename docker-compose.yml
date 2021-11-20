@@ -57,6 +57,7 @@ services:
       STATISTICS_SERVICE_PASSWORD: $STATISTICS_SERVICE_PASSWORD
       ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
       MONGODB_PASSWORD: $MONGODB_PASSWORD
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
     image: sqshq/piggymetrics-auth-service
     restart: always
     depends_on:
@@ -72,6 +73,19 @@ services:
       MONGODB_PASSWORD: $MONGODB_PASSWORD
     image: sqshq/piggymetrics-mongodb
     restart: always
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "10"
+
+  auth-mysql:
+    image: elkolotfi/piggymetrics-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: $MYSQL_PASSWORD
+      MYSQL_PASSWORD: $MYSQL_PASSWORD
+      ACCOUNT_SERVICE_PASSWORD: $ACCOUNT_SERVICE_PASSWORD
+      STATISTICS_SERVICE_PASSWORD: $STATISTICS_SERVICE_PASSWORD
+      NOTIFICATION_SERVICE_PASSWORD: $NOTIFICATION_SERVICE_PASSWORD
     logging:
       options:
         max-size: "10m"

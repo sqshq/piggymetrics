@@ -22,5 +22,10 @@ server:
   port: 6000
 
 feign:
+  client:
+    config:
+      default:
+        connectTimeout: 160000000
+        readTimeout: 160000000
   hystrix:
     enabled: true
