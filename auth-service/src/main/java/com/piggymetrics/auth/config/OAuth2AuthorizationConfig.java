@@ -1,8 +1,10 @@
 package com.piggymetrics.auth.config;
 
+import com.piggymetrics.auth.service.security.MongoTokenStore;
 import com.piggymetrics.auth.service.security.MongoUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,8 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+
 
 /**
  * @author cdov
@@ -22,7 +23,9 @@ import org.springframework.security.oauth2.provider.token.store.InMemoryTokenSto
 @EnableAuthorizationServer
 public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
-    private TokenStore tokenStore = new InMemoryTokenStore();
+    @Autowired
+    private MongoTokenStore tokenStore;
+    
     private final String NOOP_PASSWORD_ENCODE = "{noop}";
 
     @Autowired
@@ -45,6 +48,8 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
                 .withClient("browser")
                 .authorizedGrantTypes("refresh_token", "password")
                 .scopes("ui")
+                .accessTokenValiditySeconds(20)
+                .refreshTokenValiditySeconds(180)
                 .and()
                 .withClient("account-service")
                 .secret(env.getProperty("ACCOUNT_SERVICE_PASSWORD"))
@@ -69,6 +74,7 @@ public class OAuth2AuthorizationConfig extends AuthorizationServerConfigurerAdap
                 .tokenStore(tokenStore)
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService);
+
     }
 
     @Override
