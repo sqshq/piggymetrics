@@ -45,4 +45,11 @@
 		<module>turbine-stream-service</module>
 	</modules>
 
+  <repositories>
+    <repository>
+      <id>repo</id>
+      <name>aliyun</name>
+      <url>https://maven.aliyun.com/repository/central</url>
+    </repository>
+  </repositories>
 </project>
