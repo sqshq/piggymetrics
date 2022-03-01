@@ -23,7 +23,7 @@ Contains general input logic and validation: incomes/expenses items, savings and
 
 Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
-GET	| /accounts/{account}	| Get specified account data	|  | 	
+GET	| /accounts/{account}	| Get specified account data	|  |
 GET	| /accounts/current	| Get current account data	| × | ×
 GET	| /accounts/demo	| Get demo account data (pre-filled incomes/expenses items, etc)	|   | 	×
 PUT	| /accounts/current	| Save current account data	| × | ×
@@ -35,10 +35,10 @@ Performs calculations on major statistics parameters and captures time series fo
 
 Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
-GET	| /statistics/{account}	| Get specified account statistics	          |  | 	
-GET	| /statistics/current	| Get current account statistics	| × | × 
-GET	| /statistics/demo	| Get demo account statistics	|   | × 
-PUT	| /statistics/{account}	| Create or update time series datapoint for specified account	|   | 
+GET	| /statistics/{account}	| Get specified account statistics	          |  |
+GET	| /statistics/current	| Get current account statistics	| × | ×
+GET	| /statistics/demo	| Get demo account statistics	|   | ×
+PUT	| /statistics/{account}	| Create or update time series datapoint for specified account	|   |
 
 
 #### Notification service
@@ -46,7 +46,7 @@ Stores user contact information and notification settings (reminders, backup fre
 
 Method	| Path	| Description	| User authenticated	| Available from UI
 ------------- | ------------------------- | ------------- |:-------------:|:----------------:|
-GET	| /notifications/settings/current	| Get current account notification settings	| × | ×	
+GET	| /notifications/settings/current	| Get current account notification settings	| × | ×
 PUT	| /notifications/settings/current	| Save current account notification settings	| × | ×
 
 #### Notes
@@ -76,7 +76,7 @@ spring:
       fail-fast: true
 ```
 
-##### With Spring Cloud Config, you can change application config dynamically. 
+##### With Spring Cloud Config, you can change application config dynamically.
 For example, [EmailService bean](https://github.com/sqshq/PiggyMetrics/blob/master/notification-service/src/main/java/com/piggymetrics/notification/service/EmailServiceImpl.java) is annotated with `@RefreshScope`. That means you can change e-mail text and subject without rebuild and restart the Notification service.
 
 First, change required properties in Config server. Then make a refresh call to the Notification service:
@@ -195,7 +195,7 @@ Centralized logging can be very useful while attempting to identify problems in 
 
 Analyzing problems in distributed systems can be difficult, especially trying to trace requests that propagate from one microservice to another.
 
-[Spring Cloud Sleuth](https://cloud.spring.io/spring-cloud-sleuth/) solves this problem by providing support for the distributed tracing. It adds two types of IDs to the logging: `traceId` and `spanId`. `spanId` represents a basic unit of work, for example sending an HTTP request. The traceId contains a set of spans forming a tree-like structure. For example, with a distributed big-data store, a trace might be formed by a PUT request. Using `traceId` and `spanId` for each operation we know when and where our application is as it processes a request, making reading logs much easier. 
+[Spring Cloud Sleuth](https://cloud.spring.io/spring-cloud-sleuth/) solves this problem by providing support for the distributed tracing. It adds two types of IDs to the logging: `traceId` and `spanId`. `spanId` represents a basic unit of work, for example sending an HTTP request. The traceId contains a set of spans forming a tree-like structure. For example, with a distributed big-data store, a trace might be formed by a PUT request. Using `traceId` and `spanId` for each operation we know when and where our application is as it processes a request, making reading logs much easier.
 
 The logs are as follows, notice the `[appname,traceId,spanId,exportable]` entries from the Slf4J MDC:
 
@@ -252,3 +252,5 @@ If you'd like to start applications in Intellij Idea you need to either use [Env
 ## Contributions are welcome!
 
 PiggyMetrics is open source, and would greatly appreciate your help. Feel free to suggest and implement any improvements.
+
+TEST.
