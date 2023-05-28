@@ -4,6 +4,5 @@ import com.piggymetrics.auth.domain.User;
 
 public interface UserService {
 
-	void create(User user);
-
+    void create(User user);
 }

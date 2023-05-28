@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class FrequencyReaderConverter implements Converter<Integer, Frequency> {
 
-	@Override
-	public Frequency convert(Integer days) {
-		return Frequency.withDays(days);
-	}
+    @Override
+    public Frequency convert(Integer days) {
+        return Frequency.withDays(days);
+    }
 }

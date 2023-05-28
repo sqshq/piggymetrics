@@ -18,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -30,63 +29,49 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class RecipientControllerTest {
 
-	private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
-	@InjectMocks
-	private RecipientController recipientController;
+    @InjectMocks
+    private RecipientController recipientController;
 
-	@Mock
-	private RecipientService recipientService;
+    @Mock
+    private RecipientService recipientService;
 
-	private MockMvc mockMvc;
+    private MockMvc mockMvc;
 
-	@Before
-	public void setup() {
-		initMocks(this);
-		this.mockMvc = MockMvcBuilders.standaloneSetup(recipientController).build();
-	}
+    @Before
+    public void setup() {
+        initMocks(this);
+        this.mockMvc = MockMvcBuilders.standaloneSetup(recipientController).build();
+    }
 
-	@Test
-	public void shouldSaveCurrentRecipientSettings() throws Exception {
+    @Test
+    public void shouldSaveCurrentRecipientSettings() throws Exception {
+        Recipient recipient = getStubRecipient();
+        String json = mapper.writeValueAsString(recipient);
+        mockMvc.perform(put("/recipients/current").principal(new UserPrincipal(recipient.getAccountName())).contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isOk());
+    }
 
-		Recipient recipient = getStubRecipient();
-		String json = mapper.writeValueAsString(recipient);
+    @Test
+    public void shouldGetCurrentRecipientSettings() throws Exception {
+        Recipient recipient = getStubRecipient();
+        when(recipientService.findByAccountName(recipient.getAccountName())).thenReturn(recipient);
+        mockMvc.perform(get("/recipients/current").principal(new UserPrincipal(recipient.getAccountName()))).andExpect(jsonPath("$.accountName").value(recipient.getAccountName())).andExpect(status().isOk());
+    }
 
-		mockMvc.perform(put("/recipients/current").principal(new UserPrincipal(recipient.getAccountName())).contentType(MediaType.APPLICATION_JSON).content(json))
-				.andExpect(status().isOk());
-	}
-
-	@Test
-	public void shouldGetCurrentRecipientSettings() throws Exception {
-
-		Recipient recipient = getStubRecipient();
-		when(recipientService.findByAccountName(recipient.getAccountName())).thenReturn(recipient);
-
-		mockMvc.perform(get("/recipients/current").principal(new UserPrincipal(recipient.getAccountName())))
-				.andExpect(jsonPath("$.accountName").value(recipient.getAccountName()))
-				.andExpect(status().isOk());
-	}
-
-	private Recipient getStubRecipient() {
-
-		NotificationSettings remind = new NotificationSettings();
-		remind.setActive(true);
-		remind.setFrequency(Frequency.WEEKLY);
-		remind.setLastNotified(null);
-
-		NotificationSettings backup = new NotificationSettings();
-		backup.setActive(false);
-		backup.setFrequency(Frequency.MONTHLY);
-		backup.setLastNotified(null);
-
-		Recipient recipient = new Recipient();
-		recipient.setAccountName("test");
-		recipient.setEmail("test@test.com");
-		recipient.setScheduledNotifications(ImmutableMap.of(
-				NotificationType.BACKUP, backup,
-				NotificationType.REMIND, remind
-		));
-
-		return recipient;
-	}
+    private Recipient getStubRecipient() {
+        NotificationSettings remind = new NotificationSettings();
+        remind.setActive(true);
+        remind.setFrequency(Frequency.WEEKLY);
+        remind.setLastNotified(null);
+        NotificationSettings backup = new NotificationSettings();
+        backup.setActive(false);
+        backup.setFrequency(Frequency.MONTHLY);
+        backup.setLastNotified(null);
+        Recipient recipient = new Recipient();
+        recipient.setAccountName("test");
+        recipient.setEmail("test@test.com");
+        recipient.setScheduledNotifications(ImmutableMap.of(NotificationType.BACKUP, backup, NotificationType.REMIND, remind));
+        return recipient;
+    }
 }

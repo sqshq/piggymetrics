@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 @EnableResourceServer
 @Configuration
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+
     @Autowired
     private ResourceServerProperties sso;
 
