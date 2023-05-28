@@ -9,9 +9,7 @@ import org.springframework.boot.autoconfigure.mongo.embedded.EmbeddedMongoAutoCo
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import java.util.Optional;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -19,20 +17,18 @@ import static org.junit.Assert.assertTrue;
 @DataMongoTest
 public class UserRepositoryTest {
 
-	@Autowired
-	private UserRepository repository;
+    @Autowired
+    private UserRepository repository;
 
-	@Test
-	public void shouldSaveAndFindUserByName() {
-
-		User user = new User();
-		user.setUsername("name");
-		user.setPassword("password");
-		repository.save(user);
-
-		Optional<User> found = repository.findById(user.getUsername());
-		assertTrue(found.isPresent());
-		assertEquals(user.getUsername(), found.get().getUsername());
-		assertEquals(user.getPassword(), found.get().getPassword());
-	}
+    @Test
+    public void shouldSaveAndFindUserByName() {
+        User user = new User();
+        user.setUsername("name");
+        user.setPassword("password");
+        repository.save(user);
+        Optional<User> found = repository.findById(user.getUsername());
+        assertTrue(found.isPresent());
+        assertEquals(user.getUsername(), found.get().getUsername());
+        assertEquals(user.getPassword(), found.get().getPassword());
+    }
 }

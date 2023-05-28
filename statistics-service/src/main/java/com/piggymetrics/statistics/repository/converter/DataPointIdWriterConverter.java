@@ -9,16 +9,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataPointIdWriterConverter implements Converter<DataPointId, DBObject> {
 
-	private static final int FIELDS = 2;
+    private static final int FIELDS = 2;
 
-	@Override
-	public DBObject convert(DataPointId id) {
-
-		DBObject object = new BasicDBObject(FIELDS);
-
-		object.put("date", id.getDate());
-		object.put("account", id.getAccount());
-
-		return object;
-	}
+    @Override
+    public DBObject convert(DataPointId id) {
+        DBObject object = new BasicDBObject(FIELDS);
+        object.put("date", id.getDate());
+        object.put("account", id.getAccount());
+        return object;
+    }
 }

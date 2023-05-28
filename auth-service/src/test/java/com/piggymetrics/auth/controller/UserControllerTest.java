@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -25,50 +24,41 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 public class UserControllerTest {
 
-	private static final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
-	@InjectMocks
-	private UserController accountController;
+    @InjectMocks
+    private UserController accountController;
 
-	@Mock
-	private UserService userService;
+    @Mock
+    private UserService userService;
 
-	private MockMvc mockMvc;
+    private MockMvc mockMvc;
 
-	@Before
-	public void setup() {
-		initMocks(this);
-		this.mockMvc = MockMvcBuilders.standaloneSetup(accountController).build();
-	}
+    @Before
+    public void setup() {
+        initMocks(this);
+        this.mockMvc = MockMvcBuilders.standaloneSetup(accountController).build();
+    }
 
-	@Test
-	public void shouldCreateNewUser() throws Exception {
+    @Test
+    public void shouldCreateNewUser() throws Exception {
+        final User user = new User();
+        user.setUsername("test");
+        user.setPassword("password");
+        String json = mapper.writeValueAsString(user);
+        mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(json)).andExpect(status().isOk());
+    }
 
-		final User user = new User();
-		user.setUsername("test");
-		user.setPassword("password");
+    @Test
+    public void shouldFailWhenUserIsNotValid() throws Exception {
+        final User user = new User();
+        user.setUsername("t");
+        user.setPassword("p");
+        mockMvc.perform(post("/users")).andExpect(status().isBadRequest());
+    }
 
-		String json = mapper.writeValueAsString(user);
-
-		mockMvc.perform(post("/users").contentType(MediaType.APPLICATION_JSON).content(json))
-				.andExpect(status().isOk());
-	}
-
-	@Test
-	public void shouldFailWhenUserIsNotValid() throws Exception {
-
-		final User user = new User();
-		user.setUsername("t");
-		user.setPassword("p");
-
-		mockMvc.perform(post("/users"))
-				.andExpect(status().isBadRequest());
-	}
-
-	@Test
-	public void shouldReturnCurrentUser() throws Exception {
-		mockMvc.perform(get("/users/current").principal(new UserPrincipal("test")))
-				.andExpect(jsonPath("$.name").value("test"))
-				.andExpect(status().isOk());
-	}
+    @Test
+    public void shouldReturnCurrentUser() throws Exception {
+        mockMvc.perform(get("/users/current").principal(new UserPrincipal("test"))).andExpect(jsonPath("$.name").value("test")).andExpect(status().isOk());
+    }
 }

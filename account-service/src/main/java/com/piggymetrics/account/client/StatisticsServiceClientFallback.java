@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class StatisticsServiceClientFallback implements StatisticsServiceClient {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsServiceClientFallback.class);
+
     @Override
     public void updateStatistics(String accountName, Account account) {
         LOGGER.error("Error during update statistics for account: {}", accountName);

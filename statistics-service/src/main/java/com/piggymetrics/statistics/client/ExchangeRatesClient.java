@@ -12,5 +12,4 @@ public interface ExchangeRatesClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/latest")
     ExchangeRatesContainer getRates(@RequestParam("base") Currency base);
-
 }

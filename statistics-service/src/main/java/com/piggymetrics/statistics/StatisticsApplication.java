@@ -15,7 +15,6 @@ import org.springframework.data.mongodb.core.convert.CustomConversions;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
-
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -25,17 +24,16 @@ import java.util.Arrays;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class StatisticsApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(StatisticsApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(StatisticsApplication.class, args);
+    }
 
-	@Configuration
-	static class CustomConversionsConfig {
+    @Configuration
+    static class CustomConversionsConfig {
 
-		@Bean
-		public CustomConversions customConversions() {
-			return new CustomConversions(Arrays.asList(new DataPointIdReaderConverter(),
-					new DataPointIdWriterConverter()));
-		}
-	}
+        @Bean
+        public CustomConversions customConversions() {
+            return new CustomConversions(Arrays.asList(new DataPointIdReaderConverter(), new DataPointIdWriterConverter()));
+        }
+    }
 }

@@ -3,7 +3,6 @@ package com.piggymetrics.statistics.client;
 import com.piggymetrics.statistics.domain.Currency;
 import com.piggymetrics.statistics.domain.ExchangeRatesContainer;
 import org.springframework.stereotype.Component;
-
 import java.util.Collections;
 
 @Component
