@@ -1,4 +1,4 @@
-FROM java:8-jre
+FROM amazoncorretto:8u372-al2023-jre
 MAINTAINER Alexander Lukyanchikov <sqshq@sqshq.com>
 
 ADD ./target/notification-service.jar /app/
