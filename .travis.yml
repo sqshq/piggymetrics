@@ -17,66 +17,49 @@ env:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+  - docker buildx create --name builder --driver docker-container --use
+  - docker buildx inspect --bootstrap
 
   #TAG
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
 
   # CONFIG SERVICE
   - export CONFIG=sqshq/piggymetrics-config
-  - docker build -t $CONFIG:$COMMIT ./config
-  - docker tag $CONFIG:$COMMIT $CONFIG:$TAG
-  - docker push $CONFIG
+  - docker buildx build --no-cache --platform linux/amd64,linux/arm64 --push -t $CONFIG:$TAG ./config
 
   # REGISTRY
   - export REGISTRY=sqshq/piggymetrics-registry
-  - docker build -t $REGISTRY:$COMMIT ./registry
-  - docker tag $REGISTRY:$COMMIT $REGISTRY:$TAG
-  - docker push $REGISTRY
+  - docker buildx build --no-cache --platform linux/amd64,linux/arm64 --push -t $REGISTRY:$TAG ./registry
 
   # GATEWAY
   - export GATEWAY=sqshq/piggymetrics-gateway
-  - docker build -t $GATEWAY:$COMMIT ./gateway
-  - docker tag $GATEWAY:$COMMIT $GATEWAY:$TAG
-  - docker push $GATEWAY
+  - docker buildx build --no-cache --platform linux/amd64,linux/arm64 --push -t $GATEWAY:$TAG ./gateway
 
   # AUTH SERVICE
   - export AUTH_SERVICE=sqshq/piggymetrics-auth-service
-  - docker build -t $AUTH_SERVICE:$COMMIT ./auth-service
-  - docker tag $AUTH_SERVICE:$COMMIT $AUTH_SERVICE:$TAG
-  - docker push $AUTH_SERVICE
+  - docker buildx build --no-cache --platform linux/amd64,linux/arm64 --push -t $AUTH_SERVICE:$TAG ./auth-service
 
   # ACCOUNT SERVICE
   - export ACCOUNT_SERVICE=sqshq/piggymetrics-account-service
-  - docker build -t $ACCOUNT_SERVICE:$COMMIT ./account-service
-  - docker tag $ACCOUNT_SERVICE:$COMMIT $ACCOUNT_SERVICE:$TAG
-  - docker push $ACCOUNT_SERVICE
+  - docker buildx build --no-cache --platform linux/amd64,linux/arm64 --push -t $ACCOUNT_SERVICE:$TAG ./account-service
 
   # STATISTICS SERVICE
   - export STATISTICS_SERVICE=sqshq/piggymetrics-statistics-service
-  - docker build -t $STATISTICS_SERVICE:$COMMIT ./statistics-service
-  - docker tag $STATISTICS_SERVICE:$COMMIT $STATISTICS_SERVICE:$TAG
-  - docker push $STATISTICS_SERVICE
+  - docker buildx build --no-cache --platform linux/amd64,linux/arm64 --push -t $STATISTICS_SERVICE:$TAG ./statistics-service
 
   # NOTIFICATION_SERVICE
   - export NOTIFICATION_SERVICE=sqshq/piggymetrics-notification-service
-  - docker build -t $NOTIFICATION_SERVICE:$COMMIT ./notification-service
-  - docker tag $NOTIFICATION_SERVICE:$COMMIT $NOTIFICATION_SERVICE:$TAG
-  - docker push $NOTIFICATION_SERVICE
+  - docker buildx build --no-cache --platform linux/amd64,linux/arm64 --push -t $NOTIFICATION_SERVICE:$TAG ./notification-service
 
   # MONITORING
   - export MONITORING=sqshq/piggymetrics-monitoring
-  - docker build -t $MONITORING:$COMMIT ./monitoring
-  - docker tag $MONITORING:$COMMIT $MONITORING:$TAG
-  - docker push $MONITORING
+  - docker buildx build --no-cache --platform linux/amd64,linux/arm64 --push -t $MONITORING:$TAG ./monitoring
 
   # TURBINE STREAM SERVICE
   - export TURBINE=sqshq/piggymetrics-turbine-stream-service
-  - docker build -t $TURBINE:$COMMIT ./turbine-stream-service
-  - docker tag $TURBINE:$COMMIT $TURBINE:$TAG
-  - docker push $TURBINE
+  - docker buildx build --no-cache --platform linux/amd64,linux/arm64 --push -t $TURBINE:$TAG ./turbine-stream-service
 
   # MONGO DB
   - export MONGO_DB=sqshq/piggymetrics-mongodb
-  - docker build -t $MONGO_DB:$COMMIT ./mongodb
-  - docker tag $MONGO_DB:$COMMIT $MONGO_DB:$TAG
-  - docker push $MONGO_DB
+  - docker buildx build --no-cache --platform linux/amd64,linux/arm64 --push -t $MONGO_DB:$TAG ./mongodb
