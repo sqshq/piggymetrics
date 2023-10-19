@@ -17,19 +17,19 @@ public class StatisticsController {
 	@Autowired
 	private StatisticsService statisticsService;
 
-	@RequestMapping(value = "/current", method = RequestMethod.GET)
+	@GetMapping(value = "/current")
 	public List<DataPoint> getCurrentAccountStatistics(Principal principal) {
 		return statisticsService.findByAccountName(principal.getName());
 	}
 
 	@PreAuthorize("#oauth2.hasScope('server') or #accountName.equals('demo')")
-	@RequestMapping(value = "/{accountName}", method = RequestMethod.GET)
+	@GetMapping(value = "/{accountName}")
 	public List<DataPoint> getStatisticsByAccountName(@PathVariable String accountName) {
 		return statisticsService.findByAccountName(accountName);
 	}
 
 	@PreAuthorize("#oauth2.hasScope('server')")
-	@RequestMapping(value = "/{accountName}", method = RequestMethod.PUT)
+	@PutMapping(value = "/{accountName}")
 	public void saveAccountStatistics(@PathVariable String accountName, @Valid @RequestBody Account account) {
 		statisticsService.save(accountName, account);
 	}
