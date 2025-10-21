@@ -830,7 +830,16 @@ $("#logo_statistic").on("click", function() {
 });
 
 // Launch 4 page
+// fixing bug of autonumeric not initialized when sliding down/save button
 function launchStatistic() {
+
+    // Defensive init: ensure numeric inputs are initialized before any .autoNumeric('get') calls
+    $('.modalvalue, #percentvalue, #savingsvalue, .autonumeric').each(function() {
+        if (!$(this).data('autoNumeric')) {
+            try { $(this).autoNumeric('init'); } catch (e) { /* ignore init errors */ }
+        }
+    });
+
     if ($("#incomeslider").children().length > 0 && $("#expenseslider").children().length > 0) {
 
         $(".bottompage").css({"display": "block"});
@@ -856,14 +865,12 @@ function launchStatistic() {
             }
         }, true);
 
-    }
-    else {
-        alert("Please, add at least one item for each column")
-    }
+        // Save changes on server only when the view actually launches
+        jsonDataSave();
 
-    jsonDataSave();
-
-}
+    } else {
+        alert("Please, add at least one item for each column");
+    }
 
 function jsonDataSave() {
     if (global.savePermit) {
