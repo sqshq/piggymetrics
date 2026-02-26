@@ -14,3 +14,5 @@ target/
 **/*.project
 **/*.classpath
 **/*.settings
+
+.java-version
