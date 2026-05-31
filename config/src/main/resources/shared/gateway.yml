@@ -41,5 +41,12 @@ zuul:
         stripPrefix: false
         sensitiveHeaders:
 
+ratelimit:
+  enabled: true
+  capacity: 20
+  refill-tokens: 5
+  refill-seconds: 1
+  ip-whitespace-seconds: 300
+
 server:
   port: 4000
