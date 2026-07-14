@@ -2,10 +2,23 @@ package com.piggymetrics.account.domain;
 
 import org.hibernate.validator.constraints.Length;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "items")
 public class Item {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id; // Added primary key for relational H2 mapping
 
 	@NotNull
 	@Length(min = 1, max = 20)
@@ -15,13 +28,24 @@ public class Item {
 	private BigDecimal amount;
 
 	@NotNull
+	@Enumerated(EnumType.STRING) // Tells Hibernate to save enum values as text strings
 	private Currency currency;
 
 	@NotNull
+	@Enumerated(EnumType.STRING) // Tells Hibernate to save enum values as text strings
 	private TimePeriod period;
 
 	@NotNull
 	private String icon;
+
+	// Added Getter and Setter for the primary key
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getTitle() {
 		return title;
