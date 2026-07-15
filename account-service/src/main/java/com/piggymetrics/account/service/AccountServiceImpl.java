@@ -19,74 +19,75 @@ import java.util.Date;
 @Service
 public class AccountServiceImpl implements AccountService {
 
-	private final Logger log = LoggerFactory.getLogger(getClass());
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
-	@Autowired
-	private StatisticsServiceClient statisticsClient;
+    @Autowired
+    private StatisticsServiceClient statisticsClient;
 
-	@Autowired
-	private AuthServiceClient authClient;
+    @Autowired
+    private AuthServiceClient authClient;
 
-	@Autowired
-	private AccountRepository repository;
+    @Autowired
+    private AccountRepository repository;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Account findByName(String accountName) {
-		Assert.hasLength(accountName);
-		return repository.findByName(accountName);
-	}
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Account findByName(String accountName) {
+        Assert.hasLength(accountName, "Account name must not be empty");
+        return repository.findByName(accountName);
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Account create(User user) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Account create(User user) {
 
-		Account existing = repository.findByName(user.getUsername());
-		Assert.isNull(existing, "account already exists: " + user.getUsername());
+        Account existing = repository.findByName(user.getUsername());
+        Assert.isNull(existing, "account already exists: " + user.getUsername());
 
-		authClient.createUser(user);
+        authClient.createUser(user);
 
-		Saving saving = new Saving();
-		saving.setAmount(new BigDecimal(0));
-		saving.setCurrency(Currency.getDefault());
-		saving.setInterest(new BigDecimal(0));
-		saving.setDeposit(false);
-		saving.setCapitalization(false);
+        Saving saving = new Saving();
+        saving.setAmount(BigDecimal.ZERO);
+        saving.setCurrency(Currency.getDefault());
+        saving.setInterest(BigDecimal.ZERO);
+        saving.setDeposit(false);
+        saving.setCapitalization(false);
 
-		Account account = new Account();
-		account.setName(user.getUsername());
-		account.setLastSeen(new Date());
-		account.setSaving(saving);
+        Account account = new Account();
+        account.setName(user.getUsername());
+        account.setLastSeen(new Date());
+        account.setSaving(saving);
 
-		repository.save(account);
+        repository.save(account);
 
-		log.info("new account has been created: " + account.getName());
+        log.info("new account has been created: {}", account.getName());
 
-		return account;
-	}
+        return account;
+    }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void saveChanges(String name, Account update) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void saveChanges(String name, Account update) {
 
-		Account account = repository.findByName(name);
-		Assert.notNull(account, "can't find account with name " + name);
+        Account account = repository.findByName(name);
+        Assert.notNull(account, "can't find account with name " + name);
 
-		account.setIncomes(update.getIncomes());
-		account.setExpenses(update.getExpenses());
-		account.setSaving(update.getSaving());
-		account.setNote(update.getNote());
-		account.setLastSeen(new Date());
-		repository.save(account);
+        account.setIncomes(update.getIncomes());
+        account.setExpenses(update.getExpenses());
+        account.setSaving(update.getSaving());
+        account.setNote(update.getNote());
+        account.setLastSeen(new Date());
 
-		log.debug("account {} changes has been saved", name);
+        repository.save(account);
 
-		statisticsClient.updateStatistics(name, account);
-	}
+        log.debug("account {} changes have been saved", name);
+
+        statisticsClient.updateStatistics(name, account);
+    }
 }

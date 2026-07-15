@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 import java.io.IOException;
 
 import static org.mockito.Mockito.*;
