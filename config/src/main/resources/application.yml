@@ -9,6 +9,11 @@ spring:
   security:
     user:
       password: ${CONFIG_SERVICE_PASSWORD}
+  rabbitmq:
+    host: localhost
+    listener:
+      simple:
+        auto-startup: false
 
 server:
   port: 8888

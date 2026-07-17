@@ -2,19 +2,26 @@ security:
   oauth2:
     client:
       clientId: account-service
-      clientSecret: ${ACCOUNT_SERVICE_PASSWORD}
-      accessTokenUri: http://auth-service:5000/uaa/oauth/token
+      clientSecret: ${ACCOUNT_SERVICE_PASSWORD:password}
+      accessTokenUri: http://localhost:5000/uaa/oauth/token
       grant-type: client_credentials
       scope: server
 
 spring:
-  data:
-    mongodb:
-      host: account-mongodb
-      username: user
-      password: ${MONGODB_PASSWORD}
-      database: piggymetrics
-      port: 27017
+  datasource:
+    url: jdbc:h2:mem:accountdb;DB_CLOSE_DELAY=-1
+    driver-className: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
 server:
   servlet:

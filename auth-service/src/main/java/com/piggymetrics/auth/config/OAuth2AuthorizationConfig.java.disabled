@@ -1,0 +1,7 @@
+@EnableAuthorizationServer
+AuthorizationServerConfigurerAdapter
+ClientDetailsServiceConfigurer
+AuthorizationServerEndpointsConfigurer
+AuthorizationServerSecurityConfigurer
+TokenStore
+InMemoryTokenStore

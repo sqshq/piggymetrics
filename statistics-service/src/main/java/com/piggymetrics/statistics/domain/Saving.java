@@ -1,6 +1,6 @@
 package com.piggymetrics.statistics.domain;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public class Saving {

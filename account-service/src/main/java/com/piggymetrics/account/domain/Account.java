@@ -1,16 +1,23 @@
 package com.piggymetrics.account.domain;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.FetchType;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-@Document(collection = "accounts")
+@Entity
+@Table(name = "accounts")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Account {
 
@@ -19,18 +26,27 @@ public class Account {
 
 	private Date lastSeen;
 
+	// Relational mappings for your lists
 	@Valid
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Item> incomes;
 
 	@Valid
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Item> expenses;
 
+	// Relational mapping for a single object
 	@Valid
 	@NotNull
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private Saving saving;
 
 	@Length(min = 0, max = 20_000)
 	private String note;
+
+	// NEW FEATURE FIELDS ADDED HERE:
+	private BigDecimal customSavingsGoalAmount;
+	private String customSavingsGoalDescription;
 
 	public String getName() {
 		return name;
@@ -78,5 +94,22 @@ public class Account {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	// GETTERS AND SETTERS FOR YOUR NEW FEATURE:
+	public BigDecimal getCustomSavingsGoalAmount() {
+		return customSavingsGoalAmount;
+	}
+
+	public void setCustomSavingsGoalAmount(BigDecimal customSavingsGoalAmount) {
+		this.customSavingsGoalAmount = customSavingsGoalAmount;
+	}
+
+	public String getCustomSavingsGoalDescription() {
+		return customSavingsGoalDescription;
+	}
+
+	public void setCustomSavingsGoalDescription(String customSavingsGoalDescription) {
+		this.customSavingsGoalDescription = customSavingsGoalDescription;
 	}
 }
