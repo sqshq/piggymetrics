@@ -19,6 +19,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
 		<java.version>1.8</java.version>
+        <aspectj.version>1.9.24</aspectj.version>
 	</properties>
 
 	<dependencyManagement>

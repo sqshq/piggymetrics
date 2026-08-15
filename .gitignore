@@ -14,3 +14,6 @@ target/
 **/*.project
 **/*.classpath
 **/*.settings
+
+#opencode
+echo ".opencode/" >> .gitignore
