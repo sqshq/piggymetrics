@@ -1,11 +1,11 @@
 package com.piggymetrics.notification.domain;
 
-import org.hibernate.validator.constraints.Email;
+import jakarta.validation.constraints.Email;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.Map;
 
 @Document(collection = "recipients")
@@ -19,6 +19,7 @@ public class Recipient {
 	private String email;
 
 	@Valid
+	@NotNull
 	private Map<NotificationType, NotificationSettings> scheduledNotifications;
 
 	public String getAccountName() {

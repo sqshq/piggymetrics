@@ -1,0 +1,369 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >-
+  PiggyMetrics, fully serverless: Java 21 Lambda services behind an HTTP API, Amazon Cognito
+  for users and service-to-service tokens, Parameter Store for configuration, EventBridge
+  Scheduler for notification jobs, and S3 + CloudFront for the browser UI.
+
+Parameters:
+  Stage:
+    Type: String
+    Default: dev
+    AllowedPattern: '[a-z0-9-]{1,10}'
+    Description: Environment name used in resource and parameter names.
+  SubnetIds:
+    Type: CommaDelimitedList
+    Default: ''
+    Description: Optional private subnets (with NAT) when MongoDB is only reachable from a VPC.
+  SecurityGroupIds:
+    Type: CommaDelimitedList
+    Default: ''
+    Description: Security groups for the Lambda functions when SubnetIds is set.
+
+Conditions:
+  UseVpc: !Not [!Equals [!Join ['', !Ref SubnetIds], '']]
+
+Globals:
+  Function:
+    Runtime: java21
+    Architectures: [x86_64]
+    MemorySize: 1536
+    Timeout: 30
+    Tracing: Active
+    VpcConfig: !If
+      - UseVpc
+      - SubnetIds: !Ref SubnetIds
+        SecurityGroupIds: !Ref SecurityGroupIds
+      - !Ref AWS::NoValue
+
+Resources:
+  # ---------- Identity (replaces auth-service) ----------
+  UserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: !Sub piggymetrics-${Stage}
+      UsernameConfiguration:
+        CaseSensitive: false
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 8
+          RequireLowercase: false
+          RequireUppercase: false
+          RequireNumbers: false
+          RequireSymbols: false
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: false
+      LambdaConfig:
+        PreSignUp: !GetAtt PreSignUpFunction.Arn
+
+  PreSignUpFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Runtime: python3.13
+      Handler: index.handler
+      MemorySize: 128
+      Timeout: 5
+      VpcConfig: !Ref AWS::NoValue
+      InlineCode: |
+        import re
+        RESERVED = {"demo", "current"}
+        def handler(event, context):
+            # Same rules as the legacy auth-service, plus the account-service reserved paths.
+            name = event["userName"]
+            if not re.fullmatch(r"[A-Za-z0-9._-]{3,20}", name) or name.lower() in RESERVED:
+                raise Exception("Username must be 3-20 letters, digits, '.', '_' or '-'")
+            # The original app had no e-mail verification step; keep sign-up instant.
+            event["response"]["autoConfirmUser"] = True
+            return event
+
+  PreSignUpPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref PreSignUpFunction
+      Principal: cognito-idp.amazonaws.com
+      SourceArn: !GetAtt UserPool.Arn
+
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      UserPoolId: !Ref UserPool
+      Domain: !Sub piggymetrics-${Stage}-${AWS::AccountId}
+
+  ServiceResourceServer:
+    Type: AWS::Cognito::UserPoolResourceServer
+    Properties:
+      UserPoolId: !Ref UserPool
+      Identifier: piggymetrics
+      Name: PiggyMetrics services
+      Scopes:
+        - ScopeName: server
+          ScopeDescription: Service-to-service access
+
+  BrowserClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: !Ref UserPool
+      ClientName: browser
+      GenerateSecret: false
+      ExplicitAuthFlows: [ALLOW_USER_PASSWORD_AUTH, ALLOW_USER_SRP_AUTH, ALLOW_REFRESH_TOKEN_AUTH]
+      PreventUserExistenceErrors: ENABLED
+      AccessTokenValidity: 1
+      IdTokenValidity: 1
+      RefreshTokenValidity: 30
+      TokenValidityUnits:
+        AccessToken: hours
+        IdToken: hours
+        RefreshToken: days
+
+  ServiceClient:
+    Type: AWS::Cognito::UserPoolClient
+    DependsOn: ServiceResourceServer
+    Properties:
+      UserPoolId: !Ref UserPool
+      ClientName: services
+      GenerateSecret: true
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthFlows: [client_credentials]
+      AllowedOAuthScopes: [piggymetrics/server]
+      AccessTokenValidity: 1
+      TokenValidityUnits:
+        AccessToken: hours
+
+  # ---------- API (replaces Zuul gateway, Eureka and Ribbon) ----------
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: $default
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 100
+        ThrottlingRateLimit: 50
+
+  AccountFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub piggymetrics-${Stage}-account
+      CodeUri: account-service/target/account-service-1.0-SNAPSHOT-lambda.zip
+      Handler: com.piggymetrics.account.StreamLambdaHandler::handleRequest
+      Environment:
+        Variables:
+          APPLICATION_CONFIG_PARAMETER: !Sub /piggymetrics/${Stage}/account-service
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+          COGNITO_ISSUER: !Sub https://cognito-idp.${AWS::Region}.amazonaws.com/${UserPool}
+          COGNITO_BROWSER_CLIENT_ID: !Ref BrowserClient
+          COGNITO_SERVICE_CLIENT_ID: !Ref ServiceClient
+          COGNITO_TOKEN_URI: !Sub https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/token
+      Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub piggymetrics/${Stage}/account-service
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /accounts/{proxy+}
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+
+  StatisticsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub piggymetrics-${Stage}-statistics
+      CodeUri: statistics-service/target/statistics-service-1.0-SNAPSHOT-lambda.zip
+      Handler: com.piggymetrics.statistics.StreamLambdaHandler::handleRequest
+      Environment:
+        Variables:
+          APPLICATION_CONFIG_PARAMETER: !Sub /piggymetrics/${Stage}/statistics-service
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+          COGNITO_ISSUER: !Sub https://cognito-idp.${AWS::Region}.amazonaws.com/${UserPool}
+          COGNITO_BROWSER_CLIENT_ID: !Ref BrowserClient
+          COGNITO_SERVICE_CLIENT_ID: !Ref ServiceClient
+          COGNITO_TOKEN_URI: !Sub https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/token
+      Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub piggymetrics/${Stage}/statistics-service
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /statistics/{proxy+}
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+
+  NotificationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub piggymetrics-${Stage}-notification
+      CodeUri: notification-service/target/notification-service-1.0-SNAPSHOT-lambda.zip
+      Handler: com.piggymetrics.notification.StreamLambdaHandler::handleRequest
+      Environment:
+        Variables:
+          APPLICATION_CONFIG_PARAMETER: !Sub /piggymetrics/${Stage}/notification-service
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+          COGNITO_ISSUER: !Sub https://cognito-idp.${AWS::Region}.amazonaws.com/${UserPool}
+          COGNITO_BROWSER_CLIENT_ID: !Ref BrowserClient
+          COGNITO_SERVICE_CLIENT_ID: !Ref ServiceClient
+          COGNITO_TOKEN_URI: !Sub https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/token
+      Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub piggymetrics/${Stage}/notification-service
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /notifications/{proxy+}
+            Method: ANY
+            PayloadFormatVersion: '1.0'
+
+  # ---------- Scheduled jobs (replace @Scheduled cron in notification-service) ----------
+  NotificationJobsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub piggymetrics-${Stage}-notification-jobs
+      CodeUri: notification-service/target/notification-service-1.0-SNAPSHOT-lambda.zip
+      Handler: com.piggymetrics.notification.ScheduledNotificationHandler::handleRequest
+      Timeout: 600
+      ReservedConcurrentExecutions: 1
+      Environment:
+        Variables:
+          APPLICATION_CONFIG_PARAMETER: !Sub /piggymetrics/${Stage}/notification-service
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+          COGNITO_ISSUER: !Sub https://cognito-idp.${AWS::Region}.amazonaws.com/${UserPool}
+          COGNITO_BROWSER_CLIENT_ID: !Ref BrowserClient
+          COGNITO_SERVICE_CLIENT_ID: !Ref ServiceClient
+          COGNITO_TOKEN_URI: !Sub https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/token
+      Policies:
+        - SSMParameterReadPolicy:
+            ParameterName: !Sub piggymetrics/${Stage}/notification-service
+      Events:
+        Backup:
+          Type: ScheduleV2
+          Properties:
+            Name: !Sub piggymetrics-${Stage}-backup
+            ScheduleExpression: cron(0 12 * * ? *)
+            Input: '{"job":"BACKUP"}'
+            RetryPolicy:
+              MaximumRetryAttempts: 2
+        Remind:
+          Type: ScheduleV2
+          Properties:
+            Name: !Sub piggymetrics-${Stage}-remind
+            ScheduleExpression: cron(0 0 * * ? *)
+            Input: '{"job":"REMIND"}'
+            RetryPolicy:
+              MaximumRetryAttempts: 2
+
+  # ---------- Browser UI (replaces static hosting in the gateway) ----------
+  UiBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+
+  UiOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub piggymetrics-${Stage}-ui
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  UiBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref UiBucket
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub ${UiBucket.Arn}/*
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub arn:${AWS::Partition}:cloudfront::${AWS::AccountId}:distribution/${Distribution}
+          - Effect: Deny
+            Principal: '*'
+            Action: 's3:*'
+            Resource: [!GetAtt UiBucket.Arn, !Sub '${UiBucket.Arn}/*']
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+
+  Distribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: !Sub PiggyMetrics ${Stage}
+        DefaultRootObject: index.html
+        HttpVersion: http2and3
+        PriceClass: PriceClass_100
+        Origins:
+          - Id: ui
+            DomainName: !GetAtt UiBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt UiOriginAccessControl.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+          - Id: api
+            DomainName: !Sub ${HttpApi}.execute-api.${AWS::Region}.amazonaws.com
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+              OriginSSLProtocols: [TLSv1.2]
+        DefaultCacheBehavior:
+          TargetOriginId: ui
+          ViewerProtocolPolicy: redirect-to-https
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # Managed-CachingOptimized
+          ResponseHeadersPolicyId: 67f7725c-6f97-4210-82d7-5512b31e9d03 # Managed-SecurityHeadersPolicy
+        # Same-origin API paths, so the UI's relative URLs keep working without CORS.
+        CacheBehaviors:
+          - PathPattern: /accounts/*
+            TargetOriginId: api
+            ViewerProtocolPolicy: https-only
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad # Managed-CachingDisabled
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac # Managed-AllViewerExceptHostHeader
+          - PathPattern: /statistics/*
+            TargetOriginId: api
+            ViewerProtocolPolicy: https-only
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac
+          - PathPattern: /notifications/*
+            TargetOriginId: api
+            ViewerProtocolPolicy: https-only
+            AllowedMethods: [GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE]
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad
+            OriginRequestPolicyId: b689b0a8-53d0-40ab-baf2-68738e2966ac
+
+Outputs:
+  AppUrl:
+    Description: PiggyMetrics UI
+    Value: !Sub https://${Distribution.DomainName}
+  ApiUrl:
+    Description: HTTP API base URL (also used for service-to-service calls)
+    Value: !Sub https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com
+  UiBucketName:
+    Value: !Ref UiBucket
+  DistributionId:
+    Value: !Ref Distribution
+  UserPoolId:
+    Value: !Ref UserPool
+  BrowserClientId:
+    Value: !Ref BrowserClient
+  ServiceClientId:
+    Value: !Ref ServiceClient

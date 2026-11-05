@@ -1,6 +1,6 @@
 package com.piggymetrics.statistics.service;
 
-import com.google.common.collect.ImmutableMap;
+
 import com.piggymetrics.statistics.domain.*;
 import com.piggymetrics.statistics.domain.timeseries.DataPoint;
 import com.piggymetrics.statistics.domain.timeseries.DataPointId;
@@ -40,7 +40,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 	 */
 	@Override
 	public List<DataPoint> findByAccountName(String accountName) {
-		Assert.hasLength(accountName);
+		Assert.hasLength(accountName, "Value is required");
 		return repository.findByIdAccount(accountName);
 	}
 
@@ -72,7 +72,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 		dataPoint.setStatistics(statistics);
 		dataPoint.setRates(ratesService.getCurrentRates());
 
-		log.debug("new datapoint has been created: {}", pointId);
+		log.debug("New datapoint created");
 
 		return repository.save(dataPoint);
 	}
@@ -89,7 +89,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 				.map(ItemMetric::getAmount)
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 
-		return ImmutableMap.of(
+		return Map.of(
 				StatisticMetric.EXPENSES_AMOUNT, expensesAmount,
 				StatisticMetric.INCOMES_AMOUNT, incomesAmount,
 				StatisticMetric.SAVING_AMOUNT, savingAmount

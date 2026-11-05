@@ -1,16 +1,33 @@
 package com.piggymetrics.account.client;
 
 import com.piggymetrics.account.domain.Account;
-import org.springframework.cloud.openfeign.FeignClient;
+import com.piggymetrics.serverless.ServiceTokenProvider;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
 
-@FeignClient(name = "statistics-service", fallback = StatisticsServiceClientFallback.class)
-public interface StatisticsServiceClient {
+@Component
+public class StatisticsServiceClient {
+    private static final org.slf4j.Logger LOGGER = org.slf4j.LoggerFactory.getLogger(StatisticsServiceClient.class);
+    private final RestClient client;
+    private final ServiceTokenProvider tokens;
 
-	@RequestMapping(method = RequestMethod.PUT, value = "/statistics/{accountName}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	void updateStatistics(@PathVariable("accountName") String accountName, Account account);
+    public StatisticsServiceClient(RestClient.Builder builder, ServiceTokenProvider tokens,
+                                   @Value("${services.base-url}") String baseUrl) {
+        this.client = builder.clone().baseUrl(baseUrl).build();
+        this.tokens = tokens;
+    }
 
+    /** Best effort, like the former Hystrix fallback: the account change is already saved. */
+    public void updateStatistics(String accountName, Account account) {
+        try {
+            client.put().uri("/statistics/{name}", accountName)
+                    .headers(headers -> headers.setBearerAuth(tokens.getToken()))
+                    .contentType(MediaType.APPLICATION_JSON).body(account).retrieve().toBodilessEntity();
+        } catch (RuntimeException exception) {
+            LOGGER.error("Error during update statistics for account: {} ({})", accountName,
+                    exception.getClass().getSimpleName());
+        }
+    }
 }

@@ -1,11 +1,9 @@
 package com.piggymetrics.account.service;
 
-import com.piggymetrics.account.client.AuthServiceClient;
 import com.piggymetrics.account.client.StatisticsServiceClient;
 import com.piggymetrics.account.domain.Account;
 import com.piggymetrics.account.domain.Currency;
 import com.piggymetrics.account.domain.Saving;
-import com.piggymetrics.account.domain.User;
 import com.piggymetrics.account.repository.AccountRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +23,6 @@ public class AccountServiceImpl implements AccountService {
 	private StatisticsServiceClient statisticsClient;
 
 	@Autowired
-	private AuthServiceClient authClient;
-
-	@Autowired
 	private AccountRepository repository;
 
 	/**
@@ -35,7 +30,7 @@ public class AccountServiceImpl implements AccountService {
 	 */
 	@Override
 	public Account findByName(String accountName) {
-		Assert.hasLength(accountName);
+		Assert.hasLength(accountName, "Value is required");
 		return repository.findByName(accountName);
 	}
 
@@ -43,12 +38,14 @@ public class AccountServiceImpl implements AccountService {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Account create(User user) {
-
-		Account existing = repository.findByName(user.getUsername());
-		Assert.isNull(existing, "account already exists: " + user.getUsername());
-
-		authClient.createUser(user);
+	public Account create(String username) {
+		Assert.hasText(username, "Username is required");
+		Assert.isTrue(!"demo".equalsIgnoreCase(username) && !"current".equalsIgnoreCase(username),
+				"Reserved username");
+		Account existing = repository.findByName(username);
+		if (existing != null) {
+			return existing;
+		}
 
 		Saving saving = new Saving();
 		saving.setAmount(new BigDecimal(0));
@@ -58,13 +55,19 @@ public class AccountServiceImpl implements AccountService {
 		saving.setCapitalization(false);
 
 		Account account = new Account();
-		account.setName(user.getUsername());
+		account.setName(username);
+		account.setIncomes(java.util.List.of());
+		account.setExpenses(java.util.List.of());
 		account.setLastSeen(new Date());
 		account.setSaving(saving);
 
-		repository.save(account);
+		try {
+			repository.insert(account);
+		} catch (org.springframework.dao.DuplicateKeyException exception) {
+			return repository.findByName(username);
+		}
 
-		log.info("new account has been created: " + account.getName());
+		log.info("New account created");
 
 		return account;
 	}
@@ -85,7 +88,7 @@ public class AccountServiceImpl implements AccountService {
 		account.setLastSeen(new Date());
 		repository.save(account);
 
-		log.debug("account {} changes has been saved", name);
+		log.debug("Account changes saved");
 
 		statisticsClient.updateStatistics(name, account);
 	}

@@ -1,254 +1,124 @@
-[![Build Status](https://travis-ci.org/sqshq/PiggyMetrics.svg?branch=master)](https://travis-ci.org/sqshq/PiggyMetrics)
-[![codecov.io](https://codecov.io/github/sqshq/PiggyMetrics/coverage.svg?branch=master)](https://codecov.io/github/sqshq/PiggyMetrics?branch=master)
-[![GitHub license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/sqshq/PiggyMetrics/blob/master/LICENCE)
-[![Join the chat at https://gitter.im/sqshq/PiggyMetrics](https://badges.gitter.im/sqshq/PiggyMetrics.svg)](https://gitter.im/sqshq/PiggyMetrics?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# PiggyMetrics, Java 21 on AWS Lambda
 
-# Piggy Metrics
+A serverless modernization of [sqshq/PiggyMetrics](https://github.com/sqshq/piggymetrics), the MIT-licensed personal-budget tutorial. This branch upgrades the three business services from Java 8 to Java 21 and Spring Boot 3.5, and replaces the always-running infrastructure services with AWS-managed services.
 
-Piggy Metrics is a simple financial advisor app built to demonstrate the [Microservice Architecture Pattern](http://martinfowler.com/microservices/) using Spring Boot, Spring Cloud and Docker. The project is intended as a tutorial, but you are welcome to fork it and turn it into something else!
+**Status:** builds and runs locally through the packaged Lambda entry points. Not deployed or end-to-end tested in an AWS account. This is a migration reference, not a production-ready banking system.
 
-<br>
-
-![](https://cloud.githubusercontent.com/assets/6069066/13864234/442d6faa-ecb9-11e5-9929-34a9539acde0.png)
-![Piggy Metrics](https://cloud.githubusercontent.com/assets/6069066/13830155/572e7552-ebe4-11e5-918f-637a49dff9a2.gif)
-
-## Functional services
-
-Piggy Metrics is decomposed into three core microservices. All of them are independently deployable applications organized around certain business domains.
-
-<img width="880" alt="Functional services" src="https://cloud.githubusercontent.com/assets/6069066/13900465/730f2922-ee20-11e5-8df0-e7b51c668847.png">
-
-#### Account service
-Contains general input logic and validation: incomes/expenses items, savings and account settings.
-
-Method	| Path	| Description	| User authenticated	| Available from UI
-------------- | ------------------------- | ------------- |:-------------:|:----------------:|
-GET	| /accounts/{account}	| Get specified account data	|  | 	
-GET	| /accounts/current	| Get current account data	| × | ×
-GET	| /accounts/demo	| Get demo account data (pre-filled incomes/expenses items, etc)	|   | 	×
-PUT	| /accounts/current	| Save current account data	| × | ×
-POST	| /accounts/	| Register new account	|   | ×
-
-
-#### Statistics service
-Performs calculations on major statistics parameters and captures time series for each account. Datapoint contains values normalized to base currency and time period. This data is used to track cash flow dynamics during the account lifetime.
-
-Method	| Path	| Description	| User authenticated	| Available from UI
-------------- | ------------------------- | ------------- |:-------------:|:----------------:|
-GET	| /statistics/{account}	| Get specified account statistics	          |  | 	
-GET	| /statistics/current	| Get current account statistics	| × | × 
-GET	| /statistics/demo	| Get demo account statistics	|   | × 
-PUT	| /statistics/{account}	| Create or update time series datapoint for specified account	|   | 
-
-
-#### Notification service
-Stores user contact information and notification settings (reminders, backup frequency etc). Scheduled worker collects required information from other services and sends e-mail messages to subscribed customers.
-
-Method	| Path	| Description	| User authenticated	| Available from UI
-------------- | ------------------------- | ------------- |:-------------:|:----------------:|
-GET	| /notifications/settings/current	| Get current account notification settings	| × | ×	
-PUT	| /notifications/settings/current	| Save current account notification settings	| × | ×
-
-#### Notes
-- Each microservice has its own database, so there is no way to bypass API and access persistence data directly.
-- MongoDB is used as a primary database for each of the services.
-- All services are talking to each other via the Rest API
-
-## Infrastructure
-[Spring cloud](https://spring.io/projects/spring-cloud) provides powerful tools for developers to quickly implement common distributed systems patterns -
-<img width="880" alt="Infrastructure services" src="https://cloud.githubusercontent.com/assets/6069066/13906840/365c0d94-eefa-11e5-90ad-9d74804ca412.png">
-### Config service
-[Spring Cloud Config](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html) is horizontally scalable centralized configuration service for the distributed systems. It uses a pluggable repository layer that currently supports local storage, Git, and Subversion.
-
-In this project, we are going to use `native profile`, which simply loads config files from the local classpath. You can see `shared` directory in [Config service resources](https://github.com/sqshq/PiggyMetrics/tree/master/config/src/main/resources). Now, when Notification-service requests its configuration, Config service responses with `shared/notification-service.yml` and `shared/application.yml` (which is shared between all client applications).
-
-##### Client side usage
-Just build Spring Boot application with `spring-cloud-starter-config` dependency, autoconfiguration will do the rest.
-
-Now you don't need any embedded properties in your application. Just provide `bootstrap.yml` with application name and Config service url:
-```yml
-spring:
-  application:
-    name: notification-service
-  cloud:
-    config:
-      uri: http://config:8888
-      fail-fast: true
-```
-
-##### With Spring Cloud Config, you can change application config dynamically. 
-For example, [EmailService bean](https://github.com/sqshq/PiggyMetrics/blob/master/notification-service/src/main/java/com/piggymetrics/notification/service/EmailServiceImpl.java) is annotated with `@RefreshScope`. That means you can change e-mail text and subject without rebuild and restart the Notification service.
-
-First, change required properties in Config server. Then make a refresh call to the Notification service:
-`curl -H "Authorization: Bearer #token#" -XPOST http://127.0.0.1:8000/notifications/refresh`
-
-You could also use Repository [webhooks to automate this process](http://cloud.spring.io/spring-cloud-config/spring-cloud-config.html#_push_notifications_and_spring_cloud_bus)
-
-##### Notes
-- `@RefreshScope` doesn't work with `@Configuration` classes and doesn't ignores `@Scheduled` methods
-- `fail-fast` property means that Spring Boot application will fail startup immediately, if it cannot connect to the Config Service.
-
-### Auth service
-Authorization responsibilities are extracted to a separate server, which grants [OAuth2 tokens](https://tools.ietf.org/html/rfc6749) for the backend resource services. Auth Server is used for user authorization as well as for secure machine-to-machine communication inside the perimeter.
-
-In this project, I use [`Password credentials`](https://tools.ietf.org/html/rfc6749#section-4.3) grant type for users authorization (since it's used only by the UI) and [`Client Credentials`](https://tools.ietf.org/html/rfc6749#section-4.4) grant for service-to-service communciation.
-
-Spring Cloud Security provides convenient annotations and autoconfiguration to make this really easy to implement on both server and client side. You can learn more about that in [documentation](http://cloud.spring.io/spring-cloud-security/spring-cloud-security.html).
-
-On the client side, everything works exactly the same as with traditional session-based authorization. You can retrieve `Principal` object from the request, check user roles using the expression-based access control and `@PreAuthorize` annotation.
-
-Each PiggyMetrics client has a scope: `server` for backend services and `ui` - for the browser. We can use `@PreAuthorize` annotation to protect controllers from  an external access:
-
-``` java
-@PreAuthorize("#oauth2.hasScope('server')")
-@RequestMapping(value = "accounts/{name}", method = RequestMethod.GET)
-public List<DataPoint> getStatisticsByAccountName(@PathVariable String name) {
-	return statisticsService.findByAccountName(name);
-}
-```
-
-### API Gateway
-API Gateway is a single entry point into the system, used to handle requests and routing them to the appropriate backend service or by [aggregating results from a scatter-gather call](http://techblog.netflix.com/2013/01/optimizing-netflix-api.html). Also, it can be used for authentication, insights, stress and canary testing, service migration, static response handling and active traffic management.
-
-Netflix opensourced [such an edge service](http://techblog.netflix.com/2013/06/announcing-zuul-edge-service-in-cloud.html) and Spring Cloud allows to use it with a single `@EnableZuulProxy` annotation. In this project, we use Zuul to store some static content (the UI application) and to route requests to appropriate the microservices. Here's a simple prefix-based routing configuration for the Notification service:
-
-```yml
-zuul:
-  routes:
-    notification-service:
-        path: /notifications/**
-        serviceId: notification-service
-        stripPrefix: false
-
-```
-
-That means all requests starting with `/notifications` will be routed to the Notification service. There is no hardcoded addresses, as you can see. Zuul uses [Service discovery](https://github.com/sqshq/PiggyMetrics/blob/master/README.md#service-discovery) mechanism to locate Notification service instances and also [Circuit Breaker and Load Balancer](https://github.com/sqshq/PiggyMetrics/blob/master/README.md#http-client-load-balancer-and-circuit-breaker), described below.
-
-### Service Discovery
-
-Service Discovery allows automatic detection of the network locations for all registered services. These locations might have dynamically assigned addresses due to auto-scaling, failures or upgrades.
-
-The key part of Service discovery is the Registry. In this project, we use Netflix Eureka. Eureka is a good example of the client-side discovery pattern, where client is responsible for looking up the locations of available service instances and load balancing between them.
-
-With Spring Boot, you can easily build Eureka Registry using the `spring-cloud-starter-eureka-server` dependency, `@EnableEurekaServer` annotation and simple configuration properties.
-
-Client support enabled with `@EnableDiscoveryClient` annotation a `bootstrap.yml` with application name:
-``` yml
-spring:
-  application:
-    name: notification-service
-```
-
-This service will be registered with the Eureka Server and provided with metadata such as host, port, health indicator URL, home page etc. Eureka receives heartbeat messages from each instance belonging to the service. If the heartbeat fails over a configurable timetable, the instance will be removed from the registry.
-
-Also, Eureka provides a simple interface where you can track running services and a number of available instances: `http://localhost:8761`
-
-### Load balancer, Circuit breaker and Http client
-
-#### Ribbon
-Ribbon is a client side load balancer which gives you a lot of control over the behaviour of HTTP and TCP clients. Compared to a traditional load balancer, there is no need in additional network hop - you can contact desired service directly.
-
-Out of the box, it natively integrates with Spring Cloud and Service Discovery. [Eureka Client](https://github.com/sqshq/PiggyMetrics#service-discovery) provides a dynamic list of available servers so Ribbon could balance between them.
-
-#### Hystrix
-Hystrix is the implementation of [Circuit Breaker Pattern](http://martinfowler.com/bliki/CircuitBreaker.html), which gives us a control over latency and network failures while communicating with other services. The main idea is to stop cascading failures in the distributed environment - that helps to fail fast and recover as soon as possible - important aspects of a fault-tolerant system that can self-heal.
-
-Moreover, Hystrix generates metrics on execution outcomes and latency for each command, that we can use to [monitor system's behavior](https://github.com/sqshq/PiggyMetrics#monitor-dashboard).
-
-#### Feign
-Feign is a declarative Http client which seamlessly integrates with Ribbon and Hystrix. Actually, a single `spring-cloud-starter-feign` dependency and `@EnableFeignClients` annotation gives us a full set of tools, including Load balancer, Circuit Breaker and Http client with reasonable default configuration.
-
-Here is an example from the Account Service:
-
-``` java
-@FeignClient(name = "statistics-service")
-public interface StatisticsServiceClient {
-
-	@RequestMapping(method = RequestMethod.PUT, value = "/statistics/{accountName}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	void updateStatistics(@PathVariable("accountName") String accountName, Account account);
-
-}
-```
-
-- Everything you need is just an interface
-- You can share `@RequestMapping` part between Spring MVC controller and Feign methods
-- Above example specifies just a desired service id - `statistics-service`, thanks to auto-discovery through Eureka
-
-### Monitor dashboard
-
-In this project configuration, each microservice with Hystrix on board pushes metrics to Turbine via Spring Cloud Bus (with AMQP broker). The Monitoring project is just a small Spring boot application with the [Turbine](https://github.com/Netflix/Turbine) and [Hystrix Dashboard](https://github.com/Netflix-Skunkworks/hystrix-dashboard).
-
-Let's see observe the behavior of our system under load: Statistics Service imitates a delay during the request processing. The response timeout is set to 1 second:
-
-<img width="880" src="https://cloud.githubusercontent.com/assets/6069066/14194375/d9a2dd80-f7be-11e5-8bcc-9a2fce753cfe.png">
-
-<img width="212" src="https://cloud.githubusercontent.com/assets/6069066/14127349/21e90026-f628-11e5-83f1-60108cb33490.gif">	| <img width="212" src="https://cloud.githubusercontent.com/assets/6069066/14127348/21e6ed40-f628-11e5-9fa4-ed527bf35129.gif"> | <img width="212" src="https://cloud.githubusercontent.com/assets/6069066/14127346/21b9aaa6-f628-11e5-9bba-aaccab60fd69.gif"> | <img width="212" src="https://cloud.githubusercontent.com/assets/6069066/14127350/21eafe1c-f628-11e5-8ccd-a6b6873c046a.gif">
---- |--- |--- |--- |
-| `0 ms delay` | `500 ms delay` | `800 ms delay` | `1100 ms delay`
-| Well behaving system. Throughput is about 22 rps. Small number of active threads in the Statistics service. Median service time is about 50 ms. | The number of active threads is growing. We can see purple number of thread-pool rejections and therefore about 40% of errors, but the circuit is still closed. | Half-open state: the ratio of failed commands is higher than 50%, so the circuit breaker kicks in. After sleep window amount of time, the next request goes through. | 100 percent of the requests fail. The circuit is now permanently open. Retry after sleep time won't close the circuit again because a single request is too slow.
-
-### Log analysis
-
-Centralized logging can be very useful while attempting to identify problems in a distributed environment. Elasticsearch, Logstash and Kibana stack lets you search and analyze your logs, utilization and network activity data with ease.
-
-### Distributed tracing
-
-Analyzing problems in distributed systems can be difficult, especially trying to trace requests that propagate from one microservice to another.
-
-[Spring Cloud Sleuth](https://cloud.spring.io/spring-cloud-sleuth/) solves this problem by providing support for the distributed tracing. It adds two types of IDs to the logging: `traceId` and `spanId`. `spanId` represents a basic unit of work, for example sending an HTTP request. The traceId contains a set of spans forming a tree-like structure. For example, with a distributed big-data store, a trace might be formed by a PUT request. Using `traceId` and `spanId` for each operation we know when and where our application is as it processes a request, making reading logs much easier. 
-
-The logs are as follows, notice the `[appname,traceId,spanId,exportable]` entries from the Slf4J MDC:
+## Architecture
 
 ```text
-2018-07-26 23:13:49.381  WARN [gateway,3216d0de1384bb4f,3216d0de1384bb4f,false] 2999 --- [nio-4000-exec-1] o.s.c.n.z.f.r.s.AbstractRibbonCommand    : The Hystrix timeout of 20000ms for the command account-service is set lower than the combination of the Ribbon read and connect timeout, 80000ms.
-2018-07-26 23:13:49.562  INFO [account-service,3216d0de1384bb4f,404ff09c5cf91d2e,false] 3079 --- [nio-6000-exec-1] c.p.account.service.AccountServiceImpl   : new account has been created: test
+Browser -> CloudFront -> private S3 bucket (ui/)
+                      -> HTTP API -> account Lambda      -> account MongoDB database
+                                  -> statistics Lambda   -> statistics MongoDB database
+                                  -> notification Lambda -> notification MongoDB database
+
+Browser -> Cognito (sign-up / sign-in)
+Services -> Cognito (client credentials) -> HTTP API
+EventBridge Scheduler -> notification-jobs Lambda -> account API / SMTP relay
+Lambda cold starts -> SSM Parameter Store SecureString configuration
 ```
 
-- *`appname`*: The name of the application that logged the span from the property `spring.application.name`
-- *`traceId`*: This is an ID that is assigned to a single request, job, or action
-- *`spanId`*: The ID of a specific operation that took place
-- *`exportable`*: Whether the log should be exported to [Zipkin](https://zipkin.io/)
+| Original component | Replacement |
+| --- | --- |
+| account, statistics, notification services | Java 21 Lambda functions using AWS Serverless Java Container |
+| Spring Cloud Config | One Parameter Store SecureString JSON document per service |
+| Zuul gateway, Eureka, Ribbon | API Gateway HTTP API, fixed service URLs, Spring RestClient |
+| OAuth auth-service | Cognito user pool, browser client and service client |
+| `@Scheduled` notification workers | EventBridge Scheduler, separate non-web Lambda |
+| Gateway static files | Private S3 bucket and CloudFront origin access control |
+| Hystrix dashboard, Turbine, Sleuth | Lambda logs, platform metrics and active X-Ray tracing; no application-level tracing instrumentation |
 
-## Infrastructure automation
+No Java infrastructure servers, Docker Compose or RabbitMQ are needed. MongoDB and SMTP remain external dependencies and are **not provisioned by this template**. “Serverless” here describes the application compute and AWS routing/hosting. A serverless database offering must be selected separately if required.
 
-Deploying microservices, with their interdependence, is much more complex process than deploying a monolithic application. It is really important to have a fully automated infrastructure. We can achieve following benefits with Continuous Delivery approach:
+## Build and validate
 
-- The ability to release software anytime
-- Any build could end up being a release
-- Build artifacts once - deploy as needed
+Requirements: JDK 21, Maven 3.9+, Python 3. Tests use an in-memory MongoDB implementation; no Docker, AWS credentials or live exchange-rate API is required.
 
-Here is a simple Continuous Delivery workflow, implemented in this project:
+```bash
+mvn -B -ntp clean package -Plambda
+python3 scripts/smoke-test.py
+python3 scripts/test-deploy.py
+node scripts/test-ui.cjs
+```
 
-<img width="880" src="https://cloud.githubusercontent.com/assets/6069066/14159789/0dd7a7ce-f6e9-11e5-9fbb-a7fe0f4431e3.png">
+This produces `*-service/target/*-1.0-SNAPSHOT-lambda.zip`, plus executable `*-boot.jar` files for ordinary JVM execution. Use a clean build when switching from the original branch.
 
-In this [configuration](https://github.com/sqshq/PiggyMetrics/blob/master/.travis.yml), Travis CI builds tagged images for each successful git push. So, there are always the `latest` images for each microservice on [Docker Hub](https://hub.docker.com/r/sqshq/) and older images, tagged with git commit hash. It's easy to deploy any of them and quickly rollback, if needed.
+The smoke test opens loopback-only fixture servers, verifies Cognito-shaped RSA-signed JWTs against a local JWKS endpoint, and invokes the actual packaged handlers. It covers authenticated account creation/save, repeated statistics updates, notification settings, anonymous/forbidden requests, invalid token clients/types, and both scheduled jobs with no recipients. It does not contact AWS or send e-mail. Unit tests separately exercise token caching, rate-response validation, notification selection and delivery. The deployment test uses fake AWS/SAM/Maven commands; the browser contract test uses Node.js 18+ and mocked requests.
 
-## Let's try it out
+Optional infrastructure and script checks:
 
-Note that starting 8 Spring Boot applications, 4 MongoDB instances and a RabbitMq requires at least 4Gb of RAM.
+```bash
+cfn-lint --regions us-east-1 -- template.yaml
+bash -n scripts/deploy.sh
+shellcheck scripts/deploy.sh
+node --check ui/js/launch.js
+node --check ui/js/login.js
+```
 
-#### Before you start
-- Install Docker and Docker Compose.
-- Change environment variable values in `.env` file for more security or leave it as it is.
-- Build the project: `mvn package [-DskipTests]`
+## Deploy to AWS
 
-#### Production mode
-In this mode, all latest images will be pulled from Docker Hub.
-Just copy `docker-compose.yml` and hit `docker-compose up`
+Deployment creates billable AWS resources. Review `template.yaml` and `scripts/deploy.sh` before running them.
 
-#### Development mode
-If you'd like to build images yourself, you have to clone the repository and build artifacts using maven. After that, run `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
+1. Install/configure AWS CLI v2 and AWS SAM CLI in the target account and region. Use a region supporting all declared runtimes and services. The deploying identity needs CloudFormation, IAM, Lambda, API Gateway, Cognito, Scheduler, S3, CloudFront and SSM permissions.
+2. Supply a reachable MongoDB deployment with three separate databases and database-specific credentials. Configure TLS and network access. Atlas is one option. DocumentDB compatibility, trust-store setup and real database behavior must be tested before use.
+3. Supply an authenticated STARTTLS SMTP relay. For SES, verify the sender identity and satisfy sandbox recipient restrictions or request production access. Set `SMTP_FROM` to your verified sender address; this is separate from the SMTP authentication username.
+4. Set the following environment variables using your secret-management workflow, not checked-in files or shared shell history:
 
-`docker-compose.dev.yml` inherits `docker-compose.yml` with additional possibility to build images locally and expose all containers ports for convenient development.
+| Variable | Purpose |
+| --- | --- |
+| `ACCOUNT_MONGODB_URI` | Connection URI including account database name |
+| `STATISTICS_MONGODB_URI` | Connection URI including statistics database name |
+| `NOTIFICATION_MONGODB_URI` | Connection URI including notification database name |
+| `SMTP_HOST`, `SMTP_USERNAME`, `SMTP_PASSWORD` | SMTP relay credentials |
+| `SMTP_FROM` | Sender e-mail address, required |
+| `SMTP_PORT` | Optional, defaults to 587 |
+| `STAGE` | Optional, defaults to `dev`; 1–10 lowercase letters, digits or hyphens |
+| `SUBNET_IDS`, `SECURITY_GROUP_IDS` | Optional comma-separated lists for VPC access |
 
-If you'd like to start applications in Intellij Idea you need to either use [EnvFile plugin](https://plugins.jetbrains.com/plugin/7861-envfile) or manually export environment variables listed in `.env` file (make sure they were exported: `printenv`)
+5. Run:
 
-#### Important endpoints
-- http://localhost:80 - Gateway
-- http://localhost:8761 - Eureka Dashboard
-- http://localhost:9000/hystrix - Hystrix Dashboard (Turbine stream link: `http://turbine-stream-service:8080/turbine/turbine.stream`)
-- http://localhost:15672 - RabbitMq management (default login/password: guest/guest)
+```bash
+bash scripts/deploy.sh
+```
 
-## Contributions are welcome!
+The script builds/tests, deploys the SAM stack, retrieves the Cognito service-client secret, writes service configuration to SecureString parameters, refreshes Lambda execution environments, generates the public browser configuration, uploads the UI, and invalidates CloudFront. Open the printed `AppUrl` after CloudFront finishes deploying.
 
-PiggyMetrics is open source, and would greatly appreciate your help. Feel free to suggest and implement any improvements.
+The functions need outbound HTTPS to SSM, Cognito and the API; statistics also needs the rate provider, and notification jobs need SMTP. VPC functions normally need NAT for public destinations, plus appropriate routes/security groups. Do not broadly expose MongoDB to the internet to accommodate Lambda's changing public IP addresses.
+
+### Configuration and secrets
+
+`APPLICATION_CONFIG_PARAMETER` points to `/piggymetrics/<stage>/<service>`. At cold start, `ParameterStoreEnvironment` decrypts and loads the JSON document before bean creation. Missing/inaccessible/malformed configuration fails startup. Explicit environment variables and JVM system properties override the document. Local startup skips AWS when the parameter path is absent.
+
+Documents contain `MONGODB_URI`, `COGNITO_SERVICE_CLIENT_SECRET`, `SERVICES_BASE_URL` and, for notifications, `SMTP_*`. They use the default SSM encryption key. A customer-managed KMS key requires additional decrypt permissions. The deploy script uses private temporary files and does not print secret values. Do not enable shell tracing.
+
+Re-run deployment after rotating configuration. Warm execution environments cache configuration and service access tokens. Parameters are created outside CloudFormation; deleting the stack does not delete them. S3 must be emptied before stack deletion. Back up data before any removal.
+
+### Identity and API behavior
+
+- Sign-up uses Cognito `SignUp`; a pre-sign-up trigger validates usernames, reserves `demo` and `current`, and auto-confirms accounts to preserve the original tutorial's instant registration. It does not verify e-mail ownership.
+- Sign-in uses Cognito `USER_PASSWORD_AUTH` over HTTPS, not the retired OAuth password-grant endpoint. The UI stores the one-hour access token in localStorage; expiration requires signing in again. Refresh/MFA/challenge flows are not implemented.
+- `POST /accounts/current` creates the authenticated user's MongoDB account if missing. Repeated login preserves existing account data.
+- `/accounts/current`, `/statistics/current` and `/notifications/recipients/current` use the Cognito `username` claim as the account key. Service credentials cannot impersonate a current user.
+- Services use Cognito client credentials with `piggymetrics/server` scope for named-account APIs. The shared service client has cross-service access; it is not a separate identity per service.
+- Each service validates JWT signature, issuer, expiration, `token_use=access` and allowed `client_id`. Browser tokens cannot read another named account.
+- `GET /accounts/demo`, `GET /statistics/demo` and `GET /statistics/rates` are public. CloudFront disables caching on API paths and forwards authorization.
+- Existing MongoDB data can be retained, but legacy auth-service users/password hashes are **not migrated into Cognito**. Plan user re-registration or a dedicated identity migration before adopting existing production data.
+
+### Demo data and exchange rates
+
+An empty database has no demo account. To enable the demo button, run `mongodb/dump/account-service-dump.js` against the account database with `mongosh`, using a secure connection configuration. The script upserts the public `demo` account; do not put personal data in it. Statistics for demo starts empty.
+
+Exchange rates now come from `https://open.er-api.com/v6/latest/{base}` because the legacy API no longer supports the original unauthenticated contract. The UI obtains rates through `/statistics/rates`. Review the provider's terms, attribution and quotas before deployment. Failed/invalid responses return a gateway error rather than silently using fabricated rates.
+
+## Operational limits and follow-up
+
+- Notification jobs run daily at 12:00 UTC (backup) and 00:00 UTC (reminder), with at most one concurrent jobs invocation and two Scheduler delivery retries. Lambda asynchronous processing also has its own retry behavior. Successful deliveries are marked before processing returns, but a failure between sending and marking can still duplicate an e-mail. There is no dead-letter queue.
+- Jobs process recipients synchronously within a 600-second timeout. Large recipient sets need pagination, queues and idempotent delivery. Test real SMTP delivery before enabling subscriptions.
+- Account saves persist even when statistics updates fail, preserving the original best-effort behavior. There is no durable retry/outbox for that update.
+- Java cold starts, throughput, memory settings and database connection limits have not been benchmarked on AWS. SnapStart/provisioned concurrency are not enabled.
+- Add production alarms, retention policies, recovery tests, dependency/security scanning, stronger identity flows, UI hardening and rate/abuse controls before handling real financial data.
+- Validate the full deployed path: sign-up, sign-in, reload, account save, statistics, notification settings, SES delivery, Scheduler retries and secret rotation. Local tests cannot validate IAM permissions, AWS networking or CloudFront propagation.
+
+## Attribution
+
+Original application by Alexander Lukyanchikov and contributors: [sqshq/PiggyMetrics](https://github.com/sqshq/piggymetrics). The original tutorial architecture remains documented in the upstream repository. See [LICENCE](LICENCE) for the MIT license.
