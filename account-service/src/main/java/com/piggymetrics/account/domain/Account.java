@@ -1,12 +1,12 @@
 package com.piggymetrics.account.domain;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -20,10 +20,12 @@ public class Account {
 	private Date lastSeen;
 
 	@Valid
-	private List<Item> incomes;
+	@NotNull
+	private List<Item> incomes = java.util.List.of();
 
 	@Valid
-	private List<Item> expenses;
+	@NotNull
+	private List<Item> expenses = java.util.List.of();
 
 	@Valid
 	@NotNull

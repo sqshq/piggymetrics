@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: account-service
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/piggy_account}
+server:
+  servlet:
+    context-path: /accounts
+cognito:
+  issuer: ${COGNITO_ISSUER:https://cognito-idp.us-east-1.amazonaws.com/local}
+  browser-client-id: ${COGNITO_BROWSER_CLIENT_ID:local-browser}
+  service-client-id: ${COGNITO_SERVICE_CLIENT_ID:local-service}
+  # Supplied from the Parameter Store SecureString document in AWS.
+  service-client-secret: ${COGNITO_SERVICE_CLIENT_SECRET:local-only}
+  service-scope: ${COGNITO_SERVICE_SCOPE:piggymetrics/server}
+  token-uri: ${COGNITO_TOKEN_URI:https://localhost/oauth2/token}
+services:
+  base-url: ${SERVICES_BASE_URL:http://localhost:8080}

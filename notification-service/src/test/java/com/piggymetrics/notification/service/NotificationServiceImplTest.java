@@ -4,16 +4,16 @@ import com.google.common.collect.ImmutableList;
 import com.piggymetrics.notification.client.AccountServiceClient;
 import com.piggymetrics.notification.domain.NotificationType;
 import com.piggymetrics.notification.domain.Recipient;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import javax.mail.MessagingException;
+import jakarta.mail.MessagingException;
 import java.io.IOException;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class NotificationServiceImplTest {
 
@@ -29,9 +29,9 @@ public class NotificationServiceImplTest {
 	@Mock
 	private EmailService emailService;
 
-	@Before
+	@BeforeEach
 	public void setup() {
-		initMocks(this);
+		openMocks(this);
 	}
 
 	@Test
@@ -50,12 +50,12 @@ public class NotificationServiceImplTest {
 
 		when(recipientService.findReadyToNotify(NotificationType.BACKUP)).thenReturn(ImmutableList.of(withNoError, withError));
 
-		notificationService.sendBackupNotifications();
+		org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class,
+                () -> notificationService.sendBackupNotifications());
 
-		// TODO test concurrent code in a right way
 
-		verify(emailService, timeout(100)).send(NotificationType.BACKUP, withNoError, attachment);
-		verify(recipientService, timeout(100)).markNotified(NotificationType.BACKUP, withNoError);
+		verify(emailService).send(NotificationType.BACKUP, withNoError, attachment);
+		verify(recipientService).markNotified(NotificationType.BACKUP, withNoError);
 
 		verify(recipientService, never()).markNotified(NotificationType.BACKUP, withError);
 	}
@@ -74,12 +74,12 @@ public class NotificationServiceImplTest {
 		when(recipientService.findReadyToNotify(NotificationType.REMIND)).thenReturn(ImmutableList.of(withNoError, withError));
 		doThrow(new RuntimeException()).when(emailService).send(NotificationType.REMIND, withError, null);
 
-		notificationService.sendRemindNotifications();
+		org.junit.jupiter.api.Assertions.assertThrows(IllegalStateException.class,
+                () -> notificationService.sendRemindNotifications());
 
-		// TODO test concurrent code in a right way
 
-		verify(emailService, timeout(100)).send(NotificationType.REMIND, withNoError, null);
-		verify(recipientService, timeout(100)).markNotified(NotificationType.REMIND, withNoError);
+		verify(emailService).send(NotificationType.REMIND, withNoError, null);
+		verify(recipientService).markNotified(NotificationType.REMIND, withNoError);
 
 		verify(recipientService, never()).markNotified(NotificationType.REMIND, withError);
 	}

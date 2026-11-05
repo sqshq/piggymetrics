@@ -7,9 +7,11 @@ public class DataPointId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String account;
-
+	// Field order matters: Mongo compares embedded _id documents field by field, and the
+	// legacy converter wrote {date, account}.
 	private Date date;
+
+	private String account;
 
 	public DataPointId(String account, Date date) {
 		this.account = account;

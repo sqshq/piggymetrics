@@ -22,7 +22,7 @@ public class RecipientServiceImpl implements RecipientService {
 
 	@Override
 	public Recipient findByAccountName(String accountName) {
-		Assert.hasLength(accountName);
+		Assert.hasLength(accountName, "Value is required");
 		return repository.findByAccountName(accountName);
 	}
 
@@ -42,7 +42,7 @@ public class RecipientServiceImpl implements RecipientService {
 
 		repository.save(recipient);
 
-		log.info("recipient {} settings has been updated", recipient);
+		log.info("Notification settings updated");
 
 		return recipient;
 	}

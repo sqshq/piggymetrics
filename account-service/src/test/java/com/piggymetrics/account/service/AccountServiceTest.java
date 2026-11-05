@@ -1,21 +1,20 @@
 package com.piggymetrics.account.service;
 
-import com.piggymetrics.account.client.AuthServiceClient;
 import com.piggymetrics.account.client.StatisticsServiceClient;
 import com.piggymetrics.account.domain.*;
 import com.piggymetrics.account.repository.AccountRepository;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class AccountServiceTest {
 
@@ -26,14 +25,11 @@ public class AccountServiceTest {
 	private StatisticsServiceClient statisticsClient;
 
 	@Mock
-	private AuthServiceClient authClient;
-
-	@Mock
 	private AccountRepository repository;
 
-	@Before
+	@BeforeEach
 	public void setup() {
-		initMocks(this);
+		openMocks(this);
 	}
 
 	@Test
@@ -48,20 +44,21 @@ public class AccountServiceTest {
 		assertEquals(account, found);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void shouldFailWhenNameIsEmpty() {
+		org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
 		accountService.findByName("");
+		});
 	}
 
 	@Test
 	public void shouldCreateAccountWithGivenUser() {
 
-		User user = new User();
-		user.setUsername("test");
+		String username = "test";
 
-		Account account = accountService.create(user);
+		Account account = accountService.create(username);
 
-		assertEquals(user.getUsername(), account.getName());
+		assertEquals(username, account.getName());
 		assertEquals(0, account.getSaving().getAmount().intValue());
 		assertEquals(Currency.getDefault(), account.getSaving().getCurrency());
 		assertEquals(0, account.getSaving().getInterest().intValue());
@@ -69,8 +66,7 @@ public class AccountServiceTest {
 		assertEquals(false, account.getSaving().getCapitalization());
 		assertNotNull(account.getLastSeen());
 
-		verify(authClient, times(1)).createUser(user);
-		verify(repository, times(1)).save(account);
+		verify(repository, times(1)).insert(account);
 	}
 
 	@Test
@@ -137,13 +133,15 @@ public class AccountServiceTest {
 		verify(statisticsClient, times(1)).updateStatistics("test", account);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void shouldFailWhenNoAccountsExistedWithGivenName() {
+		org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
 		final Account update = new Account();
 		update.setIncomes(Arrays.asList(new Item()));
 		update.setExpenses(Arrays.asList(new Item()));
 
 		when(accountService.findByName("test")).thenReturn(null);
 		accountService.saveChanges("test", update);
+		});
 	}
 }

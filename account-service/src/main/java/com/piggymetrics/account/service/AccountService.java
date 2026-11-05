@@ -1,7 +1,6 @@
 package com.piggymetrics.account.service;
 
 import com.piggymetrics.account.domain.Account;
-import com.piggymetrics.account.domain.User;
 
 public interface AccountService {
 
@@ -14,14 +13,12 @@ public interface AccountService {
 	Account findByName(String accountName);
 
 	/**
-	 * Checks if account with the same name already exists
-	 * Invokes Auth Service user creation
-	 * Creates new account with default parameters
+	 * Initializes the authenticated Cognito user's account, idempotently.
 	 *
-	 * @param user
+	 * @param username
 	 * @return created account
 	 */
-	Account create(User user);
+	Account create(String username);
 
 	/**
 	 * Validates and applies incoming account updates

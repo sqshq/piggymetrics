@@ -1,6 +1,6 @@
 package com.piggymetrics.statistics.service;
 
-import com.google.common.collect.ImmutableMap;
+
 import com.piggymetrics.statistics.client.ExchangeRatesClient;
 import com.piggymetrics.statistics.domain.Currency;
 import com.piggymetrics.statistics.domain.ExchangeRatesContainer;
@@ -36,7 +36,7 @@ public class ExchangeRatesServiceImpl implements ExchangeRatesService {
 			log.info("exchange rates has been updated: {}", container);
 		}
 
-		return ImmutableMap.of(
+		return Map.of(
 				Currency.EUR, container.getRates().get(Currency.EUR.name()),
 				Currency.RUB, container.getRates().get(Currency.RUB.name()),
 				Currency.USD, BigDecimal.ONE
@@ -49,7 +49,7 @@ public class ExchangeRatesServiceImpl implements ExchangeRatesService {
 	@Override
 	public BigDecimal convert(Currency from, Currency to, BigDecimal amount) {
 
-		Assert.notNull(amount);
+		Assert.notNull(amount, "Value is required");
 
 		Map<Currency, BigDecimal> rates = getCurrentRates();
 		BigDecimal ratio = rates.get(to).divide(rates.get(from), 4, RoundingMode.HALF_UP);

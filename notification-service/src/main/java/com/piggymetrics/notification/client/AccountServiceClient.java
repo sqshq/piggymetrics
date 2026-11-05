@@ -1,15 +1,24 @@
 package com.piggymetrics.notification.client;
 
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import com.piggymetrics.serverless.ServiceTokenProvider;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
 
-@FeignClient(name = "account-service")
-public interface AccountServiceClient {
+@Component
+public class AccountServiceClient {
+    private final RestClient client;
+    private final ServiceTokenProvider tokens;
 
-	@RequestMapping(method = RequestMethod.GET, value = "/accounts/{accountName}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	String getAccount(@PathVariable("accountName") String accountName);
+    public AccountServiceClient(RestClient.Builder builder, ServiceTokenProvider tokens,
+                               @Value("${services.base-url}") String baseUrl) {
+        this.client = builder.clone().baseUrl(baseUrl).build();
+        this.tokens = tokens;
+    }
 
+    public String getAccount(String accountName) {
+        return client.get().uri("/accounts/{name}", accountName)
+                .headers(headers -> headers.setBearerAuth(tokens.getToken()))
+                .retrieve().body(String.class);
+    }
 }

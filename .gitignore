@@ -6,6 +6,10 @@
 # Mac
 .DS_Store
 
+# AWS SAM
+.aws-sam/
+samconfig.toml
+
 # Maven
 log/
 target/
