@@ -27,6 +27,7 @@ public class UserController {
 	@PreAuthorize("#oauth2.hasScope('server')")
 	@RequestMapping(method = RequestMethod.POST)
 	public void createUser(@Valid @RequestBody User user) {
+		# FIXME[CWE-915]: Apply the standard secure pattern for this weakness. (OWASP ASVS V1.1)
 		userService.create(user);
 	}
 }
