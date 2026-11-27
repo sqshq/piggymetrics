@@ -72,7 +72,8 @@
 		<dependency>
 			<groupId>de.flapdoodle.embed</groupId>
 			<artifactId>de.flapdoodle.embed.mongo</artifactId>
-			<version>1.50.3</version>
+			<!-- versión gestionada por Spring Boot 2.0.3 (2.0.3): soporta MongoDB 3.6, la versión de producción -->
+			<version>2.0.3</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -113,5 +114,57 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<!--
+			Suite de la capa de datos (docs/pruebas-capa-datos.md).
+			Ejecutar con: scripts/test-account-db.sh  (o .ps1 en Windows)
+		-->
+		<profile>
+			<id>data-tier</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<includes>
+								<include>**/account/data/*DbTest.java</include>
+							</includes>
+							<properties>
+								<property>
+									<name>listener</name>
+									<value>com.piggymetrics.account.data.support.VerdictListener</value>
+								</property>
+							</properties>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<version>1.4.11</version>
+						<configuration>
+							<!-- DB-1: clases del esquema del documento "accounts" -->
+							<targetClasses>
+								<param>com.piggymetrics.account.domain.Account</param>
+								<param>com.piggymetrics.account.domain.Item</param>
+								<param>com.piggymetrics.account.domain.Saving</param>
+							</targetClasses>
+							<targetTests>
+								<param>com.piggymetrics.account.data.*DbTest</param>
+							</targetTests>
+							<outputFormats>
+								<param>HTML</param>
+								<param>XML</param>
+							</outputFormats>
+							<timestampedReports>false</timestampedReports>
+							<timeoutConstant>60000</timeoutConstant>
+							<threads>1</threads>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
